@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Getting Started with Create React App Carton
 
 
@@ -44,4 +44,4 @@ yarn install
 
 ### Run dev server:
 yarn start
->>>>>>> origin/vinoth
+

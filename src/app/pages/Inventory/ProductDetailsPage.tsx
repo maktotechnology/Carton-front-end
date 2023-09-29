@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import './AddProductPage.css';
 
 const ProductDetailsPage = () => {
+
+  // Retrieve parameters from the URL in a React component
   const { Prod_Id, Prod_Name, UoM, Brand, Category } = useParams();
 
   // State to manage the editable values and edit mode
@@ -15,10 +17,6 @@ const ProductDetailsPage = () => {
     Brand,
     Category,
   });
-
-  const handleGoBack = () => {
-    window.history.back(); // This will navigate back one step in the browser's history
-  };
 
   // Function to toggle edit mode
   const toggleEditMode = () => {
@@ -57,14 +55,17 @@ const ProductDetailsPage = () => {
     }
   };
 
+  const handleGoBack = () => {
+    window.history.back(); // This will navigate back one step in the browser's history
+  };
+
+
   return (
     <div>
       <h2>Edit Product Details</h2>
       <p>Prod_Id: {Prod_Id}</p>
       <p>
-        Prod_Name: {' '}
-        {editMode ? (
-          <input
+        Prod_Name: {' '} {editMode ? ( <input
             type="text"
             value={editedValues.Prod_Name}
             onChange={(e) => handleInputChange('Prod_Name', e.target.value)}
@@ -87,7 +88,8 @@ const ProductDetailsPage = () => {
             value={editedValues.Brand}
             onChange={(e) => handleInputChange('Brand', e.target.value)} /> : Brand}</p>
       <br></br> 
-      {/* Edit and Save buttons */}
+
+      {/* Save and Cancel buttons */}
       {editMode ? (
         <>
           <div className="card-footer">
@@ -103,6 +105,7 @@ const ProductDetailsPage = () => {
         </>
       ) : (
         <>
+        {/* Edit and GoBack buttons */}
           <div className="card-footer">
             <div className="row">
               <div className="col-lg-6 text-center">

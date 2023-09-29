@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
+// BuilderPage.tsx
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';

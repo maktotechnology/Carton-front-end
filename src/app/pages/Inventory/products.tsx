@@ -16,13 +16,18 @@ const Projects: React.FC<Props> = ({className}) => {
   
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+
+  // Initialize a state variable named tab with an initial value of 'Sidebar'
   const [tab, setTab] = useState('Sidebar');
+
+  // functional component to initialize a state variable named config, configLoading, resetLoading
   const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
   const [configLoading, setConfigLoading] = useState<boolean>(false);
   const [resetLoading, setResetLoading] = useState<boolean>(false);
 
   const ProductId = Array.from({ length: 10 }, (_, index) => index + 1); // Sample reference IDs
 
+  // responsible for updating some configuration settings
   const updateConfig = () => {
     setConfigLoading(true);
     try {
@@ -58,6 +63,7 @@ const Projects: React.FC<Props> = ({className}) => {
   const [sampleProdData, setSampleData] = useState(() => {
     // Retrieve the data from local storage during component mount
     const storedData = localStorage.getItem('sampleProdData');
+    // Setting initial values in the table (attempt-1)
     const initialData = storedData ? JSON.parse(storedData) : [
       { 
         Prod_Id: 101, 
@@ -68,6 +74,7 @@ const Projects: React.FC<Props> = ({className}) => {
       }
     ];
 
+    // Setting initial values in the table (attempt-2)
     const storedDat = localStorage.getItem('sampleProdData');  
     const initialDat = storedDat ? JSON.parse(storedDat) : [
       { 
@@ -130,31 +137,30 @@ const Projects: React.FC<Props> = ({className}) => {
   
   const [filteredData, setFilteredData] = useState(sampleProdData);
     // Function to handle search and filter data
-    const handleSearch = (query) => {
-      setSearchQuery(query);
-      const filteredResults = sampleProdData.filter((data) =>
-        data.Prod_Id.toString().includes(query)
-      );
-      console.log(filteredResults);
-      setFilteredData(filteredResults);
-    };
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filteredResults = sampleProdData.filter((data) =>
+      data.Prod_Id.toString().includes(query)
+    );
+    console.log(filteredResults);
+    setFilteredData(filteredResults);
+  };
 
-    const handleSelectAll = (event) => {
-      const checkboxes = document.querySelectorAll('.product-check');
+  const handleSelectAll = (event) => {
+    const checkboxes = document.querySelectorAll('.product-check');
     
-      checkboxes.forEach((checkbox) => {
-        const inputCheckbox = checkbox as HTMLInputElement; // Explicit cast to HTMLInputElement
-        inputCheckbox.checked = event.target.checked;
-      });
-    };
+    checkboxes.forEach((checkbox) => {
+      const inputCheckbox = checkbox as HTMLInputElement; // Explicit cast to HTMLInputElement
+      inputCheckbox.checked = event.target.checked;
+    });
+  };
 
-    const handleDeleteRow = (prodId) => {
-      // Filter out the row to be deleted from the data state
-      const updatedData = filteredData.filter((item) => item.Prod_Id !== prodId);
-      setFilteredData(updatedData); // Update the data state
-    };
+  const handleDeleteRow = (prodId) => {
+    // Filter out the row to be deleted from the data state
+    const updatedData = filteredData.filter((item) => item.Prod_Id !== prodId);
+    setFilteredData(updatedData); // Update the data state
+  };
     
-
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -162,45 +168,31 @@ const Projects: React.FC<Props> = ({className}) => {
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>Product List</span>
         </h3>
-        
         <div className='card-toolbar'>
-          {/* begin::Menu */}
-          {/* <button
-            type='button'
-            className='btn btn-sm btn-icon btn-color-primary btn-active-light-primary'
-            data-kt-menu-trigger='click'
-            data-kt-menu-placement='bottom-end'
-            data-kt-menu-flip='top-end'
-          >
-            <KTIcon iconName='category' className='fs-2' />
-          </button> */}
-          
-      <div >
+        {/* begin::Menu */}
+          <div >
+          {/* Add a button that navigates to the AddProductPage */}
+            <Routes>
+              <Route path="/add-product/" element={<AddProductPage  />} />
+            </Routes>
+            <button className="submit-butto"><Link to="/add-product/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add New Product</Link></button>
+          </div>
+        <div >
         {/* Add a button that navigates to the AddProductPage */}
-        <Routes>
-          <Route path="/add-product/" element={<AddProductPage  />} />
-        </Routes>
-        <button className="submit-butto"><Link to="/add-product/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add New Product</Link></button>
-      </div>
-      <div >
-        {/* Add a button that navigates to the AddProductPage */}
-        <Routes>
-          <Route path="/add-multiple/" element={<AddMultiple />} />
-        </Routes>
-        <button className="submit-butto"><Link to="/add-multiple/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add Multiple</Link></button>
-      </div>
-
-          {/* begin::Menu 2 */}
+          <Routes>
+            <Route path="/add-multiple/" element={<AddMultiple />} />
+          </Routes>
+          <button className="submit-butto"><Link to="/add-multiple/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add Multiple</Link></button>
+        </div>
+        {/* begin::Menu 2 */}
           <div
             className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold w-200px'
             data-kt-menu='true' >
           </div>
-
           {/* end::Menu 2 */}
           {/* end::Menu */}
         </div>
       </div>
-
       {/* end::Header */}
       {/* begin::Body */}
       <div className='card-body py-3'>
@@ -231,13 +223,11 @@ const Projects: React.FC<Props> = ({className}) => {
                 <th className='min-w-120px'>Brand</th>
                 <th className='min-w-100px text-end'>Actions</th>
               </tr>
-            </thead>
             {/* end::Table head */}
+            </thead>
             {/* begin::Table body */}
-            <tbody>
-            
-            {filteredData.map((data) => (
-              
+            <tbody> 
+            {filteredData.map((data) => (  
               <tr key={data.Prod_Id}>
                 <td>
                   <div className='form-check form-check-sm form-check-custom form-check-solid'>
@@ -255,18 +245,16 @@ const Projects: React.FC<Props> = ({className}) => {
                 <td>{data.Category}</td>
                 <td>{data.Brand}</td>
                 <td className='text-end'>
+                {/* Make the name a clickable icon to edit all the values */}
                 <Link to={`/product-details/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Prod_Name)}/${encodeURIComponent(data.UoM)}/${encodeURIComponent(data.Category)}/${encodeURIComponent(data.Brand)}`}>
-                  <a
-                    href='#'
-                    className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                  >
+                  <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                     <KTIcon iconName='pencil' className='fs-3' />
                   </a>
                 </Link>
-
+                  {/* Make the name a clickable icon to delete the row */}
                   <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
-                  onClick={() => handleDeleteRow(data.Prod_Id)}>
-                    <KTIcon iconName='trash' className='fs-3' />
+                    onClick={() => handleDeleteRow(data.Prod_Id)}>
+                      <KTIcon iconName='trash' className='fs-3' />
                   </a>
                 </td>
               </tr>
@@ -278,7 +266,6 @@ const Projects: React.FC<Props> = ({className}) => {
         </div>
         {/* end::Table container */}
       </div>
-
       {/* begin::Body */}
     </div>
     

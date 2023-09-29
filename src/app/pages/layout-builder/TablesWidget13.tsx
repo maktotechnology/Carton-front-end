@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
+// Tableswidget13.tsx
 
 import {KTIcon} from '../../../_metronic/helpers'
 import React, { useEffect, useState } from 'react';
@@ -80,7 +80,8 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
 
   const handleClearLocalStorage = () => {
     localStorage.removeItem('sampleData');
-    setSampleData([]); // Reset the state to an empty array
+    // Reset the state to an empty array
+    setSampleData([]); 
   };
 
   const handleUserAdded = (newUser) => {
@@ -157,16 +158,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         </h3>
         
         <div className='card-toolbar'>
-          {/* begin::Menu */}
-          {/* <button
-            type='button'
-            className='btn btn-sm btn-icon btn-color-primary btn-active-light-primary'
-            data-kt-menu-trigger='click'
-            data-kt-menu-placement='bottom-end'
-            data-kt-menu-flip='top-end'
-          >
-            <KTIcon iconName='category' className='fs-2' />
-          </button> */}
+        {/* begin::Menu */}
           <div>
            {/* Add a button that navigates to the AddUserPage */}
             <Routes>
@@ -179,9 +171,9 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
             className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold w-200px'
             data-kt-menu='true'>
           </div>
-          {/* end::Menu 2 */}
-          {/* end::Menu */}
+          {/* end::Menu 2 */}  
         </div>
+        {/* end::Menu */}
       </div>
       {/* end::Header */}
       {/* begin::Body */}
@@ -219,9 +211,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
             {/* end::Table head */}
             {/* begin::Table body */}
             <tbody>
-            
             {filteredData.map((data) => (
-              
               <tr key={data.Ref_ID}>
                 <td>
                   <div className='form-check form-check-sm form-check-custom form-check-solid'>
@@ -240,7 +230,6 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
                 <td>{data.Department}</td>
                 <td>{data.Product}</td>
                 <td>{data.Status}</td>
- 
                 <td className='text-end'>
                 <Link to={`/user-details/${encodeURIComponent(data.Ref_ID)}/${encodeURIComponent(data.Request_risedby)}/${encodeURIComponent(data.Transfer_type)}/${encodeURIComponent(data.Branch)}/${encodeURIComponent(data.Department)}/${encodeURIComponent(data.Product)}/${encodeURIComponent(data.Status)}`}>
                   <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
@@ -263,6 +252,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       </div>
       {/* begin::Body */}
     </div> 
+
   )
 }
 

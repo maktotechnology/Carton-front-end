@@ -19,6 +19,7 @@ const BuilderProductPage: React.FC = () => {
   
   const productIds = Array.from({ length: 10 }, (_, index) => index + 1); // Sample Product IDs
 
+  // layout setup of a web application
   const updateConfig = () => {
     setConfigLoading(true);
     try {
@@ -30,6 +31,7 @@ const BuilderProductPage: React.FC = () => {
     }
   };
 
+  // for resetting a configuration to its default state
   const reset = () => {
     setResetLoading(true);
     setTimeout(() => {
@@ -75,7 +77,6 @@ const BuilderProductPage: React.FC = () => {
     setSampleData([]); // Reset the state to an empty array
   };
 
-
   const handleUserAdded = (newProduct) => {
     // Check if an object with the same Prod_Id already exists in sampleProdData
     const isDuplicate = sampleProdData.some((data) => data.Prod_Id === newProduct.Prod_Id);
@@ -88,7 +89,6 @@ const BuilderProductPage: React.FC = () => {
     }
   };
   
-
   // Read the URL parameters and store them in the state
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -124,7 +124,7 @@ const BuilderProductPage: React.FC = () => {
     };
   return (
     <>
-          {/* Search bar */}
+      {/* Search bar */}
       <div>
         <input
           type="text"
@@ -134,7 +134,8 @@ const BuilderProductPage: React.FC = () => {
         />
       </div>
       <div className="table-container"> {/* Add a container div for the table */}
-        <table className="custom-table"> {/* Add the custom-table class for styling */}
+        <table className="custom-table"> {/* Add the custom-table class for styling */}  
+          {/* begin::table-head */} 
           <thead>
             <tr>
               <th>Prod</th>
@@ -143,7 +144,9 @@ const BuilderProductPage: React.FC = () => {
               <th>Brand</th>
               <th>Category</th>
             </tr>
+          {/* end::table-head */} 
           </thead>
+          {/* begin::table-body */} 
           <tbody>
             {filteredData.map((data) => (          
               <tr key={data.Prod_Id}>
@@ -159,7 +162,9 @@ const BuilderProductPage: React.FC = () => {
                 <td>{data.Category}</td>
               </tr>
             ))}
+          {/* end::table-body */} 
           </tbody>
+        {/* end::table */} 
         </table>
       </div>
       <div>

@@ -1,11 +1,8 @@
+//UserDetailsPage.tsx
+
 import React, { useState } from 'react';
 import { useParams, Route, Routes } from 'react-router-dom';
-
-import {
-  TablesWidget13,
-} from '../layout-builder/TablesWidget13'
-
-
+import { TablesWidget13, } from '../layout-builder/TablesWidget13'
 
 const UserDetailsPage = () => {
   const { Ref_ID, Request_risedby, Transfer_type, Branch, Department, Product, Status} = useParams();
@@ -59,8 +56,9 @@ const UserDetailsPage = () => {
     }
   };
 
+  // This will navigate back one step in the browser's history
   const handleGoBack = () => {
-    window.history.back(); // This will navigate back one step in the browser's history
+    window.history.back(); 
   };
   
 
@@ -68,97 +66,72 @@ const UserDetailsPage = () => {
     <div>
       <h2>Meterial Requisition Details</h2>
       <p>Ref_ID: {Ref_ID}</p>
-      <p>
-        Request_risedby:{' '}
+      <p>Request_risedby:{' '}
         {editMode ? (
           <input
             type="text"
             value={editedValues.Request_risedby}
-            onChange={(e) => handleInputChange('Request_risedby', e.target.value)}
-          />
-        ) : (
-          Request_risedby
-        )}
+            onChange={(e) => handleInputChange('Request_risedby', e.target.value)}/>) : (Request_risedby)}
       </p>
       {/* Repeat the above pattern for other fields */}
-      <p>Transfer_type: {editMode ? <input type="text"
-            value={editedValues.Transfer_type}
-            onChange={(e) => handleInputChange('Transfer_type', e.target.value)} /> : Transfer_type}</p>
+      <p>Transfer_type: {editMode ? <input 
+          type="text"
+          value={editedValues.Transfer_type}
+          onChange={(e) => handleInputChange('Transfer_type', e.target.value)} /> : Transfer_type}
+      </p>
       <p>Branch: {editMode ? <input 
-      type="text"
-      value={editedValues.Branch}
-      onChange={(e) => handleInputChange('Branch', e.target.value)} /> : Branch}</p>
+          type="text"
+          value={editedValues.Branch}
+          onChange={(e) => handleInputChange('Branch', e.target.value)} /> : Branch}
+      </p>
       <p>Department: {editMode ? <input 
-            type="text"
-            value={editedValues.Department}
-            onChange={(e) => handleInputChange('Department', e.target.value)} /> : Department}</p>
-      {/*<p>Product: {editMode ? <input 
-            type="text"
-            value={editedValues.Product}
-      onChange={(e) => handleInputChange('Product', e.target.value)} /> : Product}</p> */}
-      
-      
+          type="text"
+          value={editedValues.Department}
+          onChange={(e) => handleInputChange('Department', e.target.value)} /> : Department}
+      </p>      
       <p>Product: {editMode ? <input 
-      type="text"
-      value={editedValues.Status}
-      onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Status}</p> 
-
+          type="text"
+          value={editedValues.Status}
+          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Status}
+      </p> 
       <p>Status: {Product}</p>
-      {/*<p>
-        Status:{' '}
-        {editMode ? (
-          <input
-            type="text"
-            value={editedValues.Product}
-            onChange={(e) => handleInputChange('Product', e.target.value)}
-          />
-        ) : (
-          Product
-        )}
-        </p> */}
-
-
       
-<div className='d-flex flex-column w-100 me-2'>
-  <div className='d-flex flex-stack mb-2'>
-    {Status === 'Approved' ? (
-      <span className='text-muted me-2 fs-7 fw-semibold'>
-        <span role="img" aria-label="Truck">🚚</span> 100%
-      </span>
-    ) : Status === 'Draft' ? (
-      <span className='text-muted me-2 fs-7 fw-semibold'>
-        <span role="img" aria-label="Truck">🚚</span> 0%
-      </span>
-    ) : Status === 'Processing' ? (
-      <span className='text-muted me-2 fs-7 fw-semibold'>
-        <span role="img" aria-label="Truck">🚚</span> 70%
-      </span>
-    ) : Status === 'Rejected' ? (
-      <span className='text-muted me-2 fs-7 fw-semibold' style={{ color: 'red' }}>
-        <span role="img" aria-label="Truck">🚚</span> Canceled
-      </span>
-    ) : null}
-  </div>
-  <div className='progress h-9px w-100'>
-    <div
-      className='progress-bar'
-      role='progressbar'
-      style={{
-        width: Status === 'Approved' ? '100%' : Status === 'Processing' ? '70%' : Status === 'Draft' ? '0%' : '0%',
-        backgroundColor: Status === 'Rejected' ? 'red' : 'primary',
-        backgroundImage: `url("https://static.vecteezy.com/system/resources/previews/014/455/904/original/delivery-truck-icon-icon-on-transparent-background-free-png.png")`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: '30px 30px',
-        right: `calc(${Status === 'Approved' ? '100%' : Status === 'Processing' ? '70%' : Status === 'Draft' ? '0%' : '0%'} - 15px)`, // Adjust left position based on progress
-      }}
-    ></div>
-  </div>
-</div>
+      <div className='d-flex flex-column w-100 me-2'>
+        <div className='d-flex flex-stack mb-2'>
+          {Status === 'Approved' ? (
+            <span className='text-muted me-2 fs-7 fw-semibold'>
+              <span role="img" aria-label="Truck">🚚</span> 100%
+            </span>
+          ) : Status === 'Draft' ? (
+          <span className='text-muted me-2 fs-7 fw-semibold'>
+            <span role="img" aria-label="Truck">🚚</span> 0%
+          </span>
+          ) : Status === 'Processing' ? (
+            <span className='text-muted me-2 fs-7 fw-semibold'>
+              <span role="img" aria-label="Truck">🚚</span> 70%
+            </span>
+          ) : Status === 'Rejected' ? (
+            <span className='text-muted me-2 fs-7 fw-semibold' style={{ color: 'red' }}>
+              <span role="img" aria-label="Truck">🚚</span> Canceled
+            </span>
+          ) : null}
+        </div>
+        <div className='progress h-9px w-100'>
+          <div className='progress-bar' role='progressbar'
+            style={{
+              width: Status === 'Approved' ? '100%' : Status === 'Processing' ? '70%' : Status === 'Draft' ? '0%' : '0%',
+              backgroundColor: Status === 'Rejected' ? 'red' : 'primary',
+              backgroundImage: `url("https://static.vecteezy.com/system/resources/previews/014/455/904/original/delivery-truck-icon-icon-on-transparent-background-free-png.png")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundSize: '30px 30px',
+              right: `calc(${Status === 'Approved' ? '100%' : Status === 'Processing' ? '70%' : Status === 'Draft' ? '0%' : '0%'} - 15px)`, // Adjust left position based on progress
+            }}>
+          </div>
+        </div>
+      </div>
 
-
-
-       <br></br> 
+      <br></br> 
       
       {/* Edit and Save buttons */}
       {editMode ? (

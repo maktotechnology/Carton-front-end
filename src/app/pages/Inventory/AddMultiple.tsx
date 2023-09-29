@@ -13,7 +13,7 @@ const AddMultiple = () => {
     const checkboxes = document.querySelectorAll('.product-check');
 
     checkboxes.forEach((checkbox) => {
-      const inputCheckbox = checkbox as HTMLInputElement;
+      const inputCheckbox = checkbox as HTMLInputElement; // Explicit cast to HTMLInputElement
       inputCheckbox.checked = e.target.checked;
     });
   };
@@ -28,6 +28,7 @@ const AddMultiple = () => {
     },
   ]);
 
+  //update a specific row in a table or list of data 
   const handleNewRowChange = (id, name, value) => {
     const updatedTableData = tableData.map((row) => {
       if (row.Prod_Id === id) {
@@ -41,6 +42,7 @@ const AddMultiple = () => {
     setTableData(updatedTableData);
   };
 
+  //function to add new row in the table
   const handleAddRow = () => {
     const newRowId = Date.now();
     const newRow = {
@@ -75,6 +77,7 @@ const AddMultiple = () => {
     setTableData(updatedTableData);
   };
 
+  // function to handle Submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -104,21 +107,29 @@ const AddMultiple = () => {
     navigate('/inventory', { state: { data: newData } });
   };
 
+  //to navigate one step back
   const handleGoBack = () => {
     navigate(-1);
   };
 
   return (
     <div className="card-footer">
+      {/* begin::Header */}
       <h1 className="card-title align-items-start flex-column" style={{ alignItems: 'center', fontSize: '16px' }}>
         Add Multiple Products
       </h1>
 
+      {/* begin::Menu */}
       <div>
+        {/* begin::Menu 2 */}
         <div className="card-body py-3">
+          {/* begin::Menu 3 */}
           <div className="table-container">
+            {/*begin::table */}
             <table className="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+              {/*begin::table-head */}
               <thead>
+                {/*begin::table-row */}
                 <tr>
                   <th className="w-25px">
                     <div className="form-check form-check-sm form-check-custom form-check-solid">
@@ -138,8 +149,11 @@ const AddMultiple = () => {
                   <th className="head-style" style={{ color: 'gray' }}><b>Category</b></th>
                   <th className="head-style" style={{ color: 'gray' }}><b>Brand</b></th>
                   <th style={{ color: 'gray' }}><b>Action</b></th>
+                {/* end::table-row */}
                 </tr>
+              {/* end::table-head */}
               </thead>
+              {/*begin::table-body */}
               <tbody>
                 {tableData.map((row) => (
                   <tr key={row.Prod_Id}>
@@ -195,18 +209,26 @@ const AddMultiple = () => {
                             <KTIcon iconName="trash" className="fs-3" />
                       </a>
                     </td>
+                  {/* end::table-row */}
                   </tr>
                 ))}
+                {/* end::table-body */}
               </tbody>
+              {/* end::table */}
             </table>
+            {/* end::Menu 3 */}
           </div>
+        {/* end::Menu 2 */}
         </div>
+      {/* end::Menu */}
       </div>
-
+      
+      {/* add row button */}
       <button className="add-row-button" onClick={handleAddRow}>
         Add Row
       </button>
 
+      {/* Save and Cancel buttons */}
       <div className="card-footer">
         <div className="row">
           <div className="col-lg-6 text-center">
@@ -221,6 +243,7 @@ const AddMultiple = () => {
           </div>
         </div>
       </div>
+    {/* end::Header */}
     </div>
   );
 };

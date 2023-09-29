@@ -1,3 +1,5 @@
+//Tableswidget13 copy.tsx
+
 import React, { useState, useEffect, } from 'react'; // Import React and useState
 import { useContext } from 'react';
 import { KTIcon } from '../../../_metronic/helpers';
@@ -28,6 +30,7 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
     setTableData(updatedData);
   };
 
+  // function to add rows
   const handleAddRow = () => {
     const newRow: RowData = {
       Product: '',
@@ -61,14 +64,16 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
     navigate(`/builder?${queryParams.toString()}`);
   };
 
+  // This will navigate back one step back
   const handleGoBack = () => {
     navigate(-1);
   };
 
+  // To display the Prod_name in the product list from the localStorage
   const [prodNames, setProdNames] = useState([]);
   useEffect(() => {
     const storedData = localStorage.getItem('sampleProdData');
-
+      // fetch Prod_names
       if (storedData !== null) {
       const dataArray = JSON.parse(storedData);
       const namesArray = dataArray.map(item => item.Prod_Name);
@@ -196,6 +201,7 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
       </div>
       {/* end::Body */}
     </div>
+
   );
 };
 

@@ -22,7 +22,7 @@ const AddUserPage  = () =>  {
   
   // creating a functional component 
   const [formData, setFormData] = useState({
-    Ref_ID: '',
+    Ref_ID: Date.now(),
     Request_risedby: '',
     Transfer_type: '',
     Branch: '',
@@ -91,7 +91,7 @@ const AddUserPage  = () =>  {
 		    <div className="form-group row">
 			    <div className="col-lg-6">
             <label htmlFor="Ref_ID">  Ref_ID:</label>
-            <input type="number" className="form-control" name="Ref_ID" value={formData.Ref_ID} onChange={handleChange} required />
+            <input type="number" className="form-control" name="Ref_ID" value={formData.Ref_ID} onChange={handleChange} readOnly required disabled/>
 			    </div>
 			    <div className="col-lg-6">
             <label>Request_risedby:</label>
@@ -143,13 +143,3 @@ const AddUserPage  = () =>  {
 };
 
 export default AddUserPage;
-
-
-/*
-// handling form input changes
-  const handleInputChange = (index: number, field: string, value: string) => {
-    const updatedData = [...tableData];
-    updatedData[index][field] = value;
-    setTableData(updatedData);
-  };
-*/

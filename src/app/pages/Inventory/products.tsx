@@ -74,24 +74,12 @@ const Projects: React.FC<Props> = ({className}) => {
       }
     ];
 
-    // Setting initial values in the table (attempt-2)
-    const storedDat = localStorage.getItem('sampleProdData');  
-    const initialDat = storedDat ? JSON.parse(storedDat) : [
-      { 
-        Prod_Id: 101, 
-        Prod_Name: 'Iphone15', 
-        UoM: 23, 
-        Brand: 'Apple', 
-        Category: 'Electronics'
-      }
-    ];     
-    console.log(initialDat);
-
     // Remove duplicates based on Ref_ID and store in local storage
-    const uniqueData = removeDuplicates(initialDat);
+    const uniqueData = removeDuplicates(initialData);
     localStorage.setItem('sampleProdData', JSON.stringify(uniqueData));
 
-    console.log(initialDat);
+    console.log(initialData);
+
     return uniqueData;
   });
 
@@ -177,14 +165,14 @@ const Projects: React.FC<Props> = ({className}) => {
             </Routes>
             <button className="submit-butto"><Link to="/add-product/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add New Product</Link></button>
           </div>
-        <div >
-        {/* Add a button that navigates to the AddProductPage */}
-          <Routes>
-            <Route path="/add-multiple/" element={<AddMultiple />} />
-          </Routes>
-          <button className="submit-butto"><Link to="/add-multiple/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add Multiple</Link></button>
-        </div>
-        {/* begin::Menu 2 */}
+          <div >
+          {/* Add a button that navigates to the AddProductPage */}
+            <Routes>
+              <Route path="/add-multiple/" element={<AddMultiple />} />
+            </Routes>
+            <button className="submit-butto"><Link to="/add-multiple/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add Multiple</Link></button>
+          </div>
+          {/* begin::Menu 2 */}
           <div
             className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold w-200px'
             data-kt-menu='true' >

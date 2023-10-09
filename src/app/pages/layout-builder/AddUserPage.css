@@ -17,7 +17,7 @@
   width: 100%;
 } 
 
- .form-group {
+.form-group {
   margin-bottom: 10px;
 }
 
@@ -111,6 +111,69 @@ box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3p
 }
 
 
+/* Quantity number input design */
+.Quantity {
+  position: relative;
+}
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+.Quantity input {
+  width: 45px;
+  height: 42px;
+  line-height: 1.65;
+  float: left;
+  display: block;
+  padding: 0;
+  margin: 0;
+  padding-left: 20px;
+  border: 1px solid #eee;
+}
+
+.Quantity input:focus {
+  outline: 0;
+}
+
+.Quantity-nav {
+  float: left;
+  position: relative;
+  height: 42px;
+}
+
+.Quantity-button {
+  position: relative;
+  cursor: pointer;
+  border-left: 1px solid #eee;
+  width: 20px;
+  text-align: center;
+  color: #333;
+  font-size: 13px;
+  font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+  line-height: 1.7;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.Quantity-button.Quantity-up {
+  position: absolute;
+  height: 50%;
+  top: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.Quantity-button.Quantity-down {
+  position: absolute;
+  bottom: -1px;
+  height: 50%;
+}
 

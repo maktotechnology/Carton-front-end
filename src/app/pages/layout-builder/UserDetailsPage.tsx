@@ -133,7 +133,7 @@ const UserDetailsPage = () => {
 
       <br></br> 
       
-      {/* Edit and Save buttons */}
+      {/* Edit, Save and GoBack buttons */}
       {editMode ? (
         <>
           <div className="card-footer">
@@ -167,61 +167,3 @@ const UserDetailsPage = () => {
 
 export default UserDetailsPage;
 
-// public class MergeSort {
-//   public static void mergeSort(int[] arr) {
-//       if (arr.length <= 1) {
-//           return; // Array is already sorted or empty, nothing to do
-//       }
-
-//       int middle = arr.length / 2; // Find the middle index of the array
-//       int[] left = new int[middle]; // Create a new array for the left half
-//       int[] right = new int[arr.length - middle]; // Create a new array for the right half
-
-//       // Fill the left array with elements from the start of the original array
-//       for (int i = 0; i < middle; i++) {
-//           left[i] = arr[i];
-//       }
-//       // Fill the right array with elements from the second half of the original array
-//       for (int i = middle; i < arr.length; i++) {
-//           right[i - middle] = arr[i];
-//       }
-
-//       // Recursively sort both the left and right halves of the array
-//       mergeSort(left);
-//       mergeSort(right);
-
-//       // Merge the sorted left and right halves back into the original array
-//       merge(arr, left, right);
-//   }
-
-//   private static void merge(int[] arr, int[] left, int[] right) {
-//       int i = 0, j = 0, k = 0; // Indexes to track positions in the arrays
-
-//       // Compare elements from left and right arrays and merge them into the original array
-//       while (i < left.length && j < right.length) {
-//           if (left[i] < right[j]) {
-//               arr[k++] = left[i++];
-//           } else {
-//               arr[k++] = right[j++];
-//           }
-//       }
-
-//       // Copy any remaining elements from the left and right arrays
-//       while (i < left.length) {
-//           arr[k++] = left[i++];
-//       }
-//       while (j < right.length) {
-//           arr[k++] = right[j++];
-//       }
-//   }
-
-//   public static void main(String[] args) {
-//       int[] arr = {12, 11, 13, 5, 6, 7}; // Example unsorted array
-//       mergeSort(arr); // Call the mergeSort function to sort the array
-
-//       System.out.println("Sorted array:");
-//       for (int num : arr) { // Print the sorted array
-//           System.out.print(num + " ");
-//       }
-//   }
-// }

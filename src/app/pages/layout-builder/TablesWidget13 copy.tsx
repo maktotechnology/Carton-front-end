@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { KTIcon } from '../../../_metronic/helpers';
 import { useNavigate, useParams, } from 'react-router-dom'; // Import the navigate function from your routing library
 import { Projects } from '../Inventory/products'
+import './AddUserPage.css';
 
 type RowData = {
   Product: string;
@@ -36,12 +37,51 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
       Product: '',
       Dated: '',
       UoM: '',
-      Quantity: 1,
+      Quantity: 0,
       Category: '',
     };
     setTableData([...tableData, newRow]);
     // Store updated data in local storage
     localStorage.setItem('sampleData', JSON.stringify([...tableData, newRow]));
+  };
+
+  // To display the Prod_name in the product list from the localStorage
+  const [prodNames, setProdNames] = useState([]);
+  useEffect(() => {
+    const storedData = localStorage.getItem('sampleProdData');
+      // fetch Prod_names
+      if (storedData !== null) {
+      const dataArray = JSON.parse(storedData);
+      const namesArray = dataArray.map(item => item.Prod_Name);
+      setProdNames(namesArray);
+    }
+  }, []);
+
+   // Function to automatically generate the category for a product
+  const getCategoryForProductName = (productName: string): string => {
+    const storedData = localStorage.getItem('sampleProdData');
+    if (storedData !== null) {
+      const dataArray = JSON.parse(storedData);
+      const matchingProduct = dataArray.find((item) => item.Prod_Name === productName);
+      return matchingProduct ? matchingProduct.Category : '';
+    }
+    return '';
+  };
+
+  // Function to Increment the Quantity value when '+' button is pressed
+  const handleIncrement = (index: number) => {
+    const updatedData = [...tableData];
+    updatedData[index].Quantity += 1;
+    setTableData(updatedData);
+  };
+  
+  // Function to Increment the Quantity value when '-' button is pressed
+  const handleDecrement = (index: number) => {
+    const updatedData = [...tableData];
+    if (updatedData[index].Quantity > 0) {
+      updatedData[index].Quantity -= 1;
+      setTableData(updatedData);
+    }
   };
 
   const handleDeleteRow = (Product: string) => {
@@ -68,18 +108,6 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
   const handleGoBack = () => {
     navigate(-1);
   };
-
-  // To display the Prod_name in the product list from the localStorage
-  const [prodNames, setProdNames] = useState([]);
-  useEffect(() => {
-    const storedData = localStorage.getItem('sampleProdData');
-      // fetch Prod_names
-      if (storedData !== null) {
-      const dataArray = JSON.parse(storedData);
-      const namesArray = dataArray.map(item => item.Prod_Name);
-      setProdNames(namesArray);
-    }
-  }, []);
 
   return (
     <div className={`card ${className}`}>
@@ -133,18 +161,28 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
                     </div>
                   </td>
                   <td>
-                  <select className='form-control'>
-                    <option value="">Choose a Product</option>
-                      {prodNames.map((prodName, index) => (
+                    <select className='form-control custom-select' 
+                      onChange={(e) => {
+                        const productName = e.target.value;
+                        const category = getCategoryForProductName(productName);
+                        handleInputChange(index, 'Product', productName);
+                        handleInputChange(index, 'Category', category);
+                      }} required >
+                      <option value="">Choose a Product</option>
+                      {/* Remove duplicated Product names */}
+                      {prodNames
+                        .filter((prodName, index, array) => array.indexOf(prodName) === index)
+                        .map((prodName, index) => (
                         <option key={index} value={prodName}>
-                        {prodName}
+                          {prodName}
                         </option>
                       ))}
-                  </select>   
+                    </select>   
                   </td>
                   <td>
+                    {/* Make date as input format */}
                     <input
-                      type='text'
+                      type='date'
                       className='form-control'
                       value={row.Dated}
                       onChange={(e) => handleInputChange(index, 'Dated', e.target.value)}
@@ -172,14 +210,31 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
                     />
                   </td>
                   <td>
-                    <input
-                      type='number'
-                      className='form-control'
-                      name='Quantity'
-                      value={row.Quantity}
-                      onChange={(e) => handleInputChange(index, 'Quantity', e.target.value)}
-                      required
-                    />
+                    {/* Making the Increment/Decrement as +/- */}
+                    <div className="Quantity">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={tableData[index].Quantity.toString()}
+                        onChange={(e) => { const updatedData = [...tableData];
+                          updatedData[index].Quantity = parseInt( e.target.value, 10 ); 
+                          setTableData(updatedData);
+                        }} 
+                        required
+                      />
+                      <div className="Quantity-nav">
+                        <div className="Quantity-button Quantity-up"
+                          onClick={() => handleIncrement(index)} >
+                          <b>+</b>
+                        </div>
+                      </div>
+                      <div className="Quantity-nav">
+                        <div className="Quantity-button Quantity-down"
+                          onClick={() => handleDecrement(index)} >
+                          <b>-</b>
+                        </div>
+                      </div>
+                    </div>  
                   </td>
                   <td>
                     <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
@@ -206,5 +261,3 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
 };
 
 export { TablesWidget13 };
-
-

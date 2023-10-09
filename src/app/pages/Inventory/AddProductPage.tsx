@@ -29,6 +29,7 @@ const AddProductPage = () =>{
     Category: '',
     Brand: '',
   });  
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,8 +64,14 @@ const AddProductPage = () =>{
         <br/>
         {/* begin::menu */}
         <div className="card-body">
-          {/* begin::menu 2 */}
           <div className="form-group row">
+            <div className="col-lg-6">
+              <label>Prod_Id:</label>
+              <input type="text" className="form-control" name="Prod_Name" value={formData.Prod_Id} onChange={handleChange} required readOnly disabled/>
+            </div>
+          </div>
+          {/* begin::menu 2 */}
+          <div className="form-group row">  
             <div className="col-lg-6">
               <label>Prod_Name:</label>
               <input type="text" className="form-control" name="Prod_Name" value={formData.Prod_Name} onChange={handleChange} required />

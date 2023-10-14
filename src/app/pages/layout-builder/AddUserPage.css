@@ -34,8 +34,6 @@ input, select {
   border-radius: 40px;
 }
 
-/* CSS */
-
 .submit-button {
   left: 45%;
   flex-direction: column;
@@ -67,13 +65,9 @@ input, select {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-
   will-change: transform,opacity;
   z-index: 0;
 }
-
-/* CSS */
-
 
 .submit-button:hover {
 background: #F6F9FE;
@@ -176,4 +170,3 @@ input[type=number]::-webkit-outer-spin-button
   bottom: -1px;
   height: 50%;
 }
-

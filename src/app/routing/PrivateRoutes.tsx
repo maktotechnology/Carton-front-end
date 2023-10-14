@@ -41,7 +41,7 @@ const PrivateRoutes = () => {
         <Route path='accounting' element={<BuilderPageWrappe />} />
         <Route path='builder' element={<BuilderPageWrapper />} />
         <Route path='menu-test' element={<MenuTestPage />} />
-        <Route path="/user-details/:Ref_ID/:Request_risedby/:Transfer_type/:Branch/:Department/:Status/:Product" element={<UserDetailsPage />} />
+        <Route path="/user-details/:Ref_ID/:Request_risedby/:Transfer_type/:Branch/:Department/:Product/:Dated/:Uom/:Quantity" element={<UserDetailsPage />} />
         <Route path="/add-user"  element={<AddUserPage/>}/>
         <Route path='inventory' element={<BuilderPageWrapp />} />
         <Route path='master' element={<BuilderPageWrap/>}/>
@@ -49,8 +49,8 @@ const PrivateRoutes = () => {
         <Route path='settings' element={<BuilderPageWr/>}/>
         <Route path="/add-product"  element={<AddProductPage/>}/>
         <Route path="/add-multiple"  element={<AddMultiple/>}/>
-        <Route path="/product-details/:Prod_Id/:Prod_Name/:UOM/:Brand/:Category" element={<ProductDetailsPage />} />
-        
+        <Route path="/product-details/:Prod_Id/:Prod_Name/:UoM/:Category/:Brand" element={<ProductDetailsPage />} />
+
         <Route
           path='accounting/pages/profile/*'
           element={

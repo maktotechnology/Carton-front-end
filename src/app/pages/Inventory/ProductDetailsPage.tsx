@@ -64,6 +64,7 @@ const ProductDetailsPage = () => {
     <div>
       <h2>Edit Product Details</h2>
       <p>Prod_Id: {Prod_Id}</p>
+      {/* Edit Product name */}
       <p>
         Prod_Name: {' '} {editMode ? ( <input
             type="text"
@@ -74,19 +75,25 @@ const ProductDetailsPage = () => {
           Prod_Name
         )}
       </p>
-      {/* Repeat the above pattern for other fields */}
+      {/* Edit UOM */}
       <p>UoM: {editMode ? <input 
             type="text"
             value={editedValues.UoM}
-            onChange={(e) => handleInputChange('UoM', e.target.value)} /> : UoM}</p>
+            onChange={(e) => handleInputChange('UoM', e.target.value)} /> : UoM}
+      </p>
+      {/* Edit Category */}
       <p>Category: {editMode ? <input 
             type="text"
             value={editedValues.Category}
-            onChange={(e) => handleInputChange('Category', e.target.value)} /> : Category}</p>
+            onChange={(e) => handleInputChange('Category', e.target.value)} /> : Category}
+      </p>
+      {/* Edit Brand */}
       <p>Brand: {editMode ? <input 
             type="text"
             value={editedValues.Brand}
-            onChange={(e) => handleInputChange('Brand', e.target.value)} /> : Brand}</p>
+            onChange={(e) => handleInputChange('Brand', e.target.value)} /> : Brand}
+      </p>
+
       <br></br> 
 
       {/* Save and Cancel buttons */}

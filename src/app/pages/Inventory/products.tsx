@@ -3,7 +3,6 @@
 import {KTIcon} from '../../../_metronic/helpers'
 import React, { useEffect, useState } from 'react';
 import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
-import './BuilderProductPage.css';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import AddProductPage from './AddProductPage';
 import AddMultiple from './AddMultiple';
@@ -13,9 +12,9 @@ type Props = {
 }
 
 const Projects: React.FC<Props> = ({className}) => {
-  
-  const [searchQuery, setSearchQuery] = useState('');
+
   const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Initialize a state variable named tab with an initial value of 'Sidebar'
   const [tab, setTab] = useState('Sidebar');
@@ -24,8 +23,6 @@ const Projects: React.FC<Props> = ({className}) => {
   const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
   const [configLoading, setConfigLoading] = useState<boolean>(false);
   const [resetLoading, setResetLoading] = useState<boolean>(false);
-
-  const ProductId = Array.from({ length: 10 }, (_, index) => index + 1); // Sample reference IDs
 
   // responsible for updating some configuration settings
   const updateConfig = () => {
@@ -48,6 +45,21 @@ const Projects: React.FC<Props> = ({className}) => {
     }, 1000);
   };
 
+  // Function to handle search and filter data
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filteredResults = sampleProdData.filter((data) =>
+      data.Prod_Id.toString().includes(query)
+    );
+    console.log(filteredResults);
+    setFilteredData(filteredResults);
+  };
+
+  const handleClearLocalStorage = () => {
+    localStorage.removeItem('sampleProdData');
+    setSampleData([]); // Reset the state to an empty array
+  };
+
   // Function to remove duplicates based on Prod_ID
   const removeDuplicates = (dataList) => {
     const uniqueprodIds = new Set();
@@ -60,13 +72,14 @@ const Projects: React.FC<Props> = ({className}) => {
     }, []);
   };
 
+  // Initialise sampleProdData useState
   const [sampleProdData, setSampleData] = useState(() => {
     // Retrieve the data from local storage during component mount
     const storedData = localStorage.getItem('sampleProdData');
     // Setting initial values in the table (attempt-1)
     const initialData = storedData ? JSON.parse(storedData) : [
       { 
-        Prod_Id: 101, 
+        Prod_Id: 1, 
         Prod_Name: 'Iphone15', 
         UoM: 23, 
         Brand: 'Apple', 
@@ -74,30 +87,32 @@ const Projects: React.FC<Props> = ({className}) => {
       }
     ];
 
-    // Remove duplicates based on Ref_ID and store in local storage
+    // Remove duplicates based on Prod_ID and store in local storage
     const uniqueData = removeDuplicates(initialData);
     localStorage.setItem('sampleProdData', JSON.stringify(uniqueData));
-
-    console.log(initialData);
-
     return uniqueData;
   });
 
-  const handleClearLocalStorage = () => {
-    localStorage.removeItem('sampleProdData');
-    setSampleData([]); // Reset the state to an empty array
+  // SelectAll checkbox function
+  const handleSelectAll = (event) => {
+    const checkboxes = document.querySelectorAll('.product-check');
+    
+    checkboxes.forEach((checkbox) => {
+      const inputCheckbox = checkbox as HTMLInputElement; // Explicit cast to HTMLInputElement
+      inputCheckbox.checked = event.target.checked;
+    });
   };
 
   const handleUserAdded = (newProduct) => {
     // Check if an object with the same Prod_Id already exists in sampleProdData
     const isDuplicate = sampleProdData.some((data) => data.Prod_Id === newProduct.Prod_Id);
-  
     if (!isDuplicate) {
       const updatedData = [...sampleProdData, newProduct];
       // Update state and local storage with the new data
       setSampleData(updatedData);
       localStorage.setItem('sampleProdData', JSON.stringify(updatedData));
     }
+    setSampleData([...sampleProdData]);
   };
 
   // Read the URL parameters and store them in the state
@@ -110,7 +125,6 @@ const Projects: React.FC<Props> = ({className}) => {
       Brand: searchParams.get('Brand') || '',
       Category: searchParams.get('Category') || '',
     };
-
     // Add the new user data to the sampleProdData array if all required fields are present
     if (
       newFormData.Prod_Id &&
@@ -124,31 +138,18 @@ const Projects: React.FC<Props> = ({className}) => {
   }, [location.search]);
   
   const [filteredData, setFilteredData] = useState(sampleProdData);
-    // Function to handle search and filter data
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filteredResults = sampleProdData.filter((data) =>
-      data.Prod_Id.toString().includes(query)
-    );
-    console.log(filteredResults);
-    setFilteredData(filteredResults);
-  };
 
-  const handleSelectAll = (event) => {
-    const checkboxes = document.querySelectorAll('.product-check');
-    
-    checkboxes.forEach((checkbox) => {
-      const inputCheckbox = checkbox as HTMLInputElement; // Explicit cast to HTMLInputElement
-      inputCheckbox.checked = event.target.checked;
-    });
-  };
-
+  // Function to delete row
   const handleDeleteRow = (prodId) => {
-    // Filter out the row to be deleted from the data state
-    const updatedData = filteredData.filter((item) => item.Prod_Id !== prodId);
-    setFilteredData(updatedData); // Update the data state
+    // Filter out the row with the specified Prod_Id
+    const updatedTableData = filteredData.filter((row) => row.Prod_Id !== prodId);
+    // Update local storage after deleting a row
+    localStorage.setItem('sampleProdData', JSON.stringify(updatedTableData));
+    // Update the data in the context
+    setFilteredData(updatedTableData);
   };
-    
+
+
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -180,8 +181,9 @@ const Projects: React.FC<Props> = ({className}) => {
           {/* end::Menu 2 */}
           {/* end::Menu */}
         </div>
-      </div>
       {/* end::Header */}
+      </div>
+      
       {/* begin::Body */}
       <div className='card-body py-3'>
         {/* begin::Table container */}
@@ -213,16 +215,17 @@ const Projects: React.FC<Props> = ({className}) => {
               </tr>
             {/* end::Table head */}
             </thead>
+
             {/* begin::Table body */}
             <tbody> 
-            {filteredData.map((data) => (  
-              <tr key={data.Prod_Id}>
+            {filteredData.map((data, index) => (  
+              <tr key={index}>
                 <td>
                   <div className='form-check form-check-sm form-check-custom form-check-solid'>
                     <input className='form-check-input product-check' type='checkbox' value='1' />
                   </div>
                 </td>
-                <td>{data.Prod_Id}</td>
+                <td>{index + 1}</td>    {/* Set serial number for each row */}
                 <td>
                   {/* Make the name a clickable link and pass the user's name as a URL parameter */}
                   <Link to={`/product-details/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Prod_Name)}/${encodeURIComponent(data.UoM)}/${encodeURIComponent(data.Category)}/${encodeURIComponent(data.Brand)}`}>
@@ -233,12 +236,12 @@ const Projects: React.FC<Props> = ({className}) => {
                 <td>{data.Category}</td>
                 <td>{data.Brand}</td>
                 <td className='text-end'>
-                {/* Make the name a clickable icon to edit all the values */}
-                <Link to={`/product-details/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Prod_Name)}/${encodeURIComponent(data.UoM)}/${encodeURIComponent(data.Category)}/${encodeURIComponent(data.Brand)}`}>
-                  <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
-                    <KTIcon iconName='pencil' className='fs-3' />
-                  </a>
-                </Link>
+                  {/* Make the name a clickable icon to edit all the values */}
+                  <Link to={`/product-details/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Prod_Name)}/${encodeURIComponent(data.UoM)}/${encodeURIComponent(data.Category)}/${encodeURIComponent(data.Brand)}`}>
+                    <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                      <KTIcon iconName='pencil' className='fs-3' />
+                    </a>
+                  </Link>
                   {/* Make the name a clickable icon to delete the row */}
                   <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                     onClick={() => handleDeleteRow(data.Prod_Id)}>
@@ -247,16 +250,15 @@ const Projects: React.FC<Props> = ({className}) => {
                 </td>
               </tr>
             ))}
+          {/* end::Table body */}
           </tbody>
-            {/* end::Table body */}
-          </table>
           {/* end::Table */}
-        </div>
+          </table>
         {/* end::Table container */}
-      </div>
+        </div>
       {/* begin::Body */}
+      </div>
     </div>
-    
   )
 }
 

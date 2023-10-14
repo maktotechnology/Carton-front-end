@@ -5,17 +5,23 @@ import { useParams, Route, Routes } from 'react-router-dom';
 import { TablesWidget13, } from '../layout-builder/TablesWidget13'
 
 const UserDetailsPage = () => {
-  const { Ref_ID, Request_risedby, Transfer_type, Branch, Department, Product, Status} = useParams();
+
+  //Initialise parameters with UseParams
+  const { Ref_ID, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity} = useParams();
 
   // State to manage the editable values and edit mode
   const [editMode, setEditMode] = useState(false);
+
   const [editedValues, setEditedValues] = useState({
     Request_risedby,
     Transfer_type,
     Branch,
     Department,
     Product,
-    Status,
+    Dated,
+    Uom,
+    Quantity,
+    //Status,
   });
 
   // Function to toggle edit mode
@@ -31,24 +37,20 @@ const UserDetailsPage = () => {
     }));
   };
 
+  // Function to save edited values
   const handleSave = () => {
     // Retrieve existing data from local storage
     const storedData = localStorage.getItem('sampleData');
     const existingData = storedData ? JSON.parse(storedData) : [];
-  
     // Find the index of the edited item using its Ref_ID
     const editedItemIndex = existingData.findIndex((data) => data.Ref_ID === Ref_ID);
-  
     if (editedItemIndex !== -1) {
       // Update the values of the edited item
       const updatedItem = { ...existingData[editedItemIndex], ...editedValues };
-  
       // Update the sampleData array with the updated item
       existingData[editedItemIndex] = updatedItem;
-  
       // Update local storage with the updated sampleData
       localStorage.setItem('sampleData', JSON.stringify(existingData));
-  
       // Exit edit mode
       toggleEditMode();
     } else {
@@ -65,7 +67,9 @@ const UserDetailsPage = () => {
   return (
     <div>
       <h2>Meterial Requisition Details</h2>
+      
       <p>Ref_ID: {Ref_ID}</p>
+      {/* Edit Request_risedby */}
       <p>Request_risedby:{' '}
         {editMode ? (
           <input
@@ -73,29 +77,49 @@ const UserDetailsPage = () => {
             value={editedValues.Request_risedby}
             onChange={(e) => handleInputChange('Request_risedby', e.target.value)}/>) : (Request_risedby)}
       </p>
-      {/* Repeat the above pattern for other fields */}
+      {/* Edit Transfer_type */}
       <p>Transfer_type: {editMode ? <input 
           type="text"
           value={editedValues.Transfer_type}
           onChange={(e) => handleInputChange('Transfer_type', e.target.value)} /> : Transfer_type}
       </p>
+      {/* Edit Branch */}
       <p>Branch: {editMode ? <input 
           type="text"
           value={editedValues.Branch}
           onChange={(e) => handleInputChange('Branch', e.target.value)} /> : Branch}
       </p>
+      {/* Edit Department */}
       <p>Department: {editMode ? <input 
           type="text"
           value={editedValues.Department}
           onChange={(e) => handleInputChange('Department', e.target.value)} /> : Department}
-      </p>      
+      </p>  
+        {/* Edit Product */}
       <p>Product: {editMode ? <input 
           type="text"
-          value={editedValues.Status}
-          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Status}
-      </p> 
-      <p>Status: {Product}</p>
-      
+          value={editedValues.Product}
+          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Product}
+      </p>
+      {/* Edit Date */}
+      <p>Date: {editMode ? <input 
+          type="text"
+          value={editedValues.Dated}
+          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Dated}
+      </p>
+      {/* Edit UOM */}
+      <p>Uom: {editMode ? <input 
+          type="text"
+          value={editedValues.Uom}
+          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Uom}
+      </p>
+      {/* Edit Quantity */}
+      <p>Quantity: {editMode ? <input 
+          type="text"
+          value={editedValues.Quantity}
+          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Quantity}
+      </p>
+{/*  
       <div className='d-flex flex-column w-100 me-2'>
         <div className='d-flex flex-stack mb-2'>
           {Status === 'Approved' ? (
@@ -130,8 +154,8 @@ const UserDetailsPage = () => {
           </div>
         </div>
       </div>
-
-      <br></br> 
+*/}
+      
       
       {/* Edit, Save and GoBack buttons */}
       {editMode ? (

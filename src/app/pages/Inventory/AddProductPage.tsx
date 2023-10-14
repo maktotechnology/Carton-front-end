@@ -13,15 +13,7 @@ const AddProductPage = () =>{
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSelectAll = (e) => {
-    const checkboxes = document.querySelectorAll('.product-check');
-
-    checkboxes.forEach((checkbox) => {
-      const inputCheckbox = checkbox as HTMLInputElement;  // Explicit cast to HTMLInputElement
-      inputCheckbox.checked = e.target.checked;
-    });
-  };
-
+  // Initialise formData
   const [formData, setFormData] = useState({
     Prod_Id: Date.now(),
     Prod_Name: '',
@@ -29,8 +21,14 @@ const AddProductPage = () =>{
     Category: '',
     Brand: '',
   });  
-  
 
+  // Function to handle InputChange
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  
+  // Functio to Submit
   const handleSubmit = (e) => {
     e.preventDefault();
     // Build query parameters
@@ -47,58 +45,53 @@ const AddProductPage = () =>{
     navigate(-1);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
 
   return (
     <div>
       {/* begin::form */}
       <form className="product-form">
+        {/* begin::head */}
         <h3 className="card-title align-items-start flex-column">
           <div className="card-label fw-bold fs-3 mb-1" style={{ textAlign: 'center' }}>
             Enter Product Details
           </div>
+        {/* end::head */}
         </h3>
         <br/>
-        {/* begin::menu */}
+        {/* begin::menu 1*/}
         <div className="card-body">
-          <div className="form-group row">
-            <div className="col-lg-6">
-              <label>Prod_Id:</label>
-              <input type="text" className="form-control" name="Prod_Name" value={formData.Prod_Id} onChange={handleChange} required readOnly disabled/>
-            </div>
-          </div>
           {/* begin::menu 2 */}
           <div className="form-group row">  
             <div className="col-lg-6">
+              {/* Input for Product name */}
               <label>Prod_Name:</label>
               <input type="text" className="form-control" name="Prod_Name" value={formData.Prod_Name} onChange={handleChange} required />
             </div>
             <div className="col-lg-6">
+              {/* Input for unit of measurement */}
               <label>UOM:</label>
               <input type="text" className="form-control" name="UoM" value={formData.UoM} onChange={handleChange} required />
             </div>
-          {/* begin::menu 2 */}
+          {/* end::menu 2 */}
           </div>
 
           <div className="form-group row">
             {/* begin::menu 3*/}
             <div className="col-lg-6">
+              {/* Input for Category */}
               <label>Category:</label>
               <input type="text" className="form-control" name="Category" value={formData.Category} onChange={handleChange} required />
             </div>
             <div className="col-lg-6">
+              {/* Input for Brand */}
               <label>Brand:</label>
               <div className="input-group">
                 <input type="text" className="form-control" name="Brand" value={formData.Brand} onChange={handleChange} required />
               </div>
-            {/* end::menu 3 */}
             </div>
-          {/* end::menu 2 */}
+          {/* end::menu 3 */}
           </div>
-        {/* end::menu */}
+        {/* end::menu 1*/}
         </div>
       {/* end::form */}
       </form>
@@ -123,4 +116,3 @@ const AddProductPage = () =>{
 };
 
 export default AddProductPage;
-

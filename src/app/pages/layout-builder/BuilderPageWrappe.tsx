@@ -1,6 +1,6 @@
 import React, {FC} from 'react'
 import {PageTitle} from '../../../_metronic/layout/core'
-import {BuilderPage} from './BuilderPage'
+//import {BuilderPage} from './BuilderPage'
 import { TablesWidget13, } from './TablesWidget13'
 
 const BuilderPageWrapper: FC = () => {

@@ -1,0 +1,37 @@
+name: CI/CD for React (Development Branch)
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Ubuntu server
+        uses: appleboy/ssh-action@v0.4.0
+        with:
+          host: ${{ secrets.172.105.35.183 }}
+          username: ${{ secrets.root }}
+          password: ${{ secrets.REACH.out1349T }}
+          script: |
+            cd /root/Carton-front-end
+            git pull origin development
+            npm install
+            npm start

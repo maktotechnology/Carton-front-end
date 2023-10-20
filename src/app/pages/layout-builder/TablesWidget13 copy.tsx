@@ -1,7 +1,6 @@
 //Tableswidget13 copy.tsx
 
 import React, { useState, useEffect, } from 'react'; // Import React and useState
-//import { useContext } from 'react';
 import { KTIcon } from '../../../_metronic/helpers';
 //import { Projects } from '../Inventory/products'
 import './AddUserPage.css';
@@ -9,13 +8,13 @@ import './AddUserPage.css';
 type RowData = {
   Product: string;
   Dated: string;
-  UoM: string;
+  Uom: string;
   Quantity:number;
   Category: string;
 };
 
 type Props = {
-  className: string;
+  className: string;  
 };
 
 const TablesWidget13: React.FC<Props> = ({ className }) => {
@@ -38,7 +37,7 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
     const newRow: RowData = {
       Product: '',
       Dated: '',
-      UoM: '',
+      Uom: '',
       Quantity: 0,
       Category: '',
     };
@@ -194,13 +193,13 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
                     />
                   </td>
                   <td>
-                    {/* Input for UOM */}
+                    {/* Input for Uom */}
                     <input
                       type='text'
                       className='form-control'
-                      name='UoM'
-                      value={row.UoM}
-                      onChange={(e) => handleInputChange(index, 'UoM', e.target.value)}
+                      name='Uom'
+                      value={row.Uom}
+                      onChange={(e) => handleInputChange(index, 'Uom', e.target.value)}
                       required
                     />
                   </td>

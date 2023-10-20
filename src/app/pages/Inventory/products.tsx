@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import AddProductPage from './AddProductPage';
+import './BuilderProductPage.css';
 import AddMultiple from './AddMultiple';
 
 type Props = {

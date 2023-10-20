@@ -99,25 +99,25 @@ const UserDetailsPage = () => {
       <p>Product: {editMode ? <input 
           type="text"
           value={editedValues.Product}
-          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Product}
+          onChange={(e) => handleInputChange('Product', e.target.value)}  /> : Product}
       </p>
       {/* Edit Date */}
       <p>Date: {editMode ? <input 
-          type="text"
+          type="date"
           value={editedValues.Dated}
-          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Dated}
+          onChange={(e) => handleInputChange('Dated', e.target.value)}  /> : Dated}
       </p>
       {/* Edit UOM */}
       <p>Uom: {editMode ? <input 
           type="text"
           value={editedValues.Uom}
-          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Uom}
+          onChange={(e) => handleInputChange('Uom', e.target.value)}  /> : Uom}
       </p>
       {/* Edit Quantity */}
       <p>Quantity: {editMode ? <input 
-          type="text"
+          type="number"
           value={editedValues.Quantity}
-          onChange={(e) => handleInputChange('Status', e.target.value)}  /> : Quantity}
+          onChange={(e) => handleInputChange('Quantity', e.target.value)}  /> : Quantity}
       </p>
 {/*  
       <div className='d-flex flex-column w-100 me-2'>

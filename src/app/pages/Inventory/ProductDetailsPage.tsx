@@ -37,14 +37,11 @@ const ProductDetailsPage = () => {
     if (storedData) {
       const existingData = JSON.parse(storedData);
       const editedItemIndex = existingData.findIndex((data) => data.Prod_Id === Prod_Id);
-
       if (editedItemIndex !== -1) {
         // Update the values of the edited item
         existingData[editedItemIndex] = editedValues;
-
         // Update local storage with the updated sampleProdData
         localStorage.setItem('sampleProdData', JSON.stringify(existingData));
-
         // Exit edit mode
         toggleEditMode();
       } else {
@@ -81,17 +78,17 @@ const ProductDetailsPage = () => {
             value={editedValues.UoM}
             onChange={(e) => handleInputChange('UoM', e.target.value)} /> : UoM}
       </p>
-      {/* Edit Category */}
-      <p>Category: {editMode ? <input 
-            type="text"
-            value={editedValues.Category}
-            onChange={(e) => handleInputChange('Category', e.target.value)} /> : Category}
-      </p>
       {/* Edit Brand */}
       <p>Brand: {editMode ? <input 
             type="text"
             value={editedValues.Brand}
             onChange={(e) => handleInputChange('Brand', e.target.value)} /> : Brand}
+      </p>
+      {/* Edit Category */}
+      <p>Category: {editMode ? <input 
+            type="text"
+            value={editedValues.Category}
+            onChange={(e) => handleInputChange('Category', e.target.value)} /> : Category}
       </p>
 
       <br></br> 

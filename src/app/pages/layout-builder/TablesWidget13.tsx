@@ -1,10 +1,10 @@
 // Tableswidget13.tsx
 
 import {KTIcon} from '../../../_metronic/helpers'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
 import './BuilderPage.css';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useParams, } from 'react-router-dom';
 import AddUserPage from './AddUserPage';
 
 type Props = {
@@ -13,6 +13,9 @@ type Props = {
 
 const TablesWidget13: React.FC<Props> = ({className}) => {
 
+  const { Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity } = useParams();
+  console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
+  
   const location = useLocation();
   const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
 
@@ -62,7 +65,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
   //Initialise sampleData to get the data from localStorage
   const [sampleData, setSampleData] = useState(() => {
     // Retrieve the data from local storage during component mount
-    const storedData = localStorage.getItem('sampleDat');
+    const storedData = localStorage.getItem('sampleData');
     const initialData = storedData ? JSON.parse(storedData) : [
       { 
         Ref_ID: 1, 
@@ -79,10 +82,9 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
      ];
     // Remove duplicates based on Reft_ID and store in local storage
     const uniqueData = removeDuplicates(initialData);
-    localStorage.setItem('sampleDat', JSON.stringify(uniqueData));
-    //console.log('sampleData');
-    console.log(initialData);
-    //console.log(uniqueData);
+    localStorage.setItem('sampleData', JSON.stringify(uniqueData));
+    console.log('Initial Data: ', initialData);   //Log the initialData
+    console.log('Unique data: ', uniqueData);   //Log the uniqueData
     return uniqueData;
   });
 
@@ -96,6 +98,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
   };
 
   const handleUserAdded = (newUser) => {
+    console.log('handleUserAdded called'); // Log function execution
     // Check if an object with the same Ref_ID already exists in sampleData
     const isDuplicate = sampleData.some((data) => data.Ref_ID === newUser.Ref_ID);
     if (!isDuplicate) {
@@ -104,6 +107,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       setSampleData(updatedData);
       localStorage.setItem('sampleData', JSON.stringify(updatedData));
     }
+    console.log('Updated sampleData:', sampleData); // Log the updated data
   };
   
   // Read the URL parameters and store them in the state
@@ -136,8 +140,12 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     ) {
       handleUserAdded(newFormData);
     }
+    console.log('Ref_ID:', Ref_ID);
+    console.log('URL Parameters:', newFormData); // Log the URL parameters
   }, [location.search]);
   
+  console.log('URL Parameters----:', location.state);
+
   const [filteredData, setFilteredData] = useState(sampleData);
   // Function to handle search and filter data
   const handleSearch = (query) => {
@@ -155,6 +163,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     const updatedData = filteredData.filter((item) => item.Ref_ID !== refId);
     // Update the data state
     setFilteredData(updatedData); 
+    localStorage.setItem('sampleData', JSON.stringify(updatedData));
   };
     
   return (
@@ -169,10 +178,10 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         {/* begin::Menu */}
           <div>
            {/* Add a button that navigates to the AddUserPage */}
-            <Routes>
-              <Route path="/add-user" element={<AddUserPage  />} />
+            <Routes>  
+              <Route path="/add-user/:Ref_ID/:Request_risedby/:Transfer_type/:Department/:Branch/:Product/:Dated/:Uom/:Quantity" element={<AddUserPage  />} />
             </Routes>
-            <button className="submit-butto"><Link to="/add-user" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add New Material</Link></button>
+            <button className="submit-butto"><Link to="/add-user/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add New Material</Link></button>
           </div>
           <div
             className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold w-200px'

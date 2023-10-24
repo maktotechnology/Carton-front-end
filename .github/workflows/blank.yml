@@ -24,9 +24,9 @@ jobs:
       - name: Deploy to Ubuntu server
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.NEW }}
-          username: ${{ secrets.NEW }}
-          password: ${{ secrets.NEW }}
+          host: ${{ secrets.ROOT }}
+          username: ${{ secrets.ROOT }}
+          password: ${{ secrets.ROOT }}
           script: |
             cd /root/Carton-front-end
             git pull origin development

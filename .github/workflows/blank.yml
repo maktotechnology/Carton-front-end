@@ -21,9 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build
-        run: npm start
-
       - name: Deploy to Ubuntu server
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -34,4 +31,13 @@ jobs:
             cd /root/Carton-front-end
             git pull origin development
             npm install
+
+      - name: Start Development Server on the server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.NEW }}
+          username: ${{ secrets.NEW }}
+          password: ${{ secrets.NEW }}
+          script: |
+            cd /root/Carton-front-end
             npm start

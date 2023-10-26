@@ -61,7 +61,11 @@ const AuthLayout = () => {
         <div className='d-flex flex-column flex-center py-15 px-5 px-md-15 w-100'>
           {/* begin::Logo */}
           <Link to='/' className='mb-12'>
+<<<<<<< HEAD
+            <img alt='Logo' src={toAbsoluteUrl('/carton.png')} className='h-75px' />
+=======
             <img alt='Logo' src={toAbsoluteUrl('/media/logos/custom-1.png')} className='h-75px' />
+>>>>>>> mirudhulaa
           </Link>
           {/* end::Logo */}
 
@@ -79,6 +83,8 @@ const AuthLayout = () => {
           </h1>
           {/* end::Title */}
 
+<<<<<<< HEAD
+=======
           {/* begin::Text */}
           <div className='text-white fs-base text-center'>
             In this kind of post,{' '}
@@ -93,6 +99,7 @@ const AuthLayout = () => {
             and their <br /> work following this is a transcript of the interview.
           </div>
           {/* end::Text */}
+>>>>>>> mirudhulaa
         </div>
         {/* end::Content */}
       </div>

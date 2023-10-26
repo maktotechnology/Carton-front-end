@@ -65,6 +65,12 @@ export function Login() {
       {/* begin::Heading */}
       <div className='text-center mb-11'>
         <h1 className='text-dark fw-bolder mb-3'>Sign In</h1>
+<<<<<<< HEAD
+        <div className='text-gray-500 fw-semibold fs-6'>Carton Warehouse Management</div>
+      </div>
+
+
+=======
         <div className='text-gray-500 fw-semibold fs-6'>Your Social Campaigns</div>
       </div>
       {/* begin::Heading */}
@@ -119,6 +125,7 @@ export function Login() {
         <span className='w-125px text-gray-500 fw-semibold fs-7'>Or with email</span>
       </div>
       {/* end::Separator */}
+>>>>>>> mirudhulaa
 
       {formik.status ? (
         <div className='mb-lg-15 alert alert-danger'>
@@ -198,11 +205,20 @@ export function Login() {
       {/* end::Wrapper */}
 
       {/* begin::Action */}
+<<<<<<< HEAD
+      
+=======
+>>>>>>> mirudhulaa
       <div className='d-grid mb-10'>
         <button
           type='submit'
           id='kt_sign_in_submit'
+<<<<<<< HEAD
+          className='btn btn-brown'
+          style={{ backgroundColor: 'brown', color: 'white' }} 
+=======
           className='btn btn-primary'
+>>>>>>> mirudhulaa
           disabled={formik.isSubmitting || !formik.isValid}
         >
           {!loading && <span className='indicator-label'>Continue</span>}

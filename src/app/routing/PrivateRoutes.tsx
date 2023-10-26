@@ -6,6 +6,23 @@ import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
 import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
+<<<<<<< HEAD
+import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
+import BuilderPageWrappe from '../pages/Accounting/BuilderPageWrappe'
+import UserDetailsPage from '../pages/layout-builder/UserDetailsPage';
+import AddUserPage from '../pages/layout-builder/AddUserPage';
+import BuilderPageWrapp from '../pages/Inventory/BuilderPageWrappe';
+import BuilderPageWrap from '../pages/MasterRecords/BuilderPageWrappe';
+import BuilderPageWra from '../pages/Reports/BuilderPageWrappe';
+import BuilderPageWr from '../pages/Settings/BuilderPageWrappe';
+
+
+
+import AddProductPage from '../pages/Inventory/AddProductPage';
+import ProductDetailsPage from '../pages/Inventory/productDetailsPage';
+import AddMultiple from '../pages/Inventory/AddMultiple';
+
+=======
 
 
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrappe'
@@ -23,6 +40,7 @@ import ProductDetailsPage from '../pages/Inventory/ProductDetailsPage';
 import AddMultiple from '../pages/Inventory/AddMultiple';
 
 
+>>>>>>> mirudhulaa
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
@@ -31,6 +49,11 @@ const PrivateRoutes = () => {
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
   
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> mirudhulaa
   return (
     <Routes>
       <Route element={<MasterLayout />}>
@@ -38,6 +61,21 @@ const PrivateRoutes = () => {
         <Route path='auth/*' element={<Navigate to='/dashboard' />} />
         {/* Pages */}
         <Route path='dashboard' element={<DashboardWrapper />} />
+<<<<<<< HEAD
+        <Route path='accounting' element={<BuilderPageWrappe />} />
+        <Route path='builder' element={<BuilderPageWrapper />} />
+        <Route path='menu-test' element={<MenuTestPage />} />
+        <Route path="/user-details/:Ref_ID/:Request_risedby/:Transfer_type/:Branch/:Department/:Status/:Product" element={<UserDetailsPage />} />
+        <Route path="/add-user"  element={<AddUserPage/>}/>
+        <Route path='inventory' element={<BuilderPageWrapp />} />
+        <Route path='master' element={<BuilderPageWrap/>}/>
+        <Route path='reports' element={<BuilderPageWra/>}/>
+        <Route path='settings' element={<BuilderPageWr/>}/>
+        <Route path="/add-product"  element={<AddProductPage/>}/>
+        <Route path="/add-multiple"  element={<AddMultiple/>}/>
+        <Route path="/product-details/:Prod_Id/:Prod_Name/:UOM/:Brand/:Category" element={<ProductDetailsPage />} />
+
+=======
         <Route path='accounting' element={<BuilderPageWrapper />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         <Route path='builder' element={<BuilderPageWrapper />} />
@@ -51,6 +89,7 @@ const PrivateRoutes = () => {
         <Route path='reports' element={<BuilderPageWra/>}/>
         <Route path='settings' element={<BuilderPageWr/>}/>
         
+>>>>>>> mirudhulaa
         <Route
           path='accounting/pages/profile/*'
           element={
@@ -77,6 +116,11 @@ const PrivateRoutes = () => {
           }
         />
        
+<<<<<<< HEAD
+        
+
+=======
+>>>>>>> mirudhulaa
         <Route
           path='inventory/pages/profile/*'
           element={
@@ -154,4 +198,8 @@ const SuspensedView: FC<WithChildren> = ({children}) => {
   return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
 }
 
+<<<<<<< HEAD
 export {PrivateRoutes}
+=======
+export {PrivateRoutes}
+>>>>>>> mirudhulaa

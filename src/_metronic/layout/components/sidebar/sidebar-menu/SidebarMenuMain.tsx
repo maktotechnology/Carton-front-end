@@ -61,7 +61,11 @@ const SidebarMenuMain = () => {
       
 
 
+<<<<<<< HEAD
        {/* Don't use this below code
+=======
+      {/* Don't use this below code
+>>>>>>> mirudhulaa
 
 
 
@@ -163,7 +167,11 @@ const SidebarMenuMain = () => {
           </span>
           <span className='menu-title'>Changelog {process.env.REACT_APP_VERSION}</span>
         </a>
+<<<<<<< HEAD
       </div>  */}
+=======
+      </div> */}
+>>>>>>> mirudhulaa
     </>
   )
 }

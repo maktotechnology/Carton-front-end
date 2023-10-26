@@ -1,16 +1,25 @@
 <p align="center">
+<<<<<<< HEAD
   <img src="https://github.com/maktotechnology/Carton-front-end/assets/134295161/2b7520c5-0a15-487f-bb66-436778752f45" />
+=======
+  <img src="https://github.com/maktotechnology/Carton-front-end/assets/134295161/ae628193-6e25-4d9b-9df9-356da79542e4" />
+>>>>>>> mirudhulaa
 </p>
 
 
 
 
 
+<<<<<<< HEAD
 
 # Getting Started with Create React App Carton
 
 https://carton.maktoinc.com/metronic8/react/demo1/auth
 
+=======
+# Getting Started with Create React App Carton
+
+>>>>>>> mirudhulaa
 
 ## Available Scripts
 
@@ -48,8 +57,13 @@ To learn React, check out the [React documentation](https://reactjs.org/). and [
 Development
 
 ## Let's look into the workflow of Carton
+<<<<<<< HEAD
 ![Workflow](https://github.com/maktotechnology/Carton-front-end/assets/134295161/b8357241-25c3-4ae2-9f12-0cf5b0cf3a4e)
 
+=======
+
+![Workflow](https://github.com/maktotechnology/Carton-front-end/assets/134295161/02a71369-b970-446e-a5d5-dbeccaf87477)
+>>>>>>> mirudhulaa
 
 ### Install dependencies:
 yarn install

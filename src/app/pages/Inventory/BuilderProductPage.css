@@ -27,7 +27,10 @@
 
   .submit-butto {
     left: -15%;
+<<<<<<< HEAD
     
+=======
+>>>>>>> mirudhulaa
     flex-direction: column;
     align-items: center; 
     justify-content: center; 
@@ -62,7 +65,10 @@
     z-index: 0;
   }
 
+<<<<<<< HEAD
   /* Apply styles to the icon */
+=======
+>>>>>>> mirudhulaa
 .submit-butto i {
   font-size: 16px; /* Adjust the size as needed */
   transition: transform 0.3s ease-in-out; /* Add a transition effect */
@@ -74,10 +80,13 @@
   color: #174ea6;
 }
 
+<<<<<<< HEAD
 
 /* CSS */
 
 
+=======
+>>>>>>> mirudhulaa
 .submit-butto:hover {
   background: #a58181;
   color: #174ea6;
@@ -113,10 +122,13 @@
   box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
 }
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> mirudhulaa
 .submit-butt {
   left: 85%;
   flex-direction: column;
@@ -159,17 +171,23 @@
   transition: transform 0.3s ease-in-out; /* Add a transition effect */
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> mirudhulaa
 /* Add animation to the icon on hover */
 .submit-butt:hover i {
   transform: rotate(90deg);
   color: #174ea6;
 }
 
+<<<<<<< HEAD
 
 /* CSS */
 
 
+=======
+>>>>>>> mirudhulaa
 .submit-butt:hover {
   background: #a58181;
   color: #174ea6;

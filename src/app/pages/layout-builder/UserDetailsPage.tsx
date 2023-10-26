@@ -40,7 +40,7 @@ const UserDetailsPage = () => {
   // Function to save edited values
   const handleSave = () => {
     // Retrieve existing data from local storage
-    const storedData = localStorage.getItem('sampleData');
+    const storedData = localStorage.getItem('materialData');
     const existingData = storedData ? JSON.parse(storedData) : [];
     // Find the index of the edited item using its Ref_ID
     const editedItemIndex = existingData.findIndex((data) => data.Ref_ID === Ref_ID);
@@ -50,7 +50,7 @@ const UserDetailsPage = () => {
       // Update the sampleData array with the updated item
       existingData[editedItemIndex] = updatedItem;
       // Update local storage with the updated sampleData
-      localStorage.setItem('sampleData', JSON.stringify(existingData));
+      localStorage.setItem('materialData', JSON.stringify(existingData));
       // Exit edit mode
       toggleEditMode();
     } else {
@@ -67,7 +67,6 @@ const UserDetailsPage = () => {
   return (
     <div>
       <h2>Meterial Requisition Details</h2>
-      
       <p>Ref_ID: {Ref_ID}</p>
       {/* Edit Request_risedby */}
       <p>Request_risedby:{' '}
@@ -119,6 +118,7 @@ const UserDetailsPage = () => {
           value={editedValues.Quantity}
           onChange={(e) => handleInputChange('Quantity', e.target.value)}  /> : Quantity}
       </p>
+
 {/*  
       <div className='d-flex flex-column w-100 me-2'>
         <div className='d-flex flex-stack mb-2'>
@@ -154,8 +154,7 @@ const UserDetailsPage = () => {
           </div>
         </div>
       </div>
-*/}
-      
+*/} 
       
       {/* Edit, Save and GoBack buttons */}
       {editMode ? (

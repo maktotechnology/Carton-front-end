@@ -61,7 +61,7 @@ const SidebarMenuMain = () => {
       
 
 
-      {/* Don't use this below code
+       {/* Don't use this below code
 
 
 
@@ -163,7 +163,7 @@ const SidebarMenuMain = () => {
           </span>
           <span className='menu-title'>Changelog {process.env.REACT_APP_VERSION}</span>
         </a>
-      </div> */}
+      </div>  */}
     </>
   )
 }

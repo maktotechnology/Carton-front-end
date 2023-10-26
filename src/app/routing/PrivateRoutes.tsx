@@ -16,6 +16,11 @@ import BuilderPageWra from '../pages/Reports/BuilderPageWrappe';
 import BuilderPageWr from '../pages/Settings/BuilderPageWrappe';
 
 
+
+import AddProductPage from '../pages/Inventory/AddProductPage';
+import ProductDetailsPage from '../pages/Inventory/productDetailsPage';
+import AddMultiple from '../pages/Inventory/AddMultiple';
+
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
@@ -42,6 +47,9 @@ const PrivateRoutes = () => {
         <Route path='master' element={<BuilderPageWrap/>}/>
         <Route path='reports' element={<BuilderPageWra/>}/>
         <Route path='settings' element={<BuilderPageWr/>}/>
+        <Route path="/add-product"  element={<AddProductPage/>}/>
+        <Route path="/add-multiple"  element={<AddMultiple/>}/>
+        <Route path="/product-details/:Prod_Id/:Prod_Name/:UOM/:Brand/:Category" element={<ProductDetailsPage />} />
 
         <Route
           path='accounting/pages/profile/*'

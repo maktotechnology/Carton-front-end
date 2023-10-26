@@ -68,7 +68,7 @@ const ProfilePage = () => (
         element={
           <>
             <PageTitle breadcrumbs={profileBreadCrumbs}>Products</PageTitle>
-            <Projects />
+            <Projects className="projects"/>
           </>
         }
       />

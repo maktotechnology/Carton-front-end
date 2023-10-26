@@ -61,7 +61,8 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     // Retrieve the data from local storage during component mount
     const storedData = localStorage.getItem('sampleData');
     const initialData = storedData ? JSON.parse(storedData) : [
-      { Ref_ID: 15, Request_risedby: 'John Doe', Transfer_type: 'Internal', Branch: 'CBE', Department: 'HR', Status: 'Approved'}
+      { Ref_ID: 15, Request_risedby: 'John Doe', Transfer_type: 'Internal', Branch: 'CBE', Department: 'HR', Status: 'Approved'},
+      
      ];
 
      console.log(initialData)

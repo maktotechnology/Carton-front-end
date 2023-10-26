@@ -90,7 +90,7 @@ const AuthLayout = () => {
             <a href='#' className='opacity-75-hover text-warning fw-bold me-1'>
               the interviewee
             </a>
-            and their <br /> work following this is a transcript of the interview.THIS DONE testing 
+            and their <br /> work following this is a transcript of the interview.THIS DONE testing.
           </div>
           {/* end::Text */}
         </div>

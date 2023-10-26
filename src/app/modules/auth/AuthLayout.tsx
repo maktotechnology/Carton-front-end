@@ -78,7 +78,9 @@ const AuthLayout = () => {
             Fast, Efficient and Productive
           </h1>
           {/* end::Title */}
-    
+
+
+
         </div>
         {/* end::Content */}
       </div>

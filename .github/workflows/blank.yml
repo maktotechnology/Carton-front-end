@@ -24,20 +24,20 @@ jobs:
       - name: Deploy to Ubuntu server
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 172.105.35.183
+          host: 192.46.209.10
           username: root
           password: REACH.out1349T
           script: |
-            cd /root/Carton-front-end
+            cd /home/Carton-front-end
             git pull origin development
             npm install
 
       - name: Start Development Server on the server
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 172.105.35.183
+          host: 192.46.209.10
           username: root
           password: REACH.out1349T
           script: |
-            cd /root/Carton-front-end
+            cd /home/Carton-front-end
             npm start

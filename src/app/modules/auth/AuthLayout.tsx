@@ -79,8 +79,6 @@ const AuthLayout = () => {
           </h1>
           {/* end::Title */}
 
-
-
         </div>
         {/* end::Content */}
       </div>

@@ -224,7 +224,7 @@ const AddMultiple = () => {
 
       {/* Add row button */}
       <button className="add-row-button" onClick={handleAddRow}>
-        Add Row
+        AddRow
       </button>
 
       {/* Save and Cancel buttons */}

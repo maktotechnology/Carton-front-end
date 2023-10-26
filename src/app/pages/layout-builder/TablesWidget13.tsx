@@ -1,3 +1,4 @@
+
 // Tableswidget13.tsx
 
 import {KTIcon} from '../../../_metronic/helpers'
@@ -8,13 +9,13 @@ import { Link, Route, Routes, useLocation, useParams, } from 'react-router-dom';
 import AddUserPage from './AddUserPage';
 
 type Props = {
-  className: string
-}
+  className: string;
+};
 
 const TablesWidget13: React.FC<Props> = ({className}) => {
 
-  const { Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity } = useParams();
-  console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
+  // const { Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity } = useParams();
+  // console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
   
   const location = useLocation();
   const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
@@ -50,8 +51,12 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     setSampleData([]); 
   };
 
-  // Function to remove duplicates based on Ref_ID
+  //Function to remove duplicates based on Ref_ID
   const removeDuplicates = (dataList) => {
+    if (!Array.isArray(dataList)) {
+      console.error('dataList is not an array');
+      return [];
+    }
     const uniqueRefIDs = new Set();
     return dataList.reduce((uniqueData, data) => {
       if (!uniqueRefIDs.has(data.Ref_ID)) {
@@ -61,11 +66,12 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       return uniqueData;
     }, []);
   };
+  
 
   //Initialise sampleData to get the data from localStorage
   const [sampleData, setSampleData] = useState(() => {
     // Retrieve the data from local storage during component mount
-    const storedData = localStorage.getItem('sampleData');
+    const storedData = localStorage.getItem('materialData');
     const initialData = storedData ? JSON.parse(storedData) : [
       { 
         Ref_ID: 1, 
@@ -82,7 +88,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
      ];
     // Remove duplicates based on Reft_ID and store in local storage
     const uniqueData = removeDuplicates(initialData);
-    localStorage.setItem('sampleData', JSON.stringify(uniqueData));
+    localStorage.setItem('materialData', JSON.stringify(uniqueData));
     console.log('Initial Data: ', initialData);   //Log the initialData
     console.log('Unique data: ', uniqueData);   //Log the uniqueData
     return uniqueData;
@@ -105,7 +111,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       const updatedData = [...sampleData, newUser];
       // Update state and local storage with the new data
       setSampleData(updatedData);
-      localStorage.setItem('sampleData', JSON.stringify(updatedData));
+      localStorage.setItem('materialData', JSON.stringify(updatedData));
     }
     console.log('Updated sampleData:', sampleData); // Log the updated data
   };
@@ -119,10 +125,10 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       Transfer_type: searchParams.get('Transfer_type') || '',
       Branch: searchParams.get('Branch') || '',
       Department: searchParams.get('Department') || '',
-      Product: searchParams.get('Product') || '',
-      Dated: searchParams.get('Dated') || '',
-      Uom: searchParams.get('Uom') || '',
-      Quantity: searchParams.get('Quantity') || '',
+      //Product: searchParams.get('Product') || '',
+      //Dated: searchParams.get('Dated') || '',
+      //Uom: searchParams.get('Uom') || '',
+      //Quantity: searchParams.get('Quantity') || '',
       //Status: searchParams.get('Status') || '',
     };
     // Add the new user data to the sampleData array if all required fields are present
@@ -131,16 +137,16 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       newFormData.Request_risedby &&
       newFormData.Transfer_type &&
       newFormData.Branch &&
-      newFormData.Department &&
-      newFormData.Product &&
-      newFormData.Dated &&
-      newFormData.Uom &&
-      newFormData.Quantity 
+      newFormData.Department 
+      // newFormData.Product &&
+      // newFormData.Dated &&
+      // newFormData.Uom &&
+      // newFormData.Quantity 
       //newFormData.Status 
     ) {
       handleUserAdded(newFormData);
     }
-    console.log('Ref_ID:', Ref_ID);
+    //console.log('Ref_ID:', Ref_ID);
     console.log('URL Parameters:', newFormData); // Log the URL parameters
   }, [location.search]);
   
@@ -163,9 +169,10 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     const updatedData = filteredData.filter((item) => item.Ref_ID !== refId);
     // Update the data state
     setFilteredData(updatedData); 
-    localStorage.setItem('sampleData', JSON.stringify(updatedData));
+    localStorage.setItem('materialData', JSON.stringify(updatedData));
   };
     
+
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -173,9 +180,8 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>Details</span>
         </h3>
-        
         <div className='card-toolbar'>
-        {/* begin::Menu */}
+          {/* begin::Menu */}
           <div>
            {/* Add a button that navigates to the AddUserPage */}
             <Routes>  
@@ -191,7 +197,6 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         </div>
       {/* end::Header */}
       </div>
-      
       {/* begin::Body */}
       <div className='card-body py-3'>
         {/* begin::Table container */}
@@ -228,7 +233,6 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
               </tr>
             {/* end::Table head */}
             </thead>
-            
             {/* begin::Table body */}
             <tbody>
             {filteredData.map((data, index) => (
@@ -283,6 +287,20 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
 export {TablesWidget13}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // // Tableswidget13.tsx
 
 // import {KTIcon} from '../../../_metronic/helpers'
@@ -293,13 +311,13 @@ export {TablesWidget13}
 // import AddUserPage from './AddUserPage';
 
 // type Props = {
-//   className: string;
-// };
+//   className: string
+// }
 
 // const TablesWidget13: React.FC<Props> = ({className}) => {
 
-//   // const { Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity } = useParams();
-//   // console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
+//   const { Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity } = useParams();
+//   console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
   
 //   const location = useLocation();
 //   const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
@@ -335,12 +353,8 @@ export {TablesWidget13}
 //     setSampleData([]); 
 //   };
 
-//   //Function to remove duplicates based on Ref_ID
+//   // Function to remove duplicates based on Ref_ID
 //   const removeDuplicates = (dataList) => {
-//     if (!Array.isArray(dataList)) {
-//       console.error('dataList is not an array');
-//       return [];
-//     }
 //     const uniqueRefIDs = new Set();
 //     return dataList.reduce((uniqueData, data) => {
 //       if (!uniqueRefIDs.has(data.Ref_ID)) {
@@ -350,12 +364,11 @@ export {TablesWidget13}
 //       return uniqueData;
 //     }, []);
 //   };
-  
 
 //   //Initialise sampleData to get the data from localStorage
 //   const [sampleData, setSampleData] = useState(() => {
 //     // Retrieve the data from local storage during component mount
-//     const storedData = localStorage.getItem('materialData');
+//     const storedData = localStorage.getItem('sampleData');
 //     const initialData = storedData ? JSON.parse(storedData) : [
 //       { 
 //         Ref_ID: 1, 
@@ -372,7 +385,7 @@ export {TablesWidget13}
 //      ];
 //     // Remove duplicates based on Reft_ID and store in local storage
 //     const uniqueData = removeDuplicates(initialData);
-//     localStorage.setItem('materialData', JSON.stringify(uniqueData));
+//     localStorage.setItem('sampleData', JSON.stringify(uniqueData));
 //     console.log('Initial Data: ', initialData);   //Log the initialData
 //     console.log('Unique data: ', uniqueData);   //Log the uniqueData
 //     return uniqueData;
@@ -395,7 +408,7 @@ export {TablesWidget13}
 //       const updatedData = [...sampleData, newUser];
 //       // Update state and local storage with the new data
 //       setSampleData(updatedData);
-//       localStorage.setItem('materialData', JSON.stringify(updatedData));
+//       localStorage.setItem('sampleData', JSON.stringify(updatedData));
 //     }
 //     console.log('Updated sampleData:', sampleData); // Log the updated data
 //   };
@@ -409,10 +422,10 @@ export {TablesWidget13}
 //       Transfer_type: searchParams.get('Transfer_type') || '',
 //       Branch: searchParams.get('Branch') || '',
 //       Department: searchParams.get('Department') || '',
-//       //Product: searchParams.get('Product') || '',
-//       //Dated: searchParams.get('Dated') || '',
-//       //Uom: searchParams.get('Uom') || '',
-//       //Quantity: searchParams.get('Quantity') || '',
+//       Product: searchParams.get('Product') || '',
+//       Dated: searchParams.get('Dated') || '',
+//       Uom: searchParams.get('Uom') || '',
+//       Quantity: searchParams.get('Quantity') || '',
 //       //Status: searchParams.get('Status') || '',
 //     };
 //     // Add the new user data to the sampleData array if all required fields are present
@@ -421,16 +434,16 @@ export {TablesWidget13}
 //       newFormData.Request_risedby &&
 //       newFormData.Transfer_type &&
 //       newFormData.Branch &&
-//       newFormData.Department 
-//       // newFormData.Product &&
-//       // newFormData.Dated &&
-//       // newFormData.Uom &&
-//       // newFormData.Quantity 
+//       newFormData.Department &&
+//       newFormData.Product &&
+//       newFormData.Dated &&
+//       newFormData.Uom &&
+//       newFormData.Quantity 
 //       //newFormData.Status 
 //     ) {
 //       handleUserAdded(newFormData);
 //     }
-//     //console.log('Ref_ID:', Ref_ID);
+//     console.log('Ref_ID:', Ref_ID);
 //     console.log('URL Parameters:', newFormData); // Log the URL parameters
 //   }, [location.search]);
   
@@ -453,10 +466,9 @@ export {TablesWidget13}
 //     const updatedData = filteredData.filter((item) => item.Ref_ID !== refId);
 //     // Update the data state
 //     setFilteredData(updatedData); 
-//     localStorage.setItem('materialData', JSON.stringify(updatedData));
+//     localStorage.setItem('sampleData', JSON.stringify(updatedData));
 //   };
     
-
 //   return (
 //     <div className={`card ${className}`}>
 //       {/* begin::Header */}
@@ -464,8 +476,9 @@ export {TablesWidget13}
 //         <h3 className='card-title align-items-start flex-column'>
 //           <span className='card-label fw-bold fs-3 mb-1'>Details</span>
 //         </h3>
+        
 //         <div className='card-toolbar'>
-//           {/* begin::Menu */}
+//         {/* begin::Menu */}
 //           <div>
 //            {/* Add a button that navigates to the AddUserPage */}
 //             <Routes>  
@@ -481,6 +494,7 @@ export {TablesWidget13}
 //         </div>
 //       {/* end::Header */}
 //       </div>
+      
 //       {/* begin::Body */}
 //       <div className='card-body py-3'>
 //         {/* begin::Table container */}
@@ -517,6 +531,7 @@ export {TablesWidget13}
 //               </tr>
 //             {/* end::Table head */}
 //             </thead>
+            
 //             {/* begin::Table body */}
 //             <tbody>
 //             {filteredData.map((data, index) => (

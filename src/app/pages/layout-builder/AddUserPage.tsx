@@ -1,14 +1,25 @@
 // AddUserPage.tsx
 
-import React, { useState } from 'react';
-import { useNavigate,  } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate,} from 'react-router-dom';
 import { KTIcon } from '../../../_metronic/helpers';
 import './AddUserPage.css';
 import {TablesWidget13,} from '../layout-builder/TablesWidget13 copy'
 
-const AddUserPage  = () =>  {
+type RowData = {
+  Pro_Id: number;
+  Product: string;
+  Dated: string;
+  Uom: string;
+  Quantity: number;
+  Category: string;
+};
+
+const AddUserPage = () =>  {
 
   const navigate = useNavigate();
+
+  const [tableData, setTableData] = useState<RowData[]>([]);
 
   // Creating a functional component 
   const [formData, setFormData] = useState({
@@ -17,13 +28,13 @@ const AddUserPage  = () =>  {
     Transfer_type: '',
     Branch: '',
     Department: '',
-    Product:'',
-    Dated:'',
-    Category: '',
-    Uom:'',
-    Quantity: 0,
     //Status: 'Draft',
   });
+
+  // Handling table data changes
+  const handleTableDataChange = (data) => {
+    setTableData(data);
+  };
   
   // handling form input changes
   const handleChange = (e) => {
@@ -33,24 +44,78 @@ const AddUserPage  = () =>  {
   };  
 
   //Submit function
-  const handleSubmit = async (e) => {
+  const handleSubmi = async (e) => {
     e.preventDefault();
     try {
       // Your form submission code here
       const queryParams = new URLSearchParams();
+      // Create an array to store the tableData values
+      const tableDataArray = [];
       for (const key in formData) {
         queryParams.append(key, formData[key]);
+        // Convert tableData to a flat structure and store it in tableDataObject
+        tableData.forEach((row, index) => {
+          for (const key in row) {
+            tableDataArray[`tableData[${index}][${key}]`] = row[key];
+          }
+        });
       }
-      console.log('Data being sent:', queryParams.toString());
-      // Navigate with query parameters
-      navigate(`/builder?${queryParams.toString()}`);
+      // Combine tableDataArray with other formData fields
+      const formDataWithTableData = {
+        ...formData,
+        ...tableDataArray,
+      };
+      console.log('Data being sent:', formDataWithTableData);
+      localStorage.setItem('productData', JSON.stringify(formDataWithTableData));
+      // Navigate with formDataWithTableData
+      navigate(`/builder?${new URLSearchParams(formDataWithTableData).toString()}`);
     } 
     catch (error) {
       console.error('Error in handleSubmit:', error);
     }
     console.log('formdata: ', formData);
   };
-
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Your form submission code here
+      const queryParams = new URLSearchParams();
+      const tableDataArray = [];
+      for (const key in formData) {
+        queryParams.append(key, formData[key]);
+        // Convert tableData to a flat structure and store it in tableDataObject
+        tableData.forEach((row, index) => {
+          for (const key in row) {
+            tableDataArray[`tableData[${index}][${key}]`] = row[key];
+          }
+        });
+      }
+      // Check if 'productData' exists in localStorage and parse it
+      const storedData = localStorage.getItem('productData');
+      const existingData = storedData ? JSON.parse(storedData) : {};
+  
+      // Combine the existing data with the new data
+      const formDataWithTableData = {
+        ...existingData,
+        ...formData,
+        ...tableDataArray,
+      };
+  
+      console.log('Data being sent:', formDataWithTableData);
+      
+      // Store the merged data back in localStorage
+      localStorage.setItem('productData', JSON.stringify(formDataWithTableData));
+  
+      // Navigate with formDataWithTableData
+      navigate(`/builder?${new URLSearchParams(formDataWithTableData).toString()}`);
+    } 
+    catch (error) {
+      console.error('Error in handleSubmit:', error);
+    }
+    console.log('formdata: ', formData);
+  };
+  
   // Navigate back one step
   const handleGoBack = () => {
     navigate(-1);
@@ -136,65 +201,11 @@ const AddUserPage  = () =>  {
             </div>
           {/* end::row-2 */}
           </div>
-          {/* begin::row-3 */}
-          <div className="form-group row"> 
-            <div className="col-lg-6">
-              <label>Product:</label>
-              <div className="input-group">
-                <select 
-                  className="round form-control"
-                  name="Product"
-                  value={formData.Product}
-                  onChange={handleChange}
-                  required
-                >
-                  <option></option>
-                  <option value="Y19">Vivo Y19</option>
-                  <option value="Iphone15">Iphone15</option>
-                </select>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <label htmlFor="Ref_ID">Dated</label>
-              <input
-                type="date"
-                className="form-control"
-                name="Dated"
-                value={formData.Dated}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <div className="col-lg-6">
-              <label>UOM:</label>
-              <input
-                type="text"
-                className="form-control"
-                name="Uom"
-                value={formData.Uom}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="col-lg-6">
-              <label >Quantity:</label>
-              <input
-                type="number"
-                className="form-control"
-                name="Quantity"
-                value={formData.Quantity}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-        {/* end::body  */}
         </div>
 
         {/* to call the functionalities present in the Tableswidget13 component */}
-        {/* <TablesWidget13 className="mb-5 mb-xl-8" /> */}
+        <TablesWidget13 className="mb-5 mb-xl-8" tableData={tableData as RowData[]} 
+          onTableDataChange={handleTableDataChange}/>
 
         {/* Save and Cancel buttons */}
         <div className="card-footer">
@@ -220,28 +231,24 @@ const AddUserPage  = () =>  {
 
 export default AddUserPage;
 
+
+
+
+
+
+
+
 // // AddUserPage.tsx
 
-// import React, { useState, useEffect } from 'react';
-// import { useNavigate,} from 'react-router-dom';
+// import React, { useState } from 'react';
+// import { useNavigate,  } from 'react-router-dom';
 // import { KTIcon } from '../../../_metronic/helpers';
 // import './AddUserPage.css';
 // import {TablesWidget13,} from '../layout-builder/TablesWidget13 copy'
 
-// type RowData = {
-//   Pro_Id: number;
-//   Product: string;
-//   Dated: string;
-//   Uom: string;
-//   Quantity: number;
-//   Category: string;
-// };
-
-// const AddUserPage = () =>  {
+// const AddUserPage  = () =>  {
 
 //   const navigate = useNavigate();
-
-//   const [tableData, setTableData] = useState<RowData[]>([]);
 
 //   // Creating a functional component 
 //   const [formData, setFormData] = useState({
@@ -250,13 +257,13 @@ export default AddUserPage;
 //     Transfer_type: '',
 //     Branch: '',
 //     Department: '',
+//     Product:'',
+//     Dated:'',
+//     Category: '',
+//     Uom:'',
+//     Quantity: 0,
 //     //Status: 'Draft',
 //   });
-
-//   // Handling table data changes
-//   const handleTableDataChange = (data) => {
-//     setTableData(data);
-//   };
   
 //   // handling form input changes
 //   const handleChange = (e) => {
@@ -274,71 +281,11 @@ export default AddUserPage;
 //       for (const key in formData) {
 //         queryParams.append(key, formData[key]);
 //       }
-//       // Create an array to store the tableData values
-//       const tableDataArray = [];
-//       // Convert tableData to a flat structure and store it in tableDataObject
-//       tableData.forEach((row, index) => {
-//         for (const key in row) {
-//           tableDataArray[`tableData[${index}][${key}]`] = row[key];
-//         }
-//       });
-//       // Combine tableDataArray with other formData fields
-//       const formDataWithTableData = {
-//         ...formData,
-//         ...tableDataArray,
-//       };
-//       console.log('Data being sent:', formDataWithTableData);
-//       localStorage.setItem('productData', JSON.stringify(formDataWithTableData));
-//       // Navigate with formDataWithTableData
-//       navigate(`/builder?${new URLSearchParams(formDataWithTableData).toString()}`);
+//       console.log('Data being sent:', queryParams.toString());
+//       // Navigate with query parameters
+//       navigate(`/builder?${queryParams.toString()}`);
 //     } 
 //     catch (error) {
-//       console.error('Error in handleSubmit:', error);
-//     }
-//     console.log('formdata: ', formData);
-
-//   };
-  
-//   // Submit function
-//   const handleSubmi = async (e) => {
-//     e.preventDefault();
-//     try {
-//       // Your form submission code here
-//       const queryParams = new URLSearchParams();
-//       for (const key in formData) {
-//         queryParams.append(key, formData[key]);
-//       }
-  
-//       // Create an array to store the tableData values
-//       const tableDataArray = {};
-  
-//       // Convert tableData to a flat structure and store it in tableDataArray
-//       tableData.forEach((row, index) => {
-//         for (const key in row) {
-//           tableDataArray[`tableData[${index}][${key}]`] = row[key];
-//         }
-//       });
-  
-//       // Retrieve existing data from localStorage
-//       const existingData = localStorage.getItem('productData');
-
-//       // Check if existingData is a string before parsing it
-//       const existingDataObject = typeof existingData === 'string' ? JSON.parse(existingData) : {};
-  
-//       // Merge the existing data with the new data
-//       const updatedDataObject = { ...existingDataObject, ...formData, ...tableDataArray };
-  
-//       // Stringify the merged object back into a JSON string
-//       const updatedDataString = JSON.stringify(updatedDataObject);
-  
-//       console.log('Data being sent:', updatedDataObject);
-  
-//       // Store the updated data back in localStorage
-//       localStorage.setItem('productData', updatedDataString);
-  
-//       // Navigate with formDataWithTableData
-//       navigate(`/builder?${new URLSearchParams(updatedDataObject).toString()}`);
-//     } catch (error) {
 //       console.error('Error in handleSubmit:', error);
 //     }
 //     console.log('formdata: ', formData);
@@ -429,11 +376,65 @@ export default AddUserPage;
 //             </div>
 //           {/* end::row-2 */}
 //           </div>
+//           {/* begin::row-3 */}
+//           <div className="form-group row"> 
+//             <div className="col-lg-6">
+//               <label>Product:</label>
+//               <div className="input-group">
+//                 <select 
+//                   className="round form-control"
+//                   name="Product"
+//                   value={formData.Product}
+//                   onChange={handleChange}
+//                   required
+//                 >
+//                   <option></option>
+//                   <option value="Y19">Vivo Y19</option>
+//                   <option value="Iphone15">Iphone15</option>
+//                 </select>
+//               </div>
+//             </div>
+//             <div className="col-lg-6">
+//               <label htmlFor="Ref_ID">Dated</label>
+//               <input
+//                 type="date"
+//                 className="form-control"
+//                 name="Dated"
+//                 value={formData.Dated}
+//                 onChange={handleChange}
+//                 required
+//               />
+//             </div>
+//           </div>
+//           <div className="form-group row">
+//             <div className="col-lg-6">
+//               <label>UOM:</label>
+//               <input
+//                 type="text"
+//                 className="form-control"
+//                 name="Uom"
+//                 value={formData.Uom}
+//                 onChange={handleChange}
+//                 required
+//               />
+//             </div>
+//             <div className="col-lg-6">
+//               <label >Quantity:</label>
+//               <input
+//                 type="number"
+//                 className="form-control"
+//                 name="Quantity"
+//                 value={formData.Quantity}
+//                 onChange={handleChange}
+//                 required
+//               />
+//             </div>
+//           </div>
+//         {/* end::body  */}
 //         </div>
 
 //         {/* to call the functionalities present in the Tableswidget13 component */}
-//         <TablesWidget13 className="mb-5 mb-xl-8" tableData={tableData as RowData[]} 
-//           onTableDataChange={handleTableDataChange}/>
+//         {/* <TablesWidget13 className="mb-5 mb-xl-8" /> */}
 
 //         {/* Save and Cancel buttons */}
 //         <div className="card-footer">

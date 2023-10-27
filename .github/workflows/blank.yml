@@ -20,7 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+  
+  deploy:
+    runs-on: ubuntu-latest
 
+    steps:
       - name: Deploy to Ubuntu server
         uses: appleboy/ssh-action@v1.0.0
         with:

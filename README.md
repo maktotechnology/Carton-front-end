@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/maktotechnology/Carton-front-end/assets/134295161/2b7520c5-0a15-487f-bb66-436778752f45" />
+  <img src="https://github.com/maktotechnology/Carton-front-end/assets/134295161/f0e1e77f-6771-43c9-a527-96e9b895fd9b" />
 </p>
 
 
@@ -8,8 +8,6 @@
 
 
 # Getting Started with Create React App Carton
-
-https://carton.maktoinc.com/metronic8/react/demo1/auth
 
 
 ## Available Scripts
@@ -48,7 +46,8 @@ To learn React, check out the [React documentation](https://reactjs.org/). and [
 Development
 
 ## Let's look into the workflow of Carton
-![Workflow](https://github.com/maktotechnology/Carton-front-end/assets/134295161/b8357241-25c3-4ae2-9f12-0cf5b0cf3a4e)
+
+![Workflow](https://github.com/maktotechnology/Carton-front-end/assets/134295161/21eb362d-fbcd-4f43-93c4-aa7a05acf613)
 
 
 ### Install dependencies:

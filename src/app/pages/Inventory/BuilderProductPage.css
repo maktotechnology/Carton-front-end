@@ -27,7 +27,6 @@
 
   .submit-butto {
     left: -15%;
-    
     flex-direction: column;
     align-items: center; 
     justify-content: center; 
@@ -62,7 +61,6 @@
     z-index: 0;
   }
 
-  /* Apply styles to the icon */
 .submit-butto i {
   font-size: 16px; /* Adjust the size as needed */
   transition: transform 0.3s ease-in-out; /* Add a transition effect */
@@ -73,10 +71,6 @@
   transform: rotate(90deg);
   color: #174ea6;
 }
-
-
-/* CSS */
-
 
 .submit-butto:hover {
   background: #a58181;
@@ -112,10 +106,6 @@
 .submit-butto:disabled {
   box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
 }
-
-
-
-
 
 .submit-butt {
   left: 85%;
@@ -159,16 +149,11 @@
   transition: transform 0.3s ease-in-out; /* Add a transition effect */
 }
 
-
 /* Add animation to the icon on hover */
 .submit-butt:hover i {
   transform: rotate(90deg);
   color: #174ea6;
 }
-
-
-/* CSS */
-
 
 .submit-butt:hover {
   background: #a58181;

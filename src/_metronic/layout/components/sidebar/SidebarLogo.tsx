@@ -55,7 +55,6 @@ const SidebarLogo = (props: PropsType) => {
             alt='Logo'
             src={toAbsoluteUrl('/carton.png')}
             className='h-70px app-sidebar-logo-default'
-            style={{ backgroundColor: '#f0f0f0' }}
           />
         ) : (
           <>

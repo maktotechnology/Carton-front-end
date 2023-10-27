@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="https://github.com/maktotechnology/Carton-front-end/assets/134295161/ae628193-6e25-4d9b-9df9-356da79542e4" />
+  <img src="https://github.com/maktotechnology/Carton-front-end/assets/134295161/f0e1e77f-6771-43c9-a527-96e9b895fd9b" />
 </p>
+
 
 
 
@@ -46,7 +47,8 @@ Development
 
 ## Let's look into the workflow of Carton
 
-![Workflow](https://github.com/maktotechnology/Carton-front-end/assets/134295161/02a71369-b970-446e-a5d5-dbeccaf87477)
+![Workflow](https://github.com/maktotechnology/Carton-front-end/assets/134295161/21eb362d-fbcd-4f43-93c4-aa7a05acf613)
+
 
 ### Install dependencies:
 yarn install

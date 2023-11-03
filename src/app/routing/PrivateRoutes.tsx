@@ -42,7 +42,7 @@ const PrivateRoutes = () => {
         <Route path='menu-test' element={<MenuTestPage />} />
         <Route path='builder' element={<BuilderPageWrapper />} />
         <Route path="/add-user"  element={<AddUserPage/>}/>
-        <Route path="/user-details/:Ref_ID/:Request_risedby/:Transfer_type/:Branch/:Department/:Product/:Dated/:Uom/:Quantity" element={<UserDetailsPage />} />
+        <Route path="/user-details/:Ref_ID/:Prod_Id/:Request_risedby/:Transfer_type/:Branch/:Department/:Product/:Dated/:Uom/:Quantity" element={<UserDetailsPage />} />
         <Route path='inventory' element={<BuilderPageWrapp />} />
         <Route path="/add-product"  element={<AddProductPage/>}/>
         <Route path="/add-multiple"  element={<AddMultiple/>}/>

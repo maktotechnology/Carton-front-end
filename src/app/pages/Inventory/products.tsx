@@ -3,7 +3,7 @@
 import {KTIcon} from '../../../_metronic/helpers'
 import React, { useEffect, useState } from 'react';
 import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import AddProductPage from './AddProductPage';
 import './BuilderProductPage.css';
 import AddMultiple from './AddMultiple';
@@ -16,6 +16,11 @@ const Projects: React.FC<Props> = ({className}) => {
 
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { Prod_Id, Prod_Name, UoM, Quantity, Category } = useParams();
+  console.log('URL Parameters!!!:', Prod_Id, Prod_Name, UoM, Quantity, Category );
+
+
 
   // Initialize a state variable named tab with an initial value of 'Sidebar'
   const [tab, setTab] = useState('Sidebar');
@@ -104,7 +109,7 @@ const Projects: React.FC<Props> = ({className}) => {
     });
   };
 
-  const handleUserAdded = (newProduct) => {
+  const handleProductAdded = (newProduct) => {
     // Check if an object with the same Prod_Id already exists in sampleProdData
     const isDuplicate = sampleProdData.some((data) => data.Prod_Id === newProduct.Prod_Id);
     if (!isDuplicate) {
@@ -134,7 +139,7 @@ const Projects: React.FC<Props> = ({className}) => {
       newFormData.Brand &&
       newFormData.Category 
     ) {
-      handleUserAdded(newFormData);
+      handleProductAdded(newFormData);
     }
   }, [location.search]);
   
@@ -149,7 +154,6 @@ const Projects: React.FC<Props> = ({className}) => {
     // Update the data in the context
     setFilteredData(updatedTableData);
   };
-
 
   return (
     <div className={`card ${className}`}>

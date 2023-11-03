@@ -49,7 +49,7 @@ const AddMultiple = () => {
   // Function to add a new row to the tableData state
   const handleAddRow = () => {
     const newRow = {
-      Prod_Id: 1,
+      Prod_Id: Date.now(),
       Prod_Name: '',
       UoM: '',
       Category: '',

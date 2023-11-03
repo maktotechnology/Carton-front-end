@@ -8,7 +8,7 @@ const ProductDetailsPage = () => {
 
   // Retrieve parameters from the URL in a React component
   const { Prod_Id, Prod_Name, UoM, Brand, Category } = useParams();
-
+  
   // State to manage the editable values and edit mode
   const [editMode, setEditMode] = useState(false);
   const [editedValues, setEditedValues] = useState({
@@ -36,11 +36,17 @@ const ProductDetailsPage = () => {
     const storedData = localStorage.getItem('sampleProdData');
     if (storedData) {
       const existingData = JSON.parse(storedData);
+      console.log(existingData);
+      console.log(existingData.Prod_Id);
+      // Find the index of the edited item using its Prod_Id
       const editedItemIndex = existingData.findIndex((data) => data.Prod_Id === Prod_Id);
       if (editedItemIndex !== -1) {
         // Update the values of the edited item
-        existingData[editedItemIndex] = editedValues;
-        // Update local storage with the updated sampleProdData
+        existingData[editedItemIndex] = {
+          ...existingData[editedItemIndex],
+          ...editedValues,
+        };
+        // Update local storage with the updated data
         localStorage.setItem('sampleProdData', JSON.stringify(existingData));
         // Exit edit mode
         toggleEditMode();
@@ -51,7 +57,7 @@ const ProductDetailsPage = () => {
       console.log('No data found in local storage.');
     }
   };
-
+  
   const handleGoBack = () => {
     window.history.back(); // This will navigate back one step in the browser's history
   };

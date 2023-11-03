@@ -1,17 +1,18 @@
 //UserDetailsPage.tsx
 
-import React, { useState } from 'react';
-import { useParams, Route, Routes } from 'react-router-dom';
-import { TablesWidget13, } from '../layout-builder/TablesWidget13'
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const UserDetailsPage = () => {
 
-  //Initialise parameters with UseParams
-  const { Ref_ID, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity} = useParams();
+  // Initialise parameters with UseParams
+  const { Ref_ID, Prod_Id, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity} = useParams();
+  console.log( Ref_ID, Prod_Id, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity );
 
   // State to manage the editable values and edit mode
   const [editMode, setEditMode] = useState(false);
 
+  // Initialise the state variables to edit 
   const [editedValues, setEditedValues] = useState({
     Request_risedby,
     Transfer_type,
@@ -35,29 +36,35 @@ const UserDetailsPage = () => {
       ...prevValues,
       [field]: value,
     }));
+    console.log('EditedValues: ', editedValues);
   };
 
   // Function to save edited values
   const handleSave = () => {
+    console.log('HandleSave is Called');
     // Retrieve existing data from local storage
-    const storedData = localStorage.getItem('sampleData');
+    const storedData = localStorage.getItem('productsData');
+    console.log('Stored Data from localStorage:', storedData);
     const existingData = storedData ? JSON.parse(storedData) : [];
-    // Find the index of the edited item using its Ref_ID
-    const editedItemIndex = existingData.findIndex((data) => data.Ref_ID === Ref_ID);
+    console.log('Existing Data:', existingData);
+    // Find the index of the edited item using its Prod_Id
+    const editedItemIndex = existingData.findIndex((data) => data.Prod_Id === Prod_Id);
+    
     if (editedItemIndex !== -1) {
+      console.log('In the if statement'); // Add this line
       // Update the values of the edited item
       const updatedItem = { ...existingData[editedItemIndex], ...editedValues };
       // Update the sampleData array with the updated item
       existingData[editedItemIndex] = updatedItem;
       // Update local storage with the updated sampleData
-      localStorage.setItem('sampleData', JSON.stringify(existingData));
+      localStorage.setItem('productsData', JSON.stringify(existingData));
       // Exit edit mode
       toggleEditMode();
     } else {
       console.log('Edited item not found in the existing data.');
     }
   };
-
+  
   // This will navigate back one step in the browser's history
   const handleGoBack = () => {
     window.history.back(); 
@@ -67,11 +74,10 @@ const UserDetailsPage = () => {
   return (
     <div>
       <h2>Meterial Requisition Details</h2>
-      
       <p>Ref_ID: {Ref_ID}</p>
+      <p>Prod_ID: {Prod_Id}</p>
       {/* Edit Request_risedby */}
-      <p>Request_risedby:{' '}
-        {editMode ? (
+      <p>Request_risedby: {editMode ? (
           <input
             type="text"
             value={editedValues.Request_risedby}
@@ -119,6 +125,7 @@ const UserDetailsPage = () => {
           value={editedValues.Quantity}
           onChange={(e) => handleInputChange('Quantity', e.target.value)}  /> : Quantity}
       </p>
+
 {/*  
       <div className='d-flex flex-column w-100 me-2'>
         <div className='d-flex flex-stack mb-2'>
@@ -154,8 +161,7 @@ const UserDetailsPage = () => {
           </div>
         </div>
       </div>
-*/}
-      
+*/} 
       
       {/* Edit, Save and GoBack buttons */}
       {editMode ? (

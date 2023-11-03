@@ -2,60 +2,28 @@
 
 import {KTIcon} from '../../../_metronic/helpers'
 import React, { useEffect, useState, } from 'react';
-import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
 import './BuilderPage.css';
-import { Link, Route, Routes, useLocation, useParams, } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, } from 'react-router-dom';
 import AddUserPage from './AddUserPage';
 
 type Props = {
-  className: string
-}
+  className: string;
+};
 
-const TablesWidget13: React.FC<Props> = ({className}) => {
-
-  const { Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity } = useParams();
-  console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
-  
+const TablesWidget13: React.FC<Props> = ({ className }) => {
+ 
   const location = useLocation();
-  const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [tab, setTab] = useState('Sidebar');
-  const [configLoading, setConfigLoading] = useState<boolean>(false);
-  const [resetLoading, setResetLoading] = useState<boolean>(false);
-  const referenceIds = Array.from({ length: 10 }, (_, index) => index + 1); // Sample reference IDs
-
-  const updateConfig = () => {
-    setConfigLoading(true);
-    try {
-      LayoutSetup.setConfig(config);
-      window.location.reload();
-    } catch (error) {
-      setConfig(getLayoutFromLocalStorage());
-      setConfigLoading(false);
-    }
-  };
-
-  const reset = () => {
-    setResetLoading(true);
-    setTimeout(() => {
-      setConfig(getLayoutFromLocalStorage());
-      setResetLoading(false);
-    }, 1000);
-  };
-
-  const handleClearLocalStorage = () => {
-    localStorage.removeItem('sampleData');
-    // Reset the state to an empty array
-    setSampleData([]); 
-  };
-
-  // Function to remove duplicates based on Ref_ID
+  
+  //Function to remove duplicates based on Prod_Id
   const removeDuplicates = (dataList) => {
-    const uniqueRefIDs = new Set();
+    if (!Array.isArray(dataList)) {
+      console.error('dataList is not an array');
+      return [];
+    }
+    const uniqueProdIds = new Set();
     return dataList.reduce((uniqueData, data) => {
-      if (!uniqueRefIDs.has(data.Ref_ID)) {
-        uniqueRefIDs.add(data.Ref_ID);
+      if (!uniqueProdIds.has(data.Prod_Id)) {
+        uniqueProdIds.add(data.Prod_Id);
         uniqueData.push(data);
       }
       return uniqueData;
@@ -65,12 +33,13 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
   //Initialise sampleData to get the data from localStorage
   const [sampleData, setSampleData] = useState(() => {
     // Retrieve the data from local storage during component mount
-    const storedData = localStorage.getItem('sampleData');
+    const storedData = localStorage.getItem('productsData');
     const initialData = storedData ? JSON.parse(storedData) : [
       { 
-        Ref_ID: 1, 
+        Ref_ID: Date.now(), 
+        Prod_Id: Date.now(),
         Request_risedby: 'John Doe', 
-        Transfer_type: 'Internal', 
+        Transfer_Type: 'Internal', 
         Branch: 'CBE', 
         Department: 'Admin', 
         Product: 'Vivo', 
@@ -80,11 +49,11 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         //Status: 'Approved'
       }
      ];
-    // Remove duplicates based on Reft_ID and store in local storage
+    // Remove duplicates based on Prod_Id and store in local storage
     const uniqueData = removeDuplicates(initialData);
-    localStorage.setItem('sampleData', JSON.stringify(uniqueData));
+    // Store the data to the LocalStorage
+    localStorage.setItem('productsData', JSON.stringify(uniqueData));
     console.log('Initial Data: ', initialData);   //Log the initialData
-    console.log('Unique data: ', uniqueData);   //Log the uniqueData
     return uniqueData;
   });
 
@@ -98,14 +67,14 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
   };
 
   const handleUserAdded = (newUser) => {
-    console.log('handleUserAdded called'); // Log function execution
-    // Check if an object with the same Ref_ID already exists in sampleData
-    const isDuplicate = sampleData.some((data) => data.Ref_ID === newUser.Ref_ID);
+    console.log('handleUserAdded called'); // Log the function execution
+    // Check if an object with the same Prod_Id already exists in sampleData
+    const isDuplicate = sampleData.some((data) => data.Prod_Id === newUser.Prod_Id);
     if (!isDuplicate) {
       const updatedData = [...sampleData, newUser];
       // Update state and local storage with the new data
       setSampleData(updatedData);
-      localStorage.setItem('sampleData', JSON.stringify(updatedData));
+      localStorage.setItem('productsData', JSON.stringify(updatedData));
     }
     console.log('Updated sampleData:', sampleData); // Log the updated data
   };
@@ -115,6 +84,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     const searchParams = new URLSearchParams(location.search);
     const newFormData = {
       Ref_ID: searchParams.get('Ref_ID') || '',
+      Prod_Id: searchParams.get('Prod_Id') || '',
       Request_risedby: searchParams.get('Request_risedby') || '',
       Transfer_type: searchParams.get('Transfer_type') || '',
       Branch: searchParams.get('Branch') || '',
@@ -125,9 +95,11 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       Quantity: searchParams.get('Quantity') || '',
       //Status: searchParams.get('Status') || '',
     };
+
     // Add the new user data to the sampleData array if all required fields are present
     if (
       newFormData.Ref_ID &&
+      newFormData.Prod_Id &&
       newFormData.Request_risedby &&
       newFormData.Transfer_type &&
       newFormData.Branch &&
@@ -136,36 +108,26 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       newFormData.Dated &&
       newFormData.Uom &&
       newFormData.Quantity 
-      //newFormData.Status 
+      // newFormData.Status 
     ) {
       handleUserAdded(newFormData);
     }
-    console.log('Ref_ID:', Ref_ID);
-    console.log('URL Parameters:', newFormData); // Log the URL parameters
+    
   }, [location.search]);
   
-  console.log('URL Parameters----:', location.state);
-
-  const [filteredData, setFilteredData] = useState(sampleData);
-  // Function to handle search and filter data
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filteredResults = sampleData.filter((data) =>
-      data.Ref_ID.toString().includes(query)
-    );
-    console.log(filteredResults)
-    setFilteredData(filteredResults);
-  };
-
   // function to delete row
-  const handleDeleteRow = (refId) => {
+  const handleDeleteRow = (prodId) => {
+    console.log('handleDeleteRow is called');
     // Filter out the row to be deleted from the data state
-    const updatedData = filteredData.filter((item) => item.Ref_ID !== refId);
-    // Update the data state
-    setFilteredData(updatedData); 
-    localStorage.setItem('sampleData', JSON.stringify(updatedData));
+    const updatedData = sampleData.filter((item) => item.Prod_Id !== prodId);
+    // Update the state first
+    setSampleData(updatedData);
+    console.log('UpdatedData after handleDeleteRow', updatedData)
+    // Update the local storage with the filtered data
+    localStorage.setItem('productsData', JSON.stringify(updatedData));
   };
-    
+  
+  
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -173,13 +135,12 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>Details</span>
         </h3>
-        
         <div className='card-toolbar'>
-        {/* begin::Menu */}
+          {/* begin::Menu */}
           <div>
            {/* Add a button that navigates to the AddUserPage */}
             <Routes>  
-              <Route path="/add-user/:Ref_ID/:Request_risedby/:Transfer_type/:Department/:Branch/:Product/:Dated/:Uom/:Quantity" element={<AddUserPage  />} />
+              <Route path="/add-user/" element={<AddUserPage />} />
             </Routes>
             <button className="submit-butto"><Link to="/add-user/" style={{ color: '#3c4043', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold'  }} >  <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>Add New Material</Link></button>
           </div>
@@ -191,7 +152,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
         </div>
       {/* end::Header */}
       </div>
-      
+
       {/* begin::Body */}
       <div className='card-body py-3'>
         {/* begin::Table container */}
@@ -228,11 +189,10 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
               </tr>
             {/* end::Table head */}
             </thead>
-            
             {/* begin::Table body */}
             <tbody>
-            {filteredData.map((data, index) => (
-              <tr key={data.Ref_ID}>
+            {sampleData.map((data, index) => (
+              <tr key={data.Prod_Id}>
                 <td>
                   <div className='form-check form-check-sm form-check-custom form-check-solid'>
                     <input className='form-check-input widget-13-check' type='checkbox' value='1' />
@@ -241,7 +201,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
                 <td>{index + 1}</td>
                 <td>
                   {/* Make the name a clickable link and pass the user's name as a URL parameter */}
-                  <Link to={`/user-details/${encodeURIComponent(data.Ref_ID)}/${encodeURIComponent(data.Request_risedby)}/${encodeURIComponent(data.Transfer_type)}/${encodeURIComponent(data.Branch)}/${encodeURIComponent(data.Department)}/${encodeURIComponent(data.Product)}/${encodeURIComponent(data.Dated)}/${encodeURIComponent(data.Uom)}/${encodeURIComponent(data.Quantity)}`}>
+                  <Link to={`/user-details/${encodeURIComponent(data.Ref_ID)}/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Request_risedby)}/${encodeURIComponent(data.Transfer_type)}/${encodeURIComponent(data.Branch)}/${encodeURIComponent(data.Department)}/${encodeURIComponent(data.Product)}/${encodeURIComponent(data.Dated)}/${encodeURIComponent(data.Uom)}/${encodeURIComponent(data.Quantity)}`}>
                     {data.Request_risedby}
                   </Link>
                 </td>
@@ -254,15 +214,15 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
                 <td>{data.Quantity}</td>
                 {/* <td>{data.Status}</td> */}
                 <td className='text-end'>
-                {/* Make the button(edit) a clickable link and pass the URL parameter */}
-                <Link to={`/user-details/${encodeURIComponent(data.Ref_ID)}/${encodeURIComponent(data.Request_risedby)}/${encodeURIComponent(data.Transfer_type)}/${encodeURIComponent(data.Branch)}/${encodeURIComponent(data.Department)}/${encodeURIComponent(data.Product)}/${encodeURIComponent(data.Dated)}/${encodeURIComponent(data.Uom)}/${encodeURIComponent(data.Quantity)}}`}>
-                  <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
-                    <KTIcon iconName='pencil' className='fs-3' />
-                  </a>
-                 </Link>
+                  {/* Make the button(edit) a clickable link and pass the URL parameter */}
+                  <Link to={`/user-details/${encodeURIComponent(data.Ref_ID)}/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Request_risedby)}/${encodeURIComponent(data.Transfer_type)}/${encodeURIComponent(data.Branch)}/${encodeURIComponent(data.Department)}/${encodeURIComponent(data.Product)}/${encodeURIComponent(data.Dated)}/${encodeURIComponent(data.Uom)}/${encodeURIComponent(data.Quantity)}}`}>
+                    <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                      <KTIcon iconName='pencil' className='fs-3' />
+                    </a>
+                  </Link>
                   {/* Make the button clickable to delete the row */}
                   <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
-                    onClick={() => handleDeleteRow(data.Ref_ID)}>
+                    onClick={() => handleDeleteRow(data.Prod_Id)}>
                       <KTIcon iconName='trash' className='fs-3' />
                   </a>
                 </td>
@@ -281,3 +241,4 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
 }
 
 export {TablesWidget13}
+

@@ -4,6 +4,14 @@ import { useState, useEffect, } from 'react';
 import { useParams, useLocation, } from 'react-router-dom';
 
 
+interface RowType {
+  Prod_Id: number;
+  Product: string;
+  Dated: number;
+  Uom: string;
+  Quantity: number;
+}
+
 const UserDetailsPage = () => {
 
   const { search } = useLocation();
@@ -16,7 +24,7 @@ const UserDetailsPage = () => {
   const {  Ref_Id, Prod_Id, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity, } = useParams();
 
   //const { Ref_ID, Prod_Id, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity} = useParams();
-  console.log( Ref_Id, Prod_Id, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity );
+  console.log('Values:', Ref_Id, Prod_Id, Request_risedby, Transfer_type, Branch, Department, Product, Dated, Uom, Quantity );
     
   // State to manage the editable values and edit mode
   const [editMode, setEditMode] = useState(isEditMode);
@@ -43,23 +51,31 @@ const UserDetailsPage = () => {
     // Retrieve data from local storage
     const storedData = localStorage.getItem('productsData');
     const existingData = storedData ? JSON.parse(storedData) : [];
+    // Log the existingData
     console.table(existingData);
+
+    // Log the value and type of Ref_Id
+    console.log('Ref_Id:', Ref_Id, typeof Ref_Id);
+
+    console.log('Prod_Id:', Prod_Id, typeof Prod_Id);
+
     // Filter rows by Ref_Id
-    const filteredRows = existingData.filter((data) => data.Ref_Id.toString() === Ref_Id?.toString());
-    console.log('Filtered', filteredRows);
+    const filteredData = existingData.filter((data) => data.Ref_Id.toString() === Ref_Id?.toString());
+
+    console.log('Filtered', filteredData);
     // Set the filtered rows in state
-    setRowsByRefId(filteredRows);
+    setRowsByRefId(filteredData);
   }, [Ref_Id]);
 
   console.log('rowsByRefId', rowsByRefId);
-
+ 
   // Function to toggle edit mode
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
 
   // Function to handle input changes
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field, value: string | number) => {
     console.log('Before setting editedValues state:', editedValues);
     setEditedValues((prevValues) => ({...prevValues, [field]: value, }));
     console.log('after EditedValues: ', editedValues);

@@ -118,7 +118,7 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
   const handleDeleteRow = (Ref_Id) => {
     console.log('handleDeleteRow is called');
     // Filter out the row to be deleted from the data state
-    const updatedData = sampleData.filter((item) => item.Ref_Id !== Ref_Id);
+    const updatedData = sampleData.filter((item) => item.Ref_Id.toString() !== Ref_Id?.toString());
     // Update the state first
     setSampleData(updatedData);
     console.log('UpdatedData after handleDeleteRow', updatedData)
@@ -132,6 +132,7 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
       acc[data.Ref_Id] = [];
     }
     acc[data.Ref_Id].push(data);
+    console.log('Ref_Id:', data.Ref_Id);
     return acc;
   }, {});
 
@@ -220,9 +221,9 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
                 <td>
                   <Link
                     to={`/user-details/${
-                      encodeURIComponent((rows as any[])[0].Prod_Id)
-                    }/${
                       encodeURIComponent((rows as any[])[0].Ref_Id)
+                    }/${
+                      encodeURIComponent((rows as any[])[0].Prod_Id)
                     }/${
                       encodeURIComponent((rows as any[])[0].Request_risedby)
                     }/${
@@ -251,9 +252,9 @@ const TablesWidget13: React.FC<Props> = ({ className }) => {
                   {/* Make the button(edit) a clickable link and pass the URL parameter */}
                   <Link
                     to={`/user-details/${
-                      encodeURIComponent((rows as any[])[0].Prod_Id)
-                    }/${
                       encodeURIComponent((rows as any[])[0].Ref_Id)
+                    }/${
+                      encodeURIComponent((rows as any[])[0].Prod_Id)
                     }/${
                       encodeURIComponent((rows as any[])[0].Request_risedby)
                     }/${

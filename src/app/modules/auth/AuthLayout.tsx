@@ -1,3 +1,6 @@
+// /* eslint-disable jsx-a11y/anchor-is-valid */
+
+
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {useEffect} from 'react'
 import {Outlet, Link} from 'react-router-dom'
@@ -61,7 +64,7 @@ const AuthLayout = () => {
         <div className='d-flex flex-column flex-center py-15 px-5 px-md-15 w-100'>
           {/* begin::Logo */}
           <Link to='/' className='mb-12'>
-            <img alt='Logo' src={toAbsoluteUrl('/media/logos/custom-1.png')} className='h-75px' />
+            <img alt='Logo' src={toAbsoluteUrl('/carton.png')} className='h-75px' />
           </Link>
           {/* end::Logo */}
 
@@ -79,20 +82,6 @@ const AuthLayout = () => {
           </h1>
           {/* end::Title */}
 
-          {/* begin::Text */}
-          <div className='text-white fs-base text-center'>
-            In this kind of post,{' '}
-            <a href='#' className='opacity-75-hover text-warning fw-bold me-1'>
-              the blogger
-            </a>
-            introduces a person they’ve interviewed <br /> and provides some background information
-            about
-            <a href='#' className='opacity-75-hover text-warning fw-bold me-1'>
-              the interviewee
-            </a>
-            and their <br /> work following this is a transcript of the interview.
-          </div>
-          {/* end::Text */}
         </div>
         {/* end::Content */}
       </div>

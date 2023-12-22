@@ -64,6 +64,9 @@ export function Login() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-11'>
+      <Link to='/' className='mb-12'>
+            <img alt='Logo' src={toAbsoluteUrl('/carton-transparent.png')} className='h-50px' />
+          </Link>
         <h1 className='text-dark fw-bolder mb-3'>Sign In</h1>
         <div className='text-gray-500 fw-semibold fs-6'>Carton Warehouse Management</div>
       </div>

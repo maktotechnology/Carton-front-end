@@ -73,11 +73,7 @@ const AuthLayout = () => {
           />
           {/* end::Image */}
 
-          {/* begin::Title */}
-          <h1 className='text-white fs-2qx fw-bolder text-center mb-7'>
-            Fast, Efficient and Productive
-          </h1>
-          {/* end::Title */}
+
 
         </div>
         {/* end::Content */}

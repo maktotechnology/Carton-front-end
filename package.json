@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "/metronic8/react/demo1",
   "dependencies": {
+    "@emailjs/browser": "^3.11.0",
     "@formatjs/intl-pluralrules": "5.2.4",
     "@formatjs/intl-relativetimeformat": "11.2.4",
     "@fortawesome/fontawesome-free": "6.1.1",

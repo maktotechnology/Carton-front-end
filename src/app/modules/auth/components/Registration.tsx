@@ -5,9 +5,10 @@ import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import clsx from 'clsx'
 import {getUserByToken, register} from '../core/_requests'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {PasswordMeterComponent} from '../../../../_metronic/assets/ts/components'
 import {useAuth} from '../core/Auth'
+import {toAbsoluteUrl} from '../../../../_metronic/helpers'
 
 const initialValues = {
   firstname: '',
@@ -46,33 +47,48 @@ const registrationSchema = Yup.object().shape({
 
 export function Registration() {
   const [loading, setLoading] = useState(false)
-  const {saveAuth, setCurrentUser} = useAuth()
+  const navigate = useNavigate();
+
   const formik = useFormik({
+    
     initialValues,
     validationSchema: registrationSchema,
-    onSubmit: async (values, {setStatus, setSubmitting}) => {
-      setLoading(true)
+    onSubmit: async (values, { setStatus, setSubmitting }) => {
+      
+      setLoading(true);
       try {
-        const {data: auth} = await register(
-          values.email,
-          values.firstname,
-          values.lastname,
-          values.password,
-          values.changepassword
-        )
-        saveAuth(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
+        // Create the user object for the API request
+        const formData = new URLSearchParams();
+        formData.append('user[email]', values.email);
+        formData.append('user[password]', values.password);
+
+        // Make the API request to create a new user
+        const response = await fetch('http://cartonbackend.maktoinc.com/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
+        });
+        
+        if (response.ok) {
+          navigate('/auth/verification');
+        } else {
+          // If the API request fails, handle the error
+          const errorData = await response.text();
+          console.error(errorData);
+          setStatus('Registration failed. Please check your details and try again.');
+        }
       } catch (error) {
-        console.error(error)
-        saveAuth(undefined)
-        setStatus('The registration details is incorrect')
-        setSubmitting(false)
-        setLoading(false)
+        console.error(error);
+        setStatus('An error occurred during registration.');
+      } finally {
+        // Set submitting and loading states to false
+        setSubmitting(false);
+        setLoading(false);
       }
     },
-  })
-
+  });
   useEffect(() => {
     PasswordMeterComponent.bootstrap()
   }, [])
@@ -86,7 +102,11 @@ export function Registration() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-11'>
+      <Link to='/' className='mb-12'>
+            <img alt='Logo' src={toAbsoluteUrl('/carton-transparent.png')} className='h-50px' />
+          </Link>
         {/* begin::Title */}
+        <p className='text-dark fw-bolder mb-3'>This page has been connected to the backend API. Currently, the parameters included in the API are only Email and Password.</p>
         <h1 className='text-dark fw-bolder mb-3'>Sign Up</h1>
         {/* end::Title */}
 

@@ -26,8 +26,6 @@ import {Tax} from '../../pages/Settings/Tax'
 import {Users} from '../../pages/Settings/Users'
 
 
-import {ProfileHeader} from './ProfileHeader'
-
 
 const profileBreadCrumbs: Array<PageLink> = [
   // {

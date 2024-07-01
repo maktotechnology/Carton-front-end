@@ -2,7 +2,7 @@
   "name": "demo1",
   "version": "8.2.0",
   "private": true,
-  "homepage": "/metronic8/react/demo1",
+  "homepage": "/carton",
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
     "@formatjs/intl-pluralrules": "5.2.4",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
     "@types/bootstrap": "5.1.10",

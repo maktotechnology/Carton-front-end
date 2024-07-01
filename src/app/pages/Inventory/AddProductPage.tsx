@@ -1,17 +1,14 @@
 //AddProductPage.tsx
 
-import React, { useState, useEffect } from 'react';
-import { KTIcon } from '../../../_metronic/helpers';
-import { Link, Route, Routes, useLocation, useNavigate, } from 'react-router-dom';
-import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
+import React, { useState } from 'react';
+import {  useNavigate, } from 'react-router-dom';
 import './AddProductPage.css';
-import { Projects } from '../Inventory/products';
 
 
 const AddProductPage = () =>{
 
   const navigate = useNavigate();
-  const location = useLocation();
+
 
   // Initialise formData
   const [formData, setFormData] = useState({

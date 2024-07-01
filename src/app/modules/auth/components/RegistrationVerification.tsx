@@ -1,12 +1,3 @@
-import {useState} from 'react'
-import * as Yup from 'yup'
-import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-
-
-
-
-
 const ForgotPasswordComponent = () => {
     return (
       <div className='text-center mb-10'>

@@ -1,10 +1,9 @@
 // Tableswidget13.tsx
 
 import {KTIcon} from '../../../_metronic/helpers'
-import React, { useEffect, useState, } from 'react';
-import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
+import React, { useEffect, useState,useCallback } from 'react';
 import './BuilderPage.css';
-import { Link, Route, Routes, useLocation, useParams, } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import AddUserPage from './AddUserPage';
 
 type Props = {
@@ -17,38 +16,10 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
   // console.log('URL Parameters!!!:',  Ref_ID, Request_risedby, Transfer_type, Department, Branch, Product, Dated, Uom, Quantity ); 
   
   const location = useLocation();
-  const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [tab, setTab] = useState('Sidebar');
-  const [configLoading, setConfigLoading] = useState<boolean>(false);
-  const [resetLoading, setResetLoading] = useState<boolean>(false);
-  const referenceIds = Array.from({ length: 10 }, (_, index) => index + 1); // Sample reference IDs
 
-  const updateConfig = () => {
-    setConfigLoading(true);
-    try {
-      LayoutSetup.setConfig(config);
-      window.location.reload();
-    } catch (error) {
-      setConfig(getLayoutFromLocalStorage());
-      setConfigLoading(false);
-    }
-  };
 
-  const reset = () => {
-    setResetLoading(true);
-    setTimeout(() => {
-      setConfig(getLayoutFromLocalStorage());
-      setResetLoading(false);
-    }, 1000);
-  };
 
-  const handleClearLocalStorage = () => {
-    localStorage.removeItem('sampleData');
-    // Reset the state to an empty array
-    setSampleData([]); 
-  };
 
   //Function to remove duplicates based on Ref_ID
   const removeDuplicates = (dataList) => {
@@ -102,20 +73,17 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
     });
   };
 
-  const handleUserAdded = (newUser) => {
-    console.log('handleUserAdded called'); // Log function execution
-    // Check if an object with the same Ref_ID already exists in sampleData
+  const handleUserAdded = useCallback((newUser) => {
+    console.log('handleUserAdded called');
     const isDuplicate = sampleData.some((data) => data.Ref_ID === newUser.Ref_ID);
     if (!isDuplicate) {
       const updatedData = [...sampleData, newUser];
-      // Update state and local storage with the new data
       setSampleData(updatedData);
       localStorage.setItem('materialData', JSON.stringify(updatedData));
     }
-    console.log('Updated sampleData:', sampleData); // Log the updated data
-  };
-  
-  // Read the URL parameters and store them in the state
+    console.log('Updated sampleData:', sampleData);
+  }, [sampleData]);
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const newFormData = {
@@ -124,43 +92,24 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
       Transfer_type: searchParams.get('Transfer_type') || '',
       Branch: searchParams.get('Branch') || '',
       Department: searchParams.get('Department') || '',
-      //Product: searchParams.get('Product') || '',
-      //Dated: searchParams.get('Dated') || '',
-      //Uom: searchParams.get('Uom') || '',
-      //Quantity: searchParams.get('Quantity') || '',
-      //Status: searchParams.get('Status') || '',
     };
-    // Add the new user data to the sampleData array if all required fields are present
+
     if (
       newFormData.Ref_ID &&
       newFormData.Request_risedby &&
       newFormData.Transfer_type &&
       newFormData.Branch &&
-      newFormData.Department 
-      // newFormData.Product &&
-      // newFormData.Dated &&
-      // newFormData.Uom &&
-      // newFormData.Quantity 
-      //newFormData.Status 
+      newFormData.Department
     ) {
       handleUserAdded(newFormData);
     }
-    //console.log('Ref_ID:', Ref_ID);
-    console.log('URL Parameters:', newFormData); // Log the URL parameters
-  }, [location.search]);
+
+    console.log('URL Parameters:', newFormData);
+  }, [location.search, handleUserAdded]);
   
   console.log('URL Parameters----:', location.state);
 
   const [filteredData, setFilteredData] = useState(sampleData);
-  // Function to handle search and filter data
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filteredResults = sampleData.filter((data) =>
-      data.Ref_ID.toString().includes(query)
-    );
-    console.log(filteredResults)
-    setFilteredData(filteredResults);
-  };
 
   // function to delete row
   const handleDeleteRow = (refId) => {
@@ -259,12 +208,12 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
                 <td className='text-end'>
                 {/* Make the button(edit) a clickable link and pass the URL parameter */}
                 <Link to={`/user-details/${encodeURIComponent(data.Ref_ID)}/${encodeURIComponent(data.Request_risedby)}/${encodeURIComponent(data.Transfer_type)}/${encodeURIComponent(data.Branch)}/${encodeURIComponent(data.Department)}/${encodeURIComponent(data.Product)}/${encodeURIComponent(data.Dated)}/${encodeURIComponent(data.Uom)}/${encodeURIComponent(data.Quantity)}}`}>
-                  <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                  <a href='https://carton.maktoinc.com/' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                     <KTIcon iconName='pencil' className='fs-3' />
                   </a>
                  </Link>
                   {/* Make the button clickable to delete the row */}
-                  <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                  <a href='https://carton.maktoinc.com/' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                     onClick={() => handleDeleteRow(data.Ref_ID)}>
                       <KTIcon iconName='trash' className='fs-3' />
                   </a>

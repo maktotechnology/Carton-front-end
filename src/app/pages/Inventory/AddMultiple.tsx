@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { KTIcon } from '../../../_metronic/helpers';
 import { useNavigate, } from 'react-router-dom';
-import { Projects } from '../Inventory/products';
 import './AddProductPage.css';
 
 
@@ -203,7 +202,7 @@ const AddMultiple = () => {
                     </td>
                     <td>
                       {/* Insert a button to Delete row */}
-                      <a href="#" className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+                      <a href="https://carton.maktoinc.com/" className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
                         onClick={() => handleDeleteRow(row.Prod_Id)} >
                             <KTIcon iconName="trash" className="fs-3" />
                       </a>

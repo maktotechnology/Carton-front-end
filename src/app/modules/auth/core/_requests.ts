@@ -24,7 +24,7 @@ export function register(
   password: string,
   password_confirmation: string
 ) {
-  return axios.post(REGISTER_URL, {
+  return axios.post<AuthModel>(REGISTER_URL, {
     email,
     first_name: firstname,
     last_name: lastname,

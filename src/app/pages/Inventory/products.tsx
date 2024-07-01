@@ -1,8 +1,7 @@
 // products.tsx
 
 import {KTIcon} from '../../../_metronic/helpers'
-import React, { useEffect, useState } from 'react';
-import { getLayoutFromLocalStorage, ILayout, LayoutSetup } from '../../../_metronic/layout/core';
+import React, { useEffect, useState ,useCallback} from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import AddProductPage from './AddProductPage';
 import './BuilderProductPage.css';
@@ -15,51 +14,18 @@ type Props = {
 const Projects: React.FC<Props> = ({className}) => {
 
   const location = useLocation();
-  const [searchQuery, setSearchQuery] = useState('');
+
 
   // Initialize a state variable named tab with an initial value of 'Sidebar'
-  const [tab, setTab] = useState('Sidebar');
+
 
   // functional component to initialize a state variable named config, configLoading, resetLoading
-  const [config, setConfig] = useState<ILayout>(getLayoutFromLocalStorage());
-  const [configLoading, setConfigLoading] = useState<boolean>(false);
-  const [resetLoading, setResetLoading] = useState<boolean>(false);
 
-  // responsible for updating some configuration settings
-  const updateConfig = () => {
-    setConfigLoading(true);
-    try {
-      LayoutSetup.setConfig(config);
-      window.location.reload();
-    } 
-    catch (error) {
-      setConfig(getLayoutFromLocalStorage());
-      setConfigLoading(false);
-    }
-  };
 
-  const reset = () => {
-    setResetLoading(true);
-    setTimeout(() => {
-      setConfig(getLayoutFromLocalStorage());
-      setResetLoading(false);
-    }, 1000);
-  };
 
-  // Function to handle search and filter data
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filteredResults = sampleProdData.filter((data) =>
-      data.Prod_Id.toString().includes(query)
-    );
-    console.log(filteredResults);
-    setFilteredData(filteredResults);
-  };
 
-  const handleClearLocalStorage = () => {
-    localStorage.removeItem('sampleProdData');
-    setSampleData([]); // Reset the state to an empty array
-  };
+
+
 
   // Function to remove duplicates based on Prod_ID
   const removeDuplicates = (dataList) => {
@@ -104,19 +70,15 @@ const Projects: React.FC<Props> = ({className}) => {
     });
   };
 
-  const handleUserAdded = (newProduct) => {
-    // Check if an object with the same Prod_Id already exists in sampleProdData
+  const handleUserAdded = useCallback((newProduct) => {
     const isDuplicate = sampleProdData.some((data) => data.Prod_Id === newProduct.Prod_Id);
     if (!isDuplicate) {
       const updatedData = [...sampleProdData, newProduct];
-      // Update state and local storage with the new data
       setSampleData(updatedData);
       localStorage.setItem('sampleProdData', JSON.stringify(updatedData));
     }
-    setSampleData([...sampleProdData]);
-  };
+  }, [sampleProdData]);
 
-  // Read the URL parameters and store them in the state
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const newFormData = {
@@ -126,17 +88,18 @@ const Projects: React.FC<Props> = ({className}) => {
       Brand: searchParams.get('Brand') || '',
       Category: searchParams.get('Category') || '',
     };
-    // Add the new user data to the sampleProdData array if all required fields are present
+
     if (
       newFormData.Prod_Id &&
       newFormData.Prod_Name &&
       newFormData.UoM &&
       newFormData.Brand &&
-      newFormData.Category 
+      newFormData.Category
     ) {
       handleUserAdded(newFormData);
     }
-  }, [location.search]);
+  }, [location.search, handleUserAdded]);// Include handleUserAdded in the dependency array
+
   
   const [filteredData, setFilteredData] = useState(sampleProdData);
 
@@ -238,12 +201,12 @@ const Projects: React.FC<Props> = ({className}) => {
                 <td className='text-end'>
                   {/* Make the name a clickable icon to edit all the values */}
                   <Link to={`/product-details/${encodeURIComponent(data.Prod_Id)}/${encodeURIComponent(data.Prod_Name)}/${encodeURIComponent(data.UoM)}/${encodeURIComponent(data.Category)}/${encodeURIComponent(data.Brand)}`}>
-                    <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
+                    <a href='https://carton.maktoinc.com/' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'>
                       <KTIcon iconName='pencil' className='fs-3' />
                     </a>
                   </Link>
                   {/* Make the name a clickable icon to delete the row */}
-                  <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                  <a href='https://carton.maktoinc.com/' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                     onClick={() => handleDeleteRow(data.Prod_Id)}>
                       <KTIcon iconName='trash' className='fs-3' />
                   </a>

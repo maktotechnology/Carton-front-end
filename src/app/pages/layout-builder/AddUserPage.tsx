@@ -1,8 +1,7 @@
 // AddUserPage.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate,} from 'react-router-dom';
-import { KTIcon } from '../../../_metronic/helpers';
 import './AddUserPage.css';
 import {TablesWidget13,} from '../layout-builder/TablesWidget13 copy'
 
@@ -77,50 +76,7 @@ const AddUserPage = () =>  {
 
   };
   
-  // Submit function
-  const handleSubmi = async (e) => {
-    e.preventDefault();
-    try {
-      // Your form submission code here
-      const queryParams = new URLSearchParams();
-      for (const key in formData) {
-        queryParams.append(key, formData[key]);
-      }
-  
-      // Create an array to store the tableData values
-      const tableDataArray = {};
-  
-      // Convert tableData to a flat structure and store it in tableDataArray
-      tableData.forEach((row, index) => {
-        for (const key in row) {
-          tableDataArray[`tableData[${index}][${key}]`] = row[key];
-        }
-      });
-  
-      // Retrieve existing data from localStorage
-      const existingData = localStorage.getItem('productData');
 
-      // Check if existingData is a string before parsing it
-      const existingDataObject = typeof existingData === 'string' ? JSON.parse(existingData) : {};
-  
-      // Merge the existing data with the new data
-      const updatedDataObject = { ...existingDataObject, ...formData, ...tableDataArray };
-  
-      // Stringify the merged object back into a JSON string
-      const updatedDataString = JSON.stringify(updatedDataObject);
-  
-      console.log('Data being sent:', updatedDataObject);
-  
-      // Store the updated data back in localStorage
-      localStorage.setItem('productData', updatedDataString);
-  
-      // Navigate with formDataWithTableData
-      navigate(`/builder?${new URLSearchParams(updatedDataObject).toString()}`);
-    } catch (error) {
-      console.error('Error in handleSubmit:', error);
-    }
-    console.log('formdata: ', formData);
-  };
 
   // Navigate back one step
   const handleGoBack = () => {

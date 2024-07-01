@@ -4,11 +4,11 @@ import {useState, useEffect} from 'react'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import clsx from 'clsx'
-import {getUserByToken, register} from '../core/_requests'
 import {Link, useNavigate} from 'react-router-dom'
 import {PasswordMeterComponent} from '../../../../_metronic/assets/ts/components'
-import {useAuth} from '../core/Auth'
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
+import {useAuth} from '../core/Auth'
+import {getUserByToken, register} from '../core/_requests'
 
 const initialValues = {
   firstname: '',
@@ -24,30 +24,31 @@ const registrationSchema = Yup.object().shape({
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('First name is required'),
+  lastname: Yup.string()
+    .min(3, 'Minimum 3 symbols')
+    .max(50, 'Maximum 50 symbols')
+    .required('Last name is required'),
   email: Yup.string()
     .email('Wrong email format')
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Email is required'),
-  lastname: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Last name is required'),
-  password: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Password is required'),
+    password: Yup.string()
+    .required('No password provided.') 
+    .min(8, 'Password is too short - should be 8 chars minimum.')
+    .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
   changepassword: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Password confirmation is required')
     .oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
   acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
-})
+});
 
 export function Registration() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
+  const {saveAuth, setCurrentUser} = useAuth()
 
   const formik = useFormik({
     
@@ -55,37 +56,47 @@ export function Registration() {
     validationSchema: registrationSchema,
     onSubmit: async (values, { setStatus, setSubmitting }) => {
       
-      setLoading(true);
-      try {
-        // Create the user object for the API request
-        const formData = new URLSearchParams();
-        formData.append('user[email]', values.email);
-        formData.append('user[password]', values.password);
+      if (formik.isValid) {
+        setLoading(true);
+        try {
+          // Create the user object for the API request
+          const formData = new URLSearchParams();
+          formData.append('user[first_name]', values.firstname);
+          formData.append('user[last_name]', values.lastname);
+          formData.append('user[email]', values.email);
+          formData.append('user[password]', values.password);
+          formData.append('user[password_confirmation]', values.password);
 
-        // Make the API request to create a new user
-        const response = await fetch('http://cartonbackend.maktoinc.com/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formData.toString(),
-        });
-        
-        if (response.ok) {
-          navigate('/auth/verification');
-        } else {
-          // If the API request fails, handle the error
-          const errorData = await response.text();
-          console.error(errorData);
-          setStatus('Registration failed. Please check your details and try again.');
+          // Make the API request to create a new user
+          const response = await fetch('http://cartonbackend.maktoinc.com/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData.toString(),
+          });
+          
+          if (response.ok) {
+            console.log(response);
+            const responseData = await response.json();
+            const {data: auth} = await register(values.email, values.firstname, values.lastname, values.password,values.password);
+            saveAuth(auth)
+            const {data: user} = await getUserByToken(auth.api_token)
+            setCurrentUser(user)
+          } else {
+            // If the API request fails, handle the error
+            const errorData = await response.text();
+            console.error(errorData);
+            setStatus('Registration failed. Please check your details and try again.');
+          }
+        } catch (error) {
+          console.error(error);
+          setStatus('An error occurred during registration.');
+        } finally {
+          // Set submitting and loading states to false
+          setSubmitting(false);
+          setLoading(false);
         }
-      } catch (error) {
-        console.error(error);
-        setStatus('An error occurred during registration.');
-      } finally {
-        // Set submitting and loading states to false
-        setSubmitting(false);
-        setLoading(false);
       }
     },
   });

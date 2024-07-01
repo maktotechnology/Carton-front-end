@@ -1,8 +1,8 @@
 //UserDetailsPage.tsx
 
 import React, { useState } from 'react';
-import { useParams, Route, Routes } from 'react-router-dom';
-import { TablesWidget13, } from '../layout-builder/TablesWidget13'
+import { useParams } from 'react-router-dom';
+
 
 const UserDetailsPage = () => {
 

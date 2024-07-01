@@ -244,7 +244,7 @@ const TablesWidget13: React.FC<Props> = ({ className, tableData, onTableDataChan
                   </td>
                   <td>
                     {/* Insert a button to delete the row */}
-                    <a href='#' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                    <a href='https://carton.maktoinc.com/' className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
                       onClick={() => handleDeleteRow(row.Pro_Id)} >
                         <KTIcon iconName='trash' className='fs-3' />
                     </a>

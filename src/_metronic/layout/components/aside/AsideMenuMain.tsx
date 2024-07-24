@@ -15,6 +15,9 @@ export function AsideMenuMain() {
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
       />
       <AsideMenuItem to='/apps/user-management/users' icon='shield-tick' title='User management' />
+
+      <AsideMenuItem to='/apps/customer-management/customer' icon='shield-tick' title='Customer management' />
+
  
 
     </>

@@ -15,6 +15,8 @@ const PrivateRoutes = () => {
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
+  const CustomerPage = lazy(() => import('../modules/apps/customer-management/UsersPage'))
+
 
   return (
     <Routes>
@@ -78,6 +80,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <UsersPage />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='apps/customer-management/*'
+          element={
+            <SuspensedView>
+              <CustomerPage />
             </SuspensedView>
           }
         />

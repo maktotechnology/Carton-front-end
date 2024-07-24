@@ -71,21 +71,7 @@ const Search: FC = () => {
         data-kt-search='true'
         ref={element}
       >
-        <form data-kt-search-element='form' className='w-100 position-relative' autoComplete='off'>
-          <KTIcon
-            iconName='magnifier'
-            className='fs-2 search-icon position-absolute top-50 translate-middle-y ms-4'
-          />
-          <input
-            type='text'
-            className='search-input form-control ps-13 fs-7 h-40px'
-            name='search'
-            value={searchVal}
-            onChange={(e) => setSearchVal(e.target.value)}
-            placeholder='Quick Search'
-            data-kt-search-element='input'
-          />
-        </form>
+
 
         <div
           data-kt-search-element='content'

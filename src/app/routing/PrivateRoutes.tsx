@@ -16,6 +16,10 @@ const PrivateRoutes = () => {
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
   const CustomerPage = lazy(() => import('../modules/apps/customer-management/UsersPage'))
+  const ProductDashboard = lazy(()=> import('../modules/apps/product-dashboard/UsersPage'))
+  const Categories = lazy(()=> import('../modules/apps/categories/UsersPage'))
+
+
 
 
   return (
@@ -26,7 +30,7 @@ const PrivateRoutes = () => {
         {/* Pages */}
         <Route path='dashboard' element={<DashboardWrapper />} />
         <Route
-          path='builder'
+          path='Category'
           element={
             <SuspensedView>
               <BuilderPageWrapper />
@@ -91,6 +95,26 @@ const PrivateRoutes = () => {
             </SuspensedView>
           }
         />
+
+
+        <Route
+          path='apps/product-dashboard/*'
+          element={
+            <SuspensedView>
+              <ProductDashboard />
+            </SuspensedView>
+          }
+          />
+
+
+<Route
+          path='apps/categories/*'
+          element={
+            <SuspensedView>
+              <Categories />
+            </SuspensedView>
+          }
+          />
         {/* Page Not Found */}
         <Route path='*' element={<Navigate to='/error/404' />} />
       </Route>

@@ -15,11 +15,12 @@ export function AsideMenuMain() {
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
       />
       <AsideMenuItem to='/apps/user-management/users' icon='shield-tick' title='User management' />
-
       <AsideMenuItem to='/apps/customer-management/customer' icon='shield-tick' title='Customer management' />
-
- 
-
+      <AsideMenuItemWithSub to='/crafted/pages' title='Product Management' icon='gift'>
+          <AsideMenuItem to='/apps/product-dashboard' title='Product Dashboard' hasBullet={true} />
+          <AsideMenuItem to='/Category' title='Product List' hasBullet={true} />
+          <AsideMenuItem to='/apps/categories' title='Categories' hasBullet={true} />
+        </AsideMenuItemWithSub>
     </>
   )
 }

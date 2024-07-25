@@ -21,6 +21,12 @@ export function AsideMenuMain() {
           <AsideMenuItem to='/Category' title='Product List' hasBullet={true} />
           <AsideMenuItem to='/apps/categories' title='Categories' hasBullet={true} />
         </AsideMenuItemWithSub>
+
+      <AsideMenuItemWithSub to='' title='Store Management' icon='element-plus'>
+        <AsideMenuItem to='Store-Details' title='Store Details' hasBullet={true} />
+        <AsideMenuItem to='apps/Store-Product/Catalogue' title='Store Product Catalogue' hasBullet={true} />
+        <AsideMenuItem to='StoreOrder' title='Store Orders' hasBullet={true} />
+      </AsideMenuItemWithSub>
     </>
   )
 }

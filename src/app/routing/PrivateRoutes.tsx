@@ -7,6 +7,8 @@ import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
+import BuilderPageWrapper01 from '../pages/Store Details/BuilderPageWrapper'
+import {StoreOrder} from '../modules/apps/store-orders/DashboardWrapper'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -18,6 +20,7 @@ const PrivateRoutes = () => {
   const CustomerPage = lazy(() => import('../modules/apps/customer-management/UsersPage'))
   const ProductDashboard = lazy(()=> import('../modules/apps/product-dashboard/UsersPage'))
   const Categories = lazy(()=> import('../modules/apps/categories/UsersPage'))
+  const Catalogue = lazy(()=> import('../modules/apps/Store Product Catalogue/UsersPage'))
 
 
 
@@ -29,11 +32,20 @@ const PrivateRoutes = () => {
         <Route path='auth/*' element={<Navigate to='/dashboard' />} />
         {/* Pages */}
         <Route path='dashboard' element={<DashboardWrapper />} />
+        <Route path='StoreOrder' element={<StoreOrder />} />
         <Route
           path='Category'
           element={
             <SuspensedView>
               <BuilderPageWrapper />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='Store-Details'
+          element={
+            <SuspensedView>
+              <BuilderPageWrapper01 />
             </SuspensedView>
           }
         />
@@ -102,6 +114,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <ProductDashboard />
+            </SuspensedView>
+          }
+          />
+          <Route
+          path='apps/Store-Product/*'
+          element={
+            <SuspensedView>
+              <Catalogue />
             </SuspensedView>
           }
           />

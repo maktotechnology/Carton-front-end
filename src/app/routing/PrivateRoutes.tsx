@@ -8,7 +8,21 @@ import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/Product List/BuilderPageWrapper'
 import BuilderPageWrapper01 from '../pages/Store Details/BuilderPageWrapper'
+import BuilderPageWrapper02 from '../pages/categories form/BuilderPageWrapper'
+
 import {StoreOrder} from '../modules/apps/store-orders/DashboardWrapper'
+import {Orders} from '../modules/apps/Orders/DashboardWrapper'
+import {Cancellation} from '../modules/apps/Cancellation/DashboardWrapper'
+import {DeliveryPerson} from '../modules/apps/Delivery Person/DashboardWrapper'
+import {Payout} from '../modules/apps/Payouts/DashboardWrapper'
+
+import {Wallets} from '../modules/apps/Wallets-Payments/DashboardWrapper'
+import {Tax} from '../modules/apps/Tax-Settings/DashboardWrapper'
+import {Reports} from '../modules/apps/Reports/DashboardWrapper'
+import {Feedbacks} from '../modules/apps/Feedbacks-Review/DashboardWrapper'
+import {Banner} from '../modules/apps/Banner-Management/DashboardWrapper'
+
+
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -33,11 +47,30 @@ const PrivateRoutes = () => {
         {/* Pages */}
         <Route path='dashboard' element={<DashboardWrapper />} />
         <Route path='StoreOrder' element={<StoreOrder />} />
+        <Route path='Orders' element={<Orders />} />
+        <Route path='Cancellation' element={<Cancellation />} />
+        <Route path='DeliveryPerson' element={<DeliveryPerson />} />
+        <Route path='Payout' element={<Payout />} />
+
+        <Route path='Wallets-Payments' element={<Wallets />} />
+        <Route path='Tax-Settings' element={<Tax />} />
+        <Route path='Reports' element={<Reports />} />
+        <Route path='Feedbacks-Review' element={<Feedbacks />} />
+        <Route path='Banner-Management' element={<Banner />} />
+
         <Route
           path='Category'
           element={
             <SuspensedView>
               <BuilderPageWrapper />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='Category-Form'
+          element={
+            <SuspensedView>
+              <BuilderPageWrapper02 />
             </SuspensedView>
           }
         />

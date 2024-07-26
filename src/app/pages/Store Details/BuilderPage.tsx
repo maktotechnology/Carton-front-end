@@ -1,332 +1,206 @@
-
-import clsx from 'clsx'
-import React, {useState} from 'react'
-import {KTIcon} from '../../../_metronic/helpers'
-import {getLayout, ILayout, LayoutSetup, useLayout} from '../../../_metronic/layout/core'
+import React, { useState } from 'react';
 
 const BuilderPage: React.FC = () => {
-  const {setLayout} = useLayout()
-  const [tab, setTab] = useState('Header')
-  const [config, setConfig] = useState<ILayout>(getLayout())
-  const [configLoading, setConfigLoading] = useState<boolean>(false)
-  const [resetLoading, setResetLoading] = useState<boolean>(false)
+  const [formData, setFormData] = useState({
+    storeName: '',
+    storeManagerFirstName: '',
+    storeManagerLastName: '',
+    address1: '',
+    address2: '',
+    city: '',
+    phoneNumber: '',
+    email: ''
+  });
 
-  const updateData = (fieldsToUpdate: Partial<ILayout>) => {
-    const updatedData = {...config, ...fieldsToUpdate}
-    setConfig(updatedData)
-  }
+  const [savedData, setSavedData] = useState<any[]>([]);
+  const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [editFormData, setEditFormData] = useState(formData);
 
-  const updateConfig = () => {
-    setConfigLoading(true)
-    try {
-      LayoutSetup.setConfig(config)
-    } catch (error) {
-      setConfig(getLayout())
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (isEditing !== null) {
+      setEditFormData({ ...editFormData, [name]: value });
+    } else {
+      setFormData({ ...formData, [name]: value });
     }
-    setTimeout(() => {
-      setLayout(config)
-      setConfigLoading(false)
-    }, 1000)
-  }
+  };
 
-  const reset = () => {
-    setResetLoading(true)
-    setTimeout(() => {
-      setConfig(getLayout())
-      setResetLoading(false)
-    }, 1000)
-  }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing !== null) {
+      const updatedData = [...savedData];
+      updatedData[isEditing] = editFormData;
+      setSavedData(updatedData);
+      setIsEditing(null);
+    } else {
+      setSavedData([...savedData, formData]);
+    }
+    setFormData({
+      storeName: '',
+      storeManagerFirstName: '',
+      storeManagerLastName: '',
+      address1: '',
+      address2: '',
+      city: '',
+      phoneNumber: '',
+      email: ''
+    });
+    setEditFormData(formData);
+  };
+
+  const handleEdit = (index: number) => {
+    setIsEditing(index);
+    setEditFormData(savedData[index]);
+  };
+
+  const handleDelete = (index: number) => {
+    const updatedData = savedData.filter((_, i) => i !== index);
+    setSavedData(updatedData);
+  };
 
   return (
-    <>
-
-      <div className='card card-custom'>
-        <div className='card-header card-header-stretch overflow-auto'>
-          <ul
-            className='nav nav-stretch nav-line-tabs fw-bold border-transparent flex-nowrap'
-            role='tablist'
-          >
-            <li className='nav-item'>
-              <a
-                className={clsx(`nav-link cursor-pointer`, {active: tab === 'Header'})}
-                onClick={() => setTab('Header')}
-                role='tab'
-              >
-                Header
-              </a>
-            </li>
-
-            <li className='nav-item'>
-              <a
-                className={clsx(`nav-link cursor-pointer`, {active: tab === 'Aside'})}
-                onClick={() => setTab('Aside')}
-                role='tab'
-              >
-                Aside
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a
-                className={clsx(`nav-link cursor-pointer`, {active: tab === 'Content'})}
-                onClick={() => setTab('Content')}
-                role='tab'
-              >
-                Content
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a
-                className={clsx(`nav-link cursor-pointer`, {active: tab === 'Footer'})}
-                onClick={() => setTab('Footer')}
-                role='tab'
-              >
-                Footer
-              </a>
-            </li>
-          </ul>
-        </div>
-        {/* end::Header */}
-
-        {/* begin::Form */}
-        <form className='form'>
-          {/* begin::Body */}
-          <div className='card-body'>
-            <div className='tab-content pt-3'>
-              <div className={clsx('tab-pane', {active: tab === 'Header'})}>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Fixed Header:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <label className='form-check form-check-custom form-check-solid form-switch mb-5'>
-                      <input
-                        className='form-check-input'
-                        type='checkbox'
-                        name='layout-builder[layout][header][fixed][desktop]'
-                        checked={config.header.fixed.desktop}
-                        onChange={() =>
-                          updateData({
-                            header: {
-                              ...config.header,
-                              fixed: {
-                                ...config.header.fixed,
-                                desktop: !config.header.fixed.desktop,
-                              },
-                            },
-                          })
-                        }
-                      />
-                      <span className='form-check-label text-muted'>Desktop:</span>
-                    </label>
-
-                    <label className='form-check form-check-custom form-check-solid form-switch mb-3'>
-                      <input
-                        className='form-check-input'
-                        type='checkbox'
-                        checked={config.header.fixed.tabletAndMobile}
-                        onChange={() =>
-                          updateData({
-                            header: {
-                              ...config.header,
-                              fixed: {
-                                ...config.header.fixed,
-                                tabletAndMobile: !config.header.fixed.tabletAndMobile,
-                              },
-                            },
-                          })
-                        }
-                      />
-                      <span className='form-check-label text-muted'>Tablet & Mobile</span>
-                    </label>
-
-                    <div className='form-text text-muted'>Enable fixed header</div>
-                  </div>
-                </div>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Left Content:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <select
-                      className='form-select form-select-solid'
-                      name='layout-builder[layout][header][width]'
-                      value={config.header.left}
-                      onChange={(e) =>
-                        updateData({
-                          header: {
-                            ...config.header,
-                            left: e.target.value as 'menu' | 'page-title',
-                          },
-                        })
-                      }
-                    >
-                      <option value='menu'>Menu</option>
-                      <option value='fixed'>Page title</option>
-                    </select>
-                    <div className='form-text text-muted'>Select header left content type.</div>
-                  </div>
-                </div>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Width:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <select
-                      className='form-select form-select-solid'
-                      name='layout-builder[layout][header][width]'
-                      value={config.header.width}
-                      onChange={(e) =>
-                        updateData({
-                          header: {
-                            ...config.header,
-                            width: e.target.value as 'fixed' | 'fluid',
-                          },
-                        })
-                      }
-                    >
-                      <option value='fluid'>Fluid</option>
-                      <option value='fixed'>Fixed</option>
-                    </select>
-                    <div className='form-text text-muted'>Select header width type.</div>
-                  </div>
-                </div>
-              </div>
-              <div className={clsx('tab-pane', {active: tab === 'Content'})}>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Width:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <select
-                      className='form-select form-select-solid'
-                      name='layout-builder[layout][content][width]'
-                      value={config.content.width}
-                      onChange={(e) =>
-                        updateData({
-                          content: {
-                            ...config.content,
-                            width: e.target.value as 'fixed' | 'fluid',
-                          },
-                        })
-                      }
-                    >
-                      <option value='fluid'>Fluid</option>
-                      <option value='fixed'>Fixed</option>
-                    </select>
-                    <div className='form-text text-muted'>Select layout width type.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={clsx('tab-pane', {active: tab === 'Aside'})}>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Minimize:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <div className='switch switch-icon'>
-                      <div className='form-check form-check-custom form-check-solid form-switch mb-2'>
-                        <input
-                          className='form-check-input'
-                          type='checkbox'
-                          name='layout-builder[layout][aside][minimize]'
-                          checked={config.aside.minimize}
-                          onChange={() =>
-                            updateData({
-                              aside: {
-                                ...config.aside,
-                                minimize: !config.aside.minimize,
-                              },
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className='form-text text-muted'>Enable aside minimization</div>
-                  </div>
-                </div>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Minimized:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <div className='switch switch-icon'>
-                      <div className='form-check form-check-custom form-check-solid form-switch mb-2'>
-                        <input
-                          className='form-check-input'
-                          type='checkbox'
-                          name='layout-builder[layout][aside][minimized]'
-                          checked={config.aside.minimized}
-                          onChange={() =>
-                            updateData({
-                              aside: {
-                                ...config.aside,
-                                minimized: !config.aside.minimized,
-                              },
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className='form-text text-muted'>Default minimized aside</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={clsx('tab-pane', {active: tab === 'Footer'})}>
-                <div className='row mb-10'>
-                  <label className='col-lg-3 col-form-label text-lg-end'>Width:</label>
-                  <div className='col-lg-9 col-xl-4'>
-                    <select
-                      className='form-select form-select-solid'
-                      name='layout-builder[layout][footer][width]'
-                      value={config.footer.width}
-                      onChange={(e) =>
-                        updateData({
-                          footer: {
-                            ...config.footer,
-                            width: e.target.value as 'fixed' | 'fluid',
-                          },
-                        })
-                      }
-                    >
-                      <option value='fluid'>Fluid</option>
-                      <option value='fixed'>Fixed</option>
-                    </select>
-                    <div className='form-text text-muted'>Select layout width type.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '10px', marginBottom: '20px' }}>
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Store Name</label>
+            <input
+              type="text"
+              name="storeName"
+              value={isEditing !== null ? editFormData.storeName : formData.storeName}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
           </div>
-          {/* end::Body */}
 
-          {/* begin::Footer */}
-          <div className='card-footer py-6'>
-            <div className='row'>
-              <div className='col-lg-3'></div>
-              <div className='col-lg-9'>
-                <button type='button' onClick={updateConfig} className='btn btn-primary me-2'>
-                  {!configLoading && <span className='indicator-label'>Preview</span>}
-                  {configLoading && (
-                    <span className='indicator-progress' style={{display: 'block'}}>
-                      Please wait...{' '}
-                      <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                    </span>
-                  )}
-                </button>
-
-                <button
-                  type='button'
-                  id='kt_layout_builder_reset'
-                  className='btn btn-active-light btn-color-muted'
-                  onClick={reset}
-                >
-                  {!resetLoading && <span className='indicator-label'>Reset</span>}
-                  {resetLoading && (
-                    <span className='indicator-progress' style={{display: 'block'}}>
-                      Please wait...{' '}
-                      <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                    </span>
-                  )}
-                </button>
-              </div>
-            </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Store Manager First Name <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="text"
+              name="storeManagerFirstName"
+              value={isEditing !== null ? editFormData.storeManagerFirstName : formData.storeManagerFirstName}
+              onChange={handleChange}
+              required
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
           </div>
-          {/* end::Footer */}
+
+          <div style={{ marginBottom: '10px' }}>
+            <label>Store Manager Last Name</label>
+            <input
+              type="text"
+              name="storeManagerLastName"
+              value={isEditing !== null ? editFormData.storeManagerLastName : formData.storeManagerLastName}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px' }}>
+            <label>Address 1</label>
+            <input
+              type="text"
+              name="address1"
+              value={isEditing !== null ? editFormData.address1 : formData.address1}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px' }}>
+            <label>Address 2</label>
+            <input
+              type="text"
+              name="address2"
+              value={isEditing !== null ? editFormData.address2 : formData.address2}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px' }}>
+            <label>City</label>
+            <select
+              name="city"
+              value={isEditing !== null ? editFormData.city : formData.city}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            >
+              <option value="">Select City</option>
+              <option value="Salem">Salem</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Coimbatore">Coimbatore</option>
+              {/* Add more cities as needed */}
+            </select>
+          </div>
+
+          <div style={{ marginBottom: '10px' }}>
+            <label>Phone Number <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="text"
+              name="phoneNumber"
+              value={isEditing !== null ? editFormData.phoneNumber : formData.phoneNumber}
+              onChange={handleChange}
+              required
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '10px' }}>
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={isEditing !== null ? editFormData.email : formData.email}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+          <button type="submit" style={{ padding: '10px 20px', borderRadius: '5px', border: 'none', background: '#007bff', color: '#fff' }}>
+            {isEditing !== null ? 'Update' : 'Submit'}
+          </button>
         </form>
-        {/* end::Form */}
       </div>
-    </>
-  )
-}
 
-export {BuilderPage}
+      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '10px' }}>
+        <h3>Saved Data</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Store Name</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Store Manager First Name</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Store Manager Last Name</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Address 1</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Address 2</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>City</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Phone Number</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Email</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {savedData.map((data, index) => (
+              <tr key={index}>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.storeName}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.storeManagerFirstName}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.storeManagerLastName}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.address1}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.address2}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.city}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.phoneNumber}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.email}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px', whiteSpace: 'nowrap' }}>
+                  <button onClick={() => handleEdit(index)} style={{ marginRight: '10px' }}>Edit</button>
+                  <button onClick={() => handleDelete(index)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export { BuilderPage };

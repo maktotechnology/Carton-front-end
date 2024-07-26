@@ -6,7 +6,7 @@ import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
 import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
-import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
+import BuilderPageWrapper from '../pages/Product List/BuilderPageWrapper'
 import BuilderPageWrapper01 from '../pages/Store Details/BuilderPageWrapper'
 import {StoreOrder} from '../modules/apps/store-orders/DashboardWrapper'
 

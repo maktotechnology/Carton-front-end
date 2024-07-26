@@ -24,7 +24,7 @@ const BuilderPage: React.FC = () => {
     <>
       <div className='card card-custom'>
         <div className='card-header'>
-          <h3 className='card-title'>Add New Store Details</h3>
+          <h3 className='card-title'>New Product List</h3>
         </div>
         {/* begin::Form */}
         <form className='form'>
@@ -32,79 +32,93 @@ const BuilderPage: React.FC = () => {
           <div className='card-body'>
             <div className='row mb-10'>
               <div className='col-lg-6'>
-                <label className='col-form-label'>Store Name:</label>
+                <label className='col-form-label'>Category</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
-                  placeholder='Enter store name'
+                  placeholder='Enter Category name'
                 />
               </div>
               <div className='col-lg-6'>
-                <label className='col-form-label'>Store Manager First Name (Mandatory):</label>
+                <label className='col-form-label'>Product name</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
-                  placeholder='Enter first name'
+                  placeholder='Enter Product name'
                   required
                 />
               </div>
             </div>
             <div className='row mb-10'>
               <div className='col-lg-6'>
-                <label className='col-form-label'>Store Manager Last Name:</label>
+                <label className='col-form-label'>Quantity</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
-                  placeholder='Enter last name'
+                  placeholder='Enter Quantity name'
                 />
               </div>
               <div className='col-lg-6'>
-                <label className='col-form-label'>Address 1:</label>
-                <input
-                  type='text'
-                  className='form-control form-control-solid input-solid'
-                  placeholder='Enter address 1'
-                />
-              </div>
-            </div>
-            <div className='row mb-10'>
-              <div className='col-lg-6'>
-                <label className='col-form-label'>Address 2:</label>
-                <input
-                  type='text'
-                  className='form-control form-control-solid input-solid'
-                  placeholder='Enter address 2'
-                />
-              </div>
-              <div className='col-lg-6'>
-                <label className='col-form-label'>City:</label>
+                <label className='col-form-label'>Unit</label>
                 <select className='form-select form-select-solid input-solid'>
-                  <option value=''>Select city</option>
+                  <option value=''>Select Unit</option>
                   {/* Add your city options here */}
-                  <option value='city1'>City 1</option>
-                  <option value='city2'>City 2</option>
+                  <option value='city1'>Test 1</option>
+                  <option value='city2'>Test 2</option>
                 </select>
               </div>
+
             </div>
             <div className='row mb-10'>
               <div className='col-lg-6'>
-                <label className='col-form-label'>Phone Number (Mandatory):</label>
+                <label className='col-form-label'>Price</label>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter Price'
+                />
+              </div>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Product Image</label>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Product Image'
+                />
+              </div>
+
+            </div>
+            <div className='row mb-10'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Sub images</label>
                 <input
                   type='tel'
                   className='form-control form-control-solid input-solid'
-                  placeholder='Enter phone number'
+                  placeholder='Sub images'
                   required
                 />
               </div>
               <div className='col-lg-6'>
-                <label className='col-form-label'>Email:</label>
+                <label className='col-form-label'>Product description</label>
                 <input
                   type='email'
                   className='form-control form-control-solid input-solid'
-                  placeholder='Enter email'
+                  placeholder='Enter Product description'
                 />
               </div>
             </div>
+            <div className='row mb-10'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Store Listing name</label>
+                <select className='form-select form-select-solid input-solid'>
+                  <option value=''>Select Store</option>
+                  {/* Add your city options here */}
+                  <option value='city1'>Test 1</option>
+                  <option value='city2'>Test 2</option>
+                </select>
+              </div>
+              </div>
+            
           </div>
           {/* end::Body */}
 

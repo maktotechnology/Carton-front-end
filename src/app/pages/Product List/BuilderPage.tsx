@@ -81,23 +81,27 @@ const BuilderPage: React.FC = () => {
               <div className='col-lg-6'>
                 <label className='col-form-label'>Product Image</label>
                 <input
-                  type='text'
-                  className='form-control form-control-solid input-solid'
-                  placeholder='Product Image'
-                />
+                type='file'
+                className='form-control form-control-solid input-solid'
+                accept='image/*'
+                placeholder='Product Image'
+                required
+              />
               </div>
 
             </div>
             <div className='row mb-10'>
-              <div className='col-lg-6'>
-                <label className='col-form-label'>Sub images</label>
-                <input
-                  type='tel'
-                  className='form-control form-control-solid input-solid'
-                  placeholder='Sub images'
-                  required
-                />
-              </div>
+            <div className='col-lg-6'>
+              <label className='col-form-label'>Sub images</label>
+              <input
+                type='file'
+                className='form-control form-control-solid input-solid'
+                accept='image/*'
+                placeholder='Sub images'
+                required
+              />
+            </div>
+
               <div className='col-lg-6'>
                 <label className='col-form-label'>Product description</label>
                 <input

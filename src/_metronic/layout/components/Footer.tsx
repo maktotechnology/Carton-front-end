@@ -31,11 +31,7 @@ const Footer: FC = () => {
               Contact
             </a>
           </li>
-          <li className='menu-item'>
-            <a href='#' className='menu-link pe-0'>
-              Purchase
-            </a>
-          </li>
+
         </ul>
         {/* end::Nav */}
       </div>

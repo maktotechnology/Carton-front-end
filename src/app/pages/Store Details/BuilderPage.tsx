@@ -1,205 +1,160 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
+import { KTIcon } from '../../../_metronic/helpers';
+import { getLayout, ILayout, LayoutSetup, useLayout } from '../../../_metronic/layout/core';
 
 const BuilderPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    storeName: '',
-    storeManagerFirstName: '',
-    storeManagerLastName: '',
-    address1: '',
-    address2: '',
-    city: '',
-    phoneNumber: '',
-    email: ''
-  });
-
-  const [savedData, setSavedData] = useState<any[]>([]);
-  const [isEditing, setIsEditing] = useState<number | null>(null);
-  const [editFormData, setEditFormData] = useState(formData);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    if (isEditing !== null) {
-      setEditFormData({ ...editFormData, [name]: value });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+  const { setLayout } = useLayout();
+  const [config, setConfig] = useState<ILayout>(getLayout());
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const updateData = (fieldsToUpdate: Partial<ILayout>) => {
+    const updatedData = { ...config, ...fieldsToUpdate };
+    setConfig(updatedData);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isEditing !== null) {
-      const updatedData = [...savedData];
-      updatedData[isEditing] = editFormData;
-      setSavedData(updatedData);
-      setIsEditing(null);
-    } else {
-      setSavedData([...savedData, formData]);
-    }
-    setFormData({
-      storeName: '',
-      storeManagerFirstName: '',
-      storeManagerLastName: '',
-      address1: '',
-      address2: '',
-      city: '',
-      phoneNumber: '',
-      email: ''
-    });
-    setEditFormData(formData);
+  const handleSubmit = () => {
+    // Simulate form submission
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 2000); // Hide the popup after 2 seconds
   };
 
-  const handleEdit = (index: number) => {
-    setIsEditing(index);
-    setEditFormData(savedData[index]);
-  };
 
-  const handleDelete = (index: number) => {
-    const updatedData = savedData.filter((_, i) => i !== index);
-    setSavedData(updatedData);
-  };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '10px', marginBottom: '20px' }}>
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '10px' }}>
-            <label>Store Name</label>
-            <input
-              type="text"
-              name="storeName"
-              value={isEditing !== null ? editFormData.storeName : formData.storeName}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
+    <>
+      <div className='card card-custom'>
+        <div className='card-header'>
+          <h3 className='card-title'>Store Details</h3>
+        </div>
+        {/* begin::Form */}
+        <form className='form'>
+          {/* begin::Body */}
+          <div className='card-body'>
+            <h3>Store Details</h3>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Store Name:</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter store name'
+                />
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Store Manager First Name (Mandatory):</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter first name'
+                  required
+                />
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Store Manager Last Name:</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter last name'
+                />
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Address 1:</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter address 1'
+                />
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Address 2:</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='text'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter address 2'
+                />
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>City:</label>
+              <div className='col-lg-9 col-xl-4'>
+                <select className='form-select form-select-solid input-solid'>
+                  <option value=''>Select city</option>
+                  {/* Add your city options here */}
+                  <option value='city1'>City 1</option>
+                  <option value='city2'>City 2</option>
+                </select>
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Phone Number (Mandatory):</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='tel'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter phone number'
+                  required
+                />
+              </div>
+            </div>
+            <div className='row mb-10'>
+              <label className='col-lg-3 col-form-label text-lg-end'>Email:</label>
+              <div className='col-lg-9 col-xl-4'>
+                <input
+                  type='email'
+                  className='form-control form-control-solid input-solid'
+                  placeholder='Enter email'
+                />
+              </div>
+            </div>
           </div>
+          {/* end::Body */}
 
-          <div style={{ marginBottom: '10px' }}>
-            <label>Store Manager First Name <span style={{ color: 'red' }}>*</span></label>
-            <input
-              type="text"
-              name="storeManagerFirstName"
-              value={isEditing !== null ? editFormData.storeManagerFirstName : formData.storeManagerFirstName}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
+          {/* begin::Footer */}
+          <div className='card-footer py-6'>
+            <div className='row'>
+              <div className='col-lg-3'></div>
+              <div className='col-lg-9'>
+                <button type='button' onClick={handleSubmit} className='btn btn-primary me-2'>
+                  <span className='indicator-label'>Submit</span>
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div style={{ marginBottom: '10px' }}>
-            <label>Store Manager Last Name</label>
-            <input
-              type="text"
-              name="storeManagerLastName"
-              value={isEditing !== null ? editFormData.storeManagerLastName : formData.storeManagerLastName}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '10px' }}>
-            <label>Address 1</label>
-            <input
-              type="text"
-              name="address1"
-              value={isEditing !== null ? editFormData.address1 : formData.address1}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '10px' }}>
-            <label>Address 2</label>
-            <input
-              type="text"
-              name="address2"
-              value={isEditing !== null ? editFormData.address2 : formData.address2}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '10px' }}>
-            <label>City</label>
-            <select
-              name="city"
-              value={isEditing !== null ? editFormData.city : formData.city}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            >
-              <option value="">Select City</option>
-              <option value="Salem">Salem</option>
-              <option value="Chennai">Chennai</option>
-              <option value="Coimbatore">Coimbatore</option>
-              {/* Add more cities as needed */}
-            </select>
-          </div>
-
-          <div style={{ marginBottom: '10px' }}>
-            <label>Phone Number <span style={{ color: 'red' }}>*</span></label>
-            <input
-              type="text"
-              name="phoneNumber"
-              value={isEditing !== null ? editFormData.phoneNumber : formData.phoneNumber}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '10px' }}>
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={isEditing !== null ? editFormData.email : formData.email}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-          </div>
-
-          <button type="submit" style={{ padding: '10px 20px', borderRadius: '5px', border: 'none', background: '#007bff', color: '#fff' }}>
-            {isEditing !== null ? 'Update' : 'Submit'}
-          </button>
+          {/* end::Footer */}
         </form>
-      </div>
+        {/* end::Form */}
 
-      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '10px' }}>
-        <h3>Saved Data</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Store Name</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Store Manager First Name</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Store Manager Last Name</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Address 1</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Address 2</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>City</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Phone Number</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Email</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {savedData.map((data, index) => (
-              <tr key={index}>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.storeName}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.storeManagerFirstName}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.storeManagerLastName}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.address1}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.address2}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.city}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.phoneNumber}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{data.email}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px', whiteSpace: 'nowrap' }}>
-                  <button onClick={() => handleEdit(index)} style={{ marginRight: '10px' }}>Edit</button>
-                  <button onClick={() => handleDelete(index)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                {/* Success Popup */}
+                {showPopup && (
+          <div className='modal fade show' style={{ display: 'block' }} id='successModal' tabIndex={-1}>
+            <div className='modal-dialog'>
+              <div className='modal-content'>
+                <div className='modal-header'>
+                  <h5 className='modal-title'>Submission Successful</h5>
+                  <button type='button' className='btn-close' onClick={() => setShowPopup(false)}></button>
+                </div>
+                <div className='modal-body text-center'>
+                  <div className='mb-3'>
+                    <i className='fa fa-check-circle fa-3x text-success'></i>
+                  </div>
+                  <p>Your data has been submitted successfully!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

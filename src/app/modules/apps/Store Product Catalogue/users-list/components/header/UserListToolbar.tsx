@@ -24,7 +24,7 @@ const UsersListToolbar = () => {
       {/* begin::Add user */}
       <button type='button' className='btn btn-primary' onClick={handleRedirect}>
               <KTIcon iconName='plus' className='fs-2' />
-              Product List
+              Store Add
             </button>
       {/* end::Add user */}
     </div>

@@ -20,8 +20,6 @@ const BuilderPage: React.FC = () => {
     }, 2000); // Hide the popup after 2 seconds
   };
 
-
-
   return (
     <>
       <div className='card card-custom'>
@@ -34,18 +32,16 @@ const BuilderPage: React.FC = () => {
           <div className='card-body'>
             <h3>Store Details</h3>
             <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Store Name:</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Store Name:</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
                   placeholder='Enter store name'
                 />
               </div>
-            </div>
-            <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Store Manager First Name (Mandatory):</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Store Manager First Name (Mandatory):</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
@@ -55,18 +51,16 @@ const BuilderPage: React.FC = () => {
               </div>
             </div>
             <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Store Manager Last Name:</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Store Manager Last Name:</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
                   placeholder='Enter last name'
                 />
               </div>
-            </div>
-            <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Address 1:</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Address 1:</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
@@ -75,18 +69,16 @@ const BuilderPage: React.FC = () => {
               </div>
             </div>
             <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Address 2:</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Address 2:</label>
                 <input
                   type='text'
                   className='form-control form-control-solid input-solid'
                   placeholder='Enter address 2'
                 />
               </div>
-            </div>
-            <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>City:</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>City:</label>
                 <select className='form-select form-select-solid input-solid'>
                   <option value=''>Select city</option>
                   {/* Add your city options here */}
@@ -96,8 +88,8 @@ const BuilderPage: React.FC = () => {
               </div>
             </div>
             <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Phone Number (Mandatory):</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Phone Number (Mandatory):</label>
                 <input
                   type='tel'
                   className='form-control form-control-solid input-solid'
@@ -105,10 +97,8 @@ const BuilderPage: React.FC = () => {
                   required
                 />
               </div>
-            </div>
-            <div className='row mb-10'>
-              <label className='col-lg-3 col-form-label text-lg-end'>Email:</label>
-              <div className='col-lg-9 col-xl-4'>
+              <div className='col-lg-6'>
+                <label className='col-form-label'>Email:</label>
                 <input
                   type='email'
                   className='form-control form-control-solid input-solid'
@@ -121,21 +111,21 @@ const BuilderPage: React.FC = () => {
 
           {/* begin::Footer */}
           <div className='card-footer py-6'>
-            <div className='row'>
-              <div className='col-lg-3'></div>
-              <div className='col-lg-9'>
-                <button type='button' onClick={handleSubmit} className='btn btn-primary me-2'>
-                  <span className='indicator-label'>Submit</span>
-                </button>
-              </div>
-            </div>
-          </div>
+  <div className='row justify-content-center'>
+    <div className='col-lg-6 text-center'>
+      <button type='button' onClick={handleSubmit} className='btn btn-primary'>
+        <span className='indicator-label'>Submit</span>
+      </button>
+    </div>
+  </div>
+</div>
+
           {/* end::Footer */}
         </form>
         {/* end::Form */}
 
-                {/* Success Popup */}
-                {showPopup && (
+        {/* Success Popup */}
+        {showPopup && (
           <div className='modal fade show' style={{ display: 'block' }} id='successModal' tabIndex={-1}>
             <div className='modal-dialog'>
               <div className='modal-content'>

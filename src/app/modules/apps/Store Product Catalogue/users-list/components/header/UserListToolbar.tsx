@@ -25,7 +25,7 @@ const UsersListToolbar = () => {
       <button type='button' className='btn btn-primary' onClick={handleRedirect}>
               <KTIcon iconName='plus' className='fs-2' />
               Store Add
-            </button>
+      </button>
       {/* end::Add user */}
     </div>
   )

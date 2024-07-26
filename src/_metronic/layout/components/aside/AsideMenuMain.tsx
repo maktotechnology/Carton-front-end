@@ -14,19 +14,30 @@ export function AsideMenuMain() {
         icon='element-11'
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
       />
-      <AsideMenuItem to='/apps/user-management/users' icon='shield-tick' title='User management' />
-      <AsideMenuItem to='/apps/customer-management/customer' icon='shield-tick' title='Customer management' />
-      <AsideMenuItemWithSub to='/crafted/pages' title='Product Management' icon='gift'>
-          <AsideMenuItem to='/apps/product-dashboard' title='Product Dashboard' hasBullet={true} />
-          <AsideMenuItem to='/Category' title='Product List' hasBullet={true} />
-          <AsideMenuItem to='/apps/categories' title='Categories' hasBullet={true} />
-        </AsideMenuItemWithSub>
+            <AsideMenuItem to='/apps/customer-management/customer' icon='shield-tick' title='Customer management' />
+            <AsideMenuItem to='/apps/user-management/users' icon='shield-tick' title='User management' />
 
-      <AsideMenuItemWithSub to='' title='Store Management' icon='element-plus'>
-        <AsideMenuItem to='Store-Details' title='Store Details' hasBullet={true} />
-        <AsideMenuItem to='apps/Store-Product/Catalogue' title='Store Product Catalogue' hasBullet={true} />
-        <AsideMenuItem to='StoreOrder' title='Store Orders' hasBullet={true} />
-      </AsideMenuItemWithSub>
+
+      <div className='menu-item'>
+        <div className='menu-content pt-8 pb-2'>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Product Management</span>
+        </div>
+      </div>
+      <AsideMenuItem to='/apps/product-dashboard' title='Product List' hasBullet={true} />
+      <AsideMenuItem to='/apps/categories' title='Categories' hasBullet={true} />
+      <div className='menu-item'>
+        <div className='menu-content pt-8 pb-2'>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Store Management</span>
+        </div>
+      </div>
+   
+      <AsideMenuItem to='apps/Store-Product/Catalogue' title='Store Product Catalogue' hasBullet={true} />
+      <AsideMenuItem to='StoreOrder' title='Store Orders' hasBullet={true} />
+
+
+
+
+
     </>
   )
 }

@@ -1,12 +1,16 @@
 import {KTIcon} from '../../../../../../../_metronic/helpers'
 import {useListView} from '../../core/ListViewProvider'
 import {UsersListFilter} from './UsersListFilter'
-
+import { useNavigate } from 'react-router-dom';
 const UsersListToolbar = () => {
   const {setItemIdForUpdate} = useListView()
-  const openAddUserModal = () => {
-    setItemIdForUpdate(null)
-  }
+
+  const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    navigate('/Category');
+  };
+
 
   return (
     <div className='d-flex justify-content-end' data-kt-user-table-toolbar='base'>
@@ -19,9 +23,9 @@ const UsersListToolbar = () => {
 
 
       {/* begin::Add user */}
-      <button type='button' className='btn btn-primary' onClick={openAddUserModal}>
-        <KTIcon iconName='plus' className='fs-2' />
-        Product List
+      <button type='button' className='btn btn-primary' onClick={handleRedirect}>
+              <KTIcon iconName='plus' className='fs-2' />
+              Add Product List
       </button>
       {/* end::Add user */}
     </div>

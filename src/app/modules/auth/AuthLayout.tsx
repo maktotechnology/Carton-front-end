@@ -38,9 +38,6 @@ const AuthLayout = () => {
               Terms
             </a>
 
-            <a href='#' className='px-5' target='_blank'>
-              Plans
-            </a>
 
             <a href='#' className='px-5' target='_blank'>
               Contact Us
@@ -57,6 +54,13 @@ const AuthLayout = () => {
         className='d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2'
         style={{backgroundImage: `url(${toAbsoluteUrl('media/misc/auth-bg.png')})`}}
       >
+                {/* Optional Image */}
+      <img
+          src={toAbsoluteUrl('media/misc/ghost-login.jpg')} // replace with your image path
+          alt='Your Alt Text'
+          style={{ maxWidth: '100%', height: 'auto', margin: 'auto', display: 'block' }} // styles to center the image
+        />
+
         {/* begin::Content */}
 
         {/* end::Content */}

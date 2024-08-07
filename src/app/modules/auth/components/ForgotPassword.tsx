@@ -1,13 +1,13 @@
-import {useState} from 'react'
-import * as Yup from 'yup'
-import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-import {useFormik} from 'formik'
-import {requestPassword} from '../core/_requests'
+import { useState } from 'react';
+import * as Yup from 'yup';
+import clsx from 'clsx';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth'; // Import from Firebase
 
 const initialValues = {
-  email: 'admin@demo.com',
-}
+  email: '',
+};
 
 const forgotPasswordSchema = Yup.object().shape({
   email: Yup.string()
@@ -15,32 +15,32 @@ const forgotPasswordSchema = Yup.object().shape({
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Email is required'),
-})
+});
 
 export function ForgotPassword() {
-  const [loading, setLoading] = useState(false)
-  const [hasErrors, setHasErrors] = useState<boolean | undefined>(undefined)
+  const [loading, setLoading] = useState(false);
+  const [hasErrors, setHasErrors] = useState<boolean | undefined>(undefined);
+  const auth = getAuth(); // Get the Firebase auth object
+
   const formik = useFormik({
     initialValues,
     validationSchema: forgotPasswordSchema,
-    onSubmit: (values, {setStatus, setSubmitting}) => {
-      setLoading(true)
-      setHasErrors(undefined)
-      setTimeout(() => {
-        requestPassword(values.email)
-          .then(() => {
-            setHasErrors(false)
-            setLoading(false)
-          })
-          .catch(() => {
-            setHasErrors(true)
-            setLoading(false)
-            setSubmitting(false)
-            setStatus('The login detail is incorrect')
-          })
-      }, 1000)
+    onSubmit: (values, { setStatus, setSubmitting }) => {
+      setLoading(true);
+      setHasErrors(undefined);
+      sendPasswordResetEmail(auth, values.email)
+        .then(() => {
+          setHasErrors(false);
+          setLoading(false);
+        })
+        .catch(() => {
+          setHasErrors(true);
+          setLoading(false);
+          setSubmitting(false);
+          setStatus('The email address is incorrect');
+        });
     },
-  })
+  });
 
   return (
     <form
@@ -72,7 +72,7 @@ export function ForgotPassword() {
 
       {hasErrors === false && (
         <div className='mb-10 bg-light-info p-8 rounded'>
-          <div className='text-info'>Sent password reset. Please check your email</div>
+          <div className='text-info'>Password reset email sent. Please check your email.</div>
         </div>
       )}
       {/* end::Title */}
@@ -82,12 +82,12 @@ export function ForgotPassword() {
         <label className='form-label fw-bolder text-gray-900 fs-6'>Email</label>
         <input
           type='email'
-          placeholder=''
+          placeholder='Enter your email'
           autoComplete='off'
           {...formik.getFieldProps('email')}
           className={clsx(
             'form-control bg-transparent',
-            {'is-invalid': formik.touched.email && formik.errors.email},
+            { 'is-invalid': formik.touched.email && formik.errors.email },
             {
               'is-valid': formik.touched.email && !formik.errors.email,
             }
@@ -127,5 +127,5 @@ export function ForgotPassword() {
       </div>
       {/* end::Form group */}
     </form>
-  )
+  );
 }

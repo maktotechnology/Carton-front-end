@@ -1,59 +1,63 @@
-
-import {useState} from 'react'
-import * as Yup from 'yup'
-import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-import {useFormik} from 'formik'
-import {getUserByToken, login} from '../core/_requests'
-import {toAbsoluteUrl} from '../../../../_metronic/helpers'
-import {useAuth} from '../core/Auth'
+import { useState } from 'react';
+import * as Yup from 'yup';
+import clsx from 'clsx';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../firebase';
+import { useAuth } from '../core/Auth';
+import { transformUserToAuthModel } from '../core/_utils';
+import { UserModel } from '../core/_models';
 
 const loginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Wrong email format')
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Email is required'),
-  password: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Password is required'),
-})
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
 
 const initialValues = {
-  email: 'admin@demo.com',
-  password: 'demo',
-}
-
-/*
-  Formik+YUP+Typescript:
-  https://jaredpalmer.com/formik/docs/tutorial#getfieldprops
-  https://medium.com/@maurice.de.beijer/yup-validation-and-typescript-and-formik-6c342578a20e
-*/
+  email: '',
+  password: '',
+};
 
 export function Login() {
-  const [loading, setLoading] = useState(false)
-  const {saveAuth, setCurrentUser} = useAuth()
+  const [loading, setLoading] = useState(false);
+  const { saveAuth, setCurrentUser } = useAuth();
 
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
-    onSubmit: async (values, {setStatus, setSubmitting}) => {
-      setLoading(true)
+    onSubmit: async (values, { setStatus, setSubmitting }) => {
+      setLoading(true);
       try {
-        const {data: auth} = await login(values.email, values.password)
-        saveAuth(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
+        const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+        const user = userCredential.user;
+        
+        // Transform Firebase User to AuthModel
+        const authModel = await transformUserToAuthModel(user);
+        saveAuth(authModel);
+
+        // Create a UserModel from the user data
+        const userModel: UserModel = {
+          id: 0, // Replace with actual ID if available
+          username: user.email || '',
+          password: undefined,
+          email: user.email || '',
+          first_name: '', // Replace with actual first name if available
+          last_name: '', // Replace with actual last name if available
+          auth: authModel,
+        };
+
+        setCurrentUser(userModel);
+        setLoading(false);
       } catch (error) {
-        console.error(error)
-        saveAuth(undefined)
-        setStatus('The login details are incorrect')
-        setSubmitting(false)
-        setLoading(false)
+        console.error(error);
+        saveAuth(undefined);
+        setStatus('The login details are incorrect');
+        setSubmitting(false);
+        setLoading(false);
       }
     },
-  })
+  });
 
   return (
     <form
@@ -66,9 +70,7 @@ export function Login() {
       <div className='text-center mb-11'>
         <h1 className='text-gray-900 fw-bolder mb-3'>Sign In</h1>
       </div>
-      {/* begin::Heading */}
-
-
+      {/* end::Heading */}
 
       {formik.status ? (
         <div className='mb-lg-15 alert alert-danger'>
@@ -77,8 +79,7 @@ export function Login() {
       ) : (
         <div className='mb-10 bg-light-info p-8 rounded'>
           <div className='text-info'>
-            Use account <strong>admin@demo.com</strong> and password <strong>demo</strong> to
-            continue.
+            Use account <strong>administrator@ghostdelivery.ae</strong> and password <strong>Ark.ia#534</strong> to continue.
           </div>
         </div>
       )}
@@ -87,14 +88,12 @@ export function Login() {
       <div className='fv-row mb-8'>
         <label className='form-label fs-6 fw-bolder text-gray-900'>Email</label>
         <input
-          placeholder='Email'
+          placeholder='@ghostdelivery.ae'
           {...formik.getFieldProps('email')}
           className={clsx(
             'form-control bg-transparent',
-            {'is-invalid': formik.touched.email && formik.errors.email},
-            {
-              'is-valid': formik.touched.email && !formik.errors.email,
-            }
+            { 'is-invalid': formik.touched.email && formik.errors.email },
+            { 'is-valid': formik.touched.email && !formik.errors.email }
           )}
           type='email'
           name='email'
@@ -117,12 +116,8 @@ export function Login() {
           {...formik.getFieldProps('password')}
           className={clsx(
             'form-control bg-transparent',
-            {
-              'is-invalid': formik.touched.password && formik.errors.password,
-            },
-            {
-              'is-valid': formik.touched.password && !formik.errors.password,
-            }
+            { 'is-invalid': formik.touched.password && formik.errors.password },
+            { 'is-valid': formik.touched.password && !formik.errors.password }
           )}
         />
         {formik.touched.password && formik.errors.password && (
@@ -157,7 +152,7 @@ export function Login() {
         >
           {!loading && <span className='indicator-label'>Continue</span>}
           {loading && (
-            <span className='indicator-progress' style={{display: 'block'}}>
+            <span className='indicator-progress' style={{ display: 'block' }}>
               Please wait...
               <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
             </span>
@@ -165,8 +160,6 @@ export function Login() {
         </button>
       </div>
       {/* end::Action */}
-
-
     </form>
-  )
+  );
 }

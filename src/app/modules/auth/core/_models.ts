@@ -1,6 +1,10 @@
+// _models.ts
 export interface AuthModel {
   api_token: string
   refreshToken?: string
+  // Add properties from Firebase user object as needed
+  uid: string
+  email: string
 }
 
 export interface UserAddressModel {

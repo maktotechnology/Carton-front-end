@@ -9,6 +9,8 @@ import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/Product List/BuilderPageWrapper'
 import BuilderPageWrapper01 from '../pages/Store Details/BuilderPageWrapper'
 import BuilderPageWrapper02 from '../pages/categories form/BuilderPageWrapper'
+import BuilderPageWrapper03 from '../pages/User Details/BuilderPageWrapper'
+
 
 import {StoreOrder} from '../modules/apps/store-orders/DashboardWrapper'
 import {Orders} from '../modules/apps/Orders/DashboardWrapper'
@@ -22,8 +24,6 @@ import {Reports} from '../modules/apps/Reports/DashboardWrapper'
 import {Feedbacks} from '../modules/apps/Feedbacks-Review/DashboardWrapper'
 import {Banner} from '../modules/apps/Banner-Management/DashboardWrapper'
 
-
-
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
@@ -35,12 +35,16 @@ const PrivateRoutes = () => {
   const ProductDashboard = lazy(()=> import('../modules/apps/product-dashboard/UsersPage'))
   const Categories = lazy(()=> import('../modules/apps/categories/UsersPage'))
   const Catalogue = lazy(()=> import('../modules/apps/Store Product Catalogue/UsersPage'))
+  const UserDetailsPage = lazy(()=> import('../modules/apps/customer-management/Userdetails'))
+
 
 
 
 
   return (
     <Routes>
+      <Route path="/user/:userId" element=<UserDetailsPage/> />
+
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion */}
         <Route path='auth/*' element={<Navigate to='/dashboard' />} />
@@ -57,6 +61,14 @@ const PrivateRoutes = () => {
         <Route path='Reports' element={<Reports />} />
         <Route path='Feedbacks-Review' element={<Feedbacks />} />
         <Route path='Banner-Management' element={<Banner />} />
+        <Route
+          path='Users/:userID'
+          element={
+            <SuspensedView>
+              <BuilderPageWrapper03 />
+            </SuspensedView>
+          }
+        />
 
         <Route
           path='Category'

@@ -43,7 +43,6 @@ const PrivateRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/user/:userId" element=<UserDetailsPage/> />
 
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion */}

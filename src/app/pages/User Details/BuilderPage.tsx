@@ -1,22 +1,28 @@
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase'; // Adjust the path to your firebase config
-import { KTIcon } from '../../../_metronic/helpers';
+import { db } from '../../firebase';
 import { getLayout, ILayout, LayoutSetup, useLayout } from '../../../_metronic/layout/core';
+import { Tab, Tabs } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 const BuilderPage: React.FC = () => {
   const { setLayout } = useLayout();
-  const [config, setConfig] = useState<ILayout>(getLayout());
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>('userDetails');
   const [userData, setUserData] = useState<any>(null);
-  const uid = "X1urUW7ZUZgJ1Uo4cuG6rghzCCF2"; // Default UID
+  const [orderData, setOrderData] = useState<any>(null); // State for order data
+  const { userID } = useParams<{ userID: string }>();
 
   useEffect(() => {
     const fetchUserDetails = async () => {
+      if (!userID) {
+        console.error('UID is undefined.');
+        return;
+      }
+  
       try {
-        const userDoc = await getDoc(doc(db, 'Number', uid));
+        const userDoc = await getDoc(doc(db, 'Number', userID));
         if (userDoc.exists()) {
           setUserData(userDoc.data());
         } else {
@@ -27,30 +33,86 @@ const BuilderPage: React.FC = () => {
       }
     };
 
-    fetchUserDetails();
-  }, []);
+    const fetchOrderDetails = async () => {
+      if (!userID) {
+        console.error('UID is undefined.');
+        return;
+      }
+
+      try {
+        const orderDoc = await getDoc(doc(db, 'orders', userID));
+        if (orderDoc.exists()) {
+          setOrderData(orderDoc.data());
+        } else {
+          console.error('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching order details:', error);
+      }
+    };
+
+    if (activeTab === 'userDetails') {
+      fetchUserDetails();
+    } else if (activeTab === 'orders') {
+      fetchOrderDetails();
+    }
+  }, [userID, activeTab]);
 
   const handleSubmit = async () => {
-    setShowPopup(true);
-    // Ask for confirmation before updating
-    const confirmUpdate = window.confirm("Are you sure you want to update this user's details?");
-    if (confirmUpdate && userData) {
-      try {
-        await updateDoc(doc(db, 'Number', uid), userData);
-        alert('User details updated successfully!');
-      } catch (error) {
-        console.error('Error updating user details:', error);
+    if (activeTab === 'userDetails') {
+      setShowPopup(true);
+      const confirmUpdate = window.confirm("Are you sure you want to update this user's details?");
+      if (confirmUpdate && userData) {
+        try {
+          if (userID) {
+            const userDocRef = doc(db, 'Number', userID);
+            await updateDoc(userDocRef, userData);
+            alert('User details updated successfully!');
+          } else {
+            console.error('UserID is undefined or invalid.');
+          }
+        } catch (error) {
+          console.error('Error updating user details:', error);
+        }
       }
+      setShowPopup(false);
+    } else if (activeTab === 'orders') {
+      setShowPopup(true);
+      const confirmUpdate = window.confirm("Are you sure you want to update this order's details?");
+      if (confirmUpdate && orderData) {
+        try {
+          if (userID) {
+            const orderDocRef = doc(db, 'orders', userID);
+            await updateDoc(orderDocRef, orderData);
+            alert('Order details updated successfully!');
+          } else {
+            console.error('UserID is undefined or invalid.');
+          }
+        } catch (error) {
+          console.error('Error updating order details:', error);
+        }
+      }
+      setShowPopup(false);
     }
-    setShowPopup(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
+    if (activeTab === 'userDetails') {
+      setUserData({ ...userData, [name]: value });
+    } else if (activeTab === 'orders') {
+      setOrderData({ ...orderData, [name]: value });
+    }
   };
 
-  if (!userData) {
+  const handleTabSelect = (tabKey: string | null) => {
+    if (tabKey) {
+      setActiveTab(tabKey);
+      setEditMode(false);
+    }
+  };
+
+  if (!userData && !orderData) {
     return <div>Loading...</div>;
   }
 
@@ -58,75 +120,60 @@ const BuilderPage: React.FC = () => {
     <>
       <div className='card card-custom'>
         <div className='card-header'>
-          <h3 className='card-title'>User Details</h3>
+          <h3 className='card-title'>
+            {activeTab === 'userDetails' ? 'User Details' : 'Orders'}
+          </h3>
           <button
-              type='button'
-              className='btn btn-primary'
-              onClick={() => setEditMode(!editMode)}
-              style={{
-                width: '100px', // Set the desired width
-                height: '50px', // Set the desired height
-                fontSize: '16px', // Optional: Adjust the font size for better readability
-                marginTop: '10px'     // Add margin to the top to move the button down
-              }}
+            type='button'
+            className='btn btn-primary'
+            onClick={() => setEditMode(!editMode)}
+            style={{
+              width: '100px',
+              height: '50px',
+              fontSize: '16px',
+              marginTop: '10px'
+            }}
           >
             {editMode ? 'Cancel Edit' : 'Edit'}
           </button>
-
         </div>
-        {/* begin::Form */}
-        <form className='form'>
-          {/* begin::Body */}
-          <div className='card-body'>
 
-            {/* Photo Display */}
-            <div className='fv-row mb-7'>
-              {/* begin::Label */}
-              <label className='d-block fw-bold fs-6 mb-5'>Photo</label>
-              {/* end::Label */}
+        <Tabs
+          activeKey={activeTab}
+          onSelect={handleTabSelect}
+          className='mb-3'
+        >
+          <Tab eventKey='userDetails' title='User Details'>
+            <form className='form'>
+              <div className='card-body'>
+                {/* User Information Form Fields */}
+                <div className='row mb-10'>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>First Name:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='firstname'
+                      value={userData.firstname}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Last Name:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='lastname'
+                      value={userData.lastname}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                </div>
 
-              {/* begin::Image input */}
-              <div
-                className='image-input image-input-outline'
-                data-kt-image-input='true'
-                style={{ backgroundImage: `url('${"blankImg"}')` }}
-              >
-                {/* begin::Preview existing avatar */}
-                <div
-                  className='image-input-wrapper w-125px h-125px'
-                  style={{ backgroundImage: `url('${userData.photo_url || "userAvatarImg"}')` }}
-                ></div>
-              </div>
-              {/* end::Image input */}
-            </div>
-            {/* End Photo Display */}
 
-            {/* User Information Form Fields */}
-            <div className='row mb-10'>
-              <div className='col-lg-6'>
-                <label className='col-form-label'>First Name:</label>
-                <input
-                  type='text'
-                  className='form-control form-control-solid input-solid'
-                  name='firstname'
-                  value={userData.firstname}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </div>
-              <div className='col-lg-6'>
-                <label className='col-form-label'>Last Name:</label>
-                <input
-                  type='text'
-                  className='form-control form-control-solid input-solid'
-                  name='lastname'
-                  value={userData.lastname}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </div>
-            </div>
-            <div className='row mb-10'>
+                <div className='row mb-10'>
               <div className='col-lg-6'>
                 <label className='col-form-label'>Phone Number:</label>
                 <input
@@ -198,47 +245,119 @@ const BuilderPage: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
-          {/* end::Body */}
-
-          {/* begin::Footer */}
-          <div className='card-footer py-6'>
-            <div className='row justify-content-center'>
-              <div className='col-lg-6 text-center'>
-                <button
-                  type='button'
-                  onClick={handleSubmit}
-                  className='btn btn-primary'
-                  disabled={!editMode}
-                >
-                  <span className='indicator-label'>Submit</span>
-                </button>
+          
+                {/* Add more fields similarly */}
               </div>
-            </div>
-          </div>
-          {/* end::Footer */}
-        </form>
-        {/* end::Form */}
-
-        {/* Success Popup */}
-        {showPopup && (
-          <div className='modal fade show' style={{ display: 'block' }} id='successModal' tabIndex={-1}>
-            <div className='modal-dialog'>
-              <div className='modal-content'>
-                <div className='modal-header'>
-                  <h5 className='modal-title'>Updating User Details</h5>
-                  <button type='button' className='btn-close' onClick={() => setShowPopup(false)}></button>
-                </div>
-                <div className='modal-body text-center'>
-                  <div className='mb-3'>
-                    <i className='fa fa-check-circle fa-3x text-success'></i>
+              <div className='card-footer py-6'>
+                <div className='row justify-content-center'>
+                  <div className='col-lg-6 text-center'>
+                    <button
+                      type='button'
+                      onClick={handleSubmit}
+                      className='btn btn-primary'
+                      disabled={!editMode}
+                    >
+                      <span className='indicator-label'>Submit</span>
+                    </button>
                   </div>
-                  <p>User details are being updated...</p>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            </form>
+          </Tab>
+          <Tab eventKey='orders' title='Orders'>
+            <form className='form'>
+              <div className='card-body'>
+                {/* Orders Information Form Fields */}
+                <div className='row mb-10'>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Order ID:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='order_id'
+                      value={orderData?.order_id || ''}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Amount:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='amount'
+                      value={orderData?.amount || ''}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                </div>
+                <div className='row mb-10'>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Items:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='items'
+                      value={orderData?.items || ''}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Payment Date:</label>
+                    <input
+                      type='date'
+                      className='form-control form-control-solid input-solid'
+                      name='payment_date'
+                      value={orderData?.payment_date || ''}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                </div>
+                <div className='row mb-10'>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Payment Type:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='payment_type'
+                      value={orderData?.payment_type || ''}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Phone Number:</label>
+                    <input
+                      type='text'
+                      className='form-control form-control-solid input-solid'
+                      name='phone_number'
+                      value={orderData?.phone_number || ''}
+                      onChange={handleChange}
+                      disabled={!editMode}
+                    />
+                  </div>
+                </div>
+                <div className='card-footer py-6'>
+                  <div className='row justify-content-center'>
+                    <div className='col-lg-6 text-center'>
+                      <button
+                        type='button'
+                        onClick={handleSubmit}
+                        className='btn btn-primary'
+                        disabled={!editMode}
+                      >
+                        <span className='indicator-label'>Submit</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </Tab>
+        </Tabs>
       </div>
     </>
   );

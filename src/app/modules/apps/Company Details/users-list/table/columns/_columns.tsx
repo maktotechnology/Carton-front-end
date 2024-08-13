@@ -15,8 +15,8 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Cell: ({...props}) => <UserSelectionCell id={props.data[props.row.index].id} />,
   },
   {
-    Header: (props) => <UserCustomHeader tableProps={props} title='Name' className='min-w-125px' />,
-    id: 'name',
+    Header: (props) => <UserCustomHeader tableProps={props} title='Company name' className='min-w-125px' />,
+    id: 'company_name',
     Cell: ({...props}) => <UserInfoCell user={props.data[props.row.index]} />,
   },
   {
@@ -24,30 +24,15 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     accessor: 'phone_number',
   },
   {
-    Header: (props) => <UserCustomHeader tableProps={props} title='Last login' className='min-w-125px' />,
+    Header: (props) => <UserCustomHeader tableProps={props} title='Company Address' className='min-w-125px' />,
   
-    accessor: 'last_login',
-  },
-  {
-    Header: (props) => <UserCustomHeader tableProps={props} title='Active/Inactive' className='min-w-125px' />,
-  
-    accessor: 'active_inactive',
+    accessor: 'address1',
   },
 
 
-  {
-    Header: (props) => (
-      <UserCustomHeader tableProps={props} title='Joined day' className='min-w-125px' />
-    ),
-    accessor: 'joined_day',
-  },
-  {
-    Header: (props) => (
-      <UserCustomHeader tableProps={props} title='Actions' className='text-end min-w-100px' />
-    ),
-    id: 'actions',
-    Cell: ({...props}) => <UserActionsCell id={props.data[props.row.index].id} />,
-  },
+
+
+
 ]
 
 export {usersColumns}

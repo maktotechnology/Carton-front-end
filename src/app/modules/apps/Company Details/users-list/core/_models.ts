@@ -30,4 +30,5 @@ export const initialUser: User = {
   phone_number: '55555',
   firstname: '',
   email: '',
+  status: ''
 }

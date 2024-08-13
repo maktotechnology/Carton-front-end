@@ -7,6 +7,9 @@ export type User = {
   email?: string
   position?: string
   role?: string
+  company_name?: string
+  status: string;
+  address1?:string
   phone_number?: string   // This represents the phone number
   last_login?: string
   two_steps?: boolean  // This can represent the Active/Inactive status
@@ -27,4 +30,5 @@ export const initialUser: User = {
   phone_number: '55555',
   firstname: '',
   email: '',
+  status: ''
 }

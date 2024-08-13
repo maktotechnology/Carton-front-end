@@ -66,22 +66,22 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, Column, ColumnInstance, Row } from 'react-table';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../../../firebase'; // Adjust the path to your firebase.tsx
-import {KTCardBody} from '../../../../../../_metronic/helpers'
-import {usersColumns} from './columns/_columns'
-import {CustomHeaderColumn} from './columns/CustomHeaderColumn'
-import {CustomRow} from './columns/CustomRow'
-import {UsersListPagination} from '../components/pagination/UsersListPagination'
-import {UsersListLoading} from '../components/loading/UsersListLoading'
+import { KTCardBody } from '../../../../../../_metronic/helpers'
+import { usersColumns } from './columns/_columns'
+import { CustomHeaderColumn } from './columns/CustomHeaderColumn'
+import { CustomRow } from './columns/CustomRow'
+import { UsersListPagination } from '../components/pagination/UsersListPagination'
+import { UsersListLoading } from '../components/loading/UsersListLoading'
 
 type User = {
   id: string;
-  firstname: string;
+  company_name: string;
   phone_number: string;
   last_login?: string;
   active_inactive?: string;
-  created_time: string;
+  address1: string;
+  status: string;
 };
-
 
 const UsersTable: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -89,15 +89,18 @@ const UsersTable: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, 'user'));
-      const usersData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        firstname: doc.data().firstname,
-        phone_number: doc.data().phone_number,
-        last_login: doc.data().Last_Login,
-        active_inactive: doc.data().active_inactive,
-        created_time: doc.data().created_time,
-      }));
+      const querySnapshot = await getDocs(collection(db, 'company'));
+      const usersData = querySnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          company_name: doc.data().company_name,
+          phone_number: doc.data().phone_number,
+          address1: doc.data().address1,
+          active_inactive: doc.data().active_inactive,
+          status: doc.data().status, // Assuming 'status' field exists
+        }))
+        .filter((user) => user.status === 'pending'); // Filter by status
+
       setUsers(usersData);
     };
 

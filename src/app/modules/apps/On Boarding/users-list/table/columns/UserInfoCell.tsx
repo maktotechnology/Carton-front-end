@@ -17,18 +17,10 @@ const UserInfoCell: FC<Props> = ({ user }) => {
   return (
     <div className='d-flex align-items-center'>
       {/* Avatar */}
-      <div className='symbol symbol-circle symbol-50px overflow-hidden me-3'>
+      <div className='d-flex flex-column'>
         <Link to={`/Users/${user.id}`}>
           {/* Display initials if avatar is not available */}
-          {user.avatar ? (
-            <div className='symbol-label'>
-              <img
-                src={toAbsoluteUrl(`media/${user.avatar}`)}
-                alt={user.firstname} // Updated from user.name to user.firstname
-                className='w-100'
-              />
-            </div>
-          ) : (
+
             <div
               className={clsx(
                 'symbol-label fs-3',
@@ -38,12 +30,11 @@ const UserInfoCell: FC<Props> = ({ user }) => {
             >
               {user.initials?.label}
             </div>
-          )}
         </Link>
       </div>
       <div className='d-flex flex-column'>
         <Link to={`/Users/${user.id}`} className='text-gray-800 text-hover-primary mb-1'>
-          {user.firstname} {/* Updated from user.name to user.firstname */}
+          {user.company_name} {/* Updated from user.name to user.firstname */}
         </Link>
       </div>
     </div>
@@ -51,7 +42,6 @@ const UserInfoCell: FC<Props> = ({ user }) => {
 };
 
 export { UserInfoCell };
-
 
 
 /////////////////////////////****************************** */

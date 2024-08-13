@@ -35,6 +35,9 @@ const PrivateRoutes = () => {
   const ProductDashboard = lazy(()=> import('../modules/apps/product-dashboard/UsersPage'))
   const Categories = lazy(()=> import('../modules/apps/categories/UsersPage'))
   const Catalogue = lazy(()=> import('../modules/apps/Store Product Catalogue/UsersPage'))
+  const Company = lazy(() => import('../modules/apps/Company Details/UsersPage'))
+  const OnBoarding = lazy(() => import('../modules/apps/On Boarding/UsersPage'))
+
 
 
 
@@ -147,6 +150,22 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <CustomerPage />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='apps/On-Boarding/*'
+          element={
+            <SuspensedView>
+              <OnBoarding />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='/apps/company-details/*'
+          element={
+            <SuspensedView>
+              <Company />
             </SuspensedView>
           }
         />

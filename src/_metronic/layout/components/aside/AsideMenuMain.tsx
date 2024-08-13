@@ -20,7 +20,7 @@ export function AsideMenuMain() {
 
 
 
-      <div className='menu-item'>
+      {/* <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Product Management</span>
         </div>
@@ -35,13 +35,15 @@ export function AsideMenuMain() {
         </div>
       </div>
       <AsideMenuItem to='apps/Store-Product/Catalogue' title='Store Product Catalogue' hasBullet={true} />
-      <AsideMenuItem to='StoreOrder' title='Store Orders' hasBullet={true} />
+      <AsideMenuItem to='StoreOrder' title='Store Orders' hasBullet={true} /> */}
 
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Delivery Management</span>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Company</span>
         </div>
       </div>
+      <AsideMenuItem to='/apps/company-details/list' title='Company Details' hasBullet={true} />
+      <AsideMenuItem to='apps/On-Boarding/OnBoarding' title='On Boarding' hasBullet={true} />
       <AsideMenuItem to='DeliveryPerson' title='Delivery Person' hasBullet={true} />
       <AsideMenuItem to='Payout' title='Payout' hasBullet={true} />
 

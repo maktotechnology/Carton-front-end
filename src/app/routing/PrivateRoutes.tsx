@@ -35,7 +35,6 @@ const PrivateRoutes = () => {
   const ProductDashboard = lazy(()=> import('../modules/apps/product-dashboard/UsersPage'))
   const Categories = lazy(()=> import('../modules/apps/categories/UsersPage'))
   const Catalogue = lazy(()=> import('../modules/apps/Store Product Catalogue/UsersPage'))
-  const UserDetailsPage = lazy(()=> import('../modules/apps/customer-management/Userdetails'))
 
 
 

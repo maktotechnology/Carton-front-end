@@ -10,6 +10,7 @@ export type User = {
   phone_number?: string   // This represents the phone number
   last_login?: string
   two_steps?: boolean  // This can represent the Active/Inactive status
+  active_inactive?: string
   joined_day?: string  // This can represent the join date (created time)
   online?: boolean
   initials?: {

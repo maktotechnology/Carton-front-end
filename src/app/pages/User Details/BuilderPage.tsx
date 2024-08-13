@@ -22,7 +22,7 @@ const BuilderPage: React.FC = () => {
       }
   
       try {
-        const userDoc = await getDoc(doc(db, 'Number', userID));
+        const userDoc = await getDoc(doc(db, 'user', userID));
         if (userDoc.exists()) {
           setUserData(userDoc.data());
         } else {
@@ -65,7 +65,7 @@ const BuilderPage: React.FC = () => {
       if (confirmUpdate && userData) {
         try {
           if (userID) {
-            const userDocRef = doc(db, 'Number', userID);
+            const userDocRef = doc(db, 'user', userID);
             await updateDoc(userDocRef, userData);
             alert('User details updated successfully!');
           } else {

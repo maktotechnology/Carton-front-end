@@ -9,6 +9,7 @@ export type User = {
   number?:string
   last_login?: string
   two_steps?: boolean
+  active_inactive?: string
   joined_day?: string
   online?: boolean
   initials?: {

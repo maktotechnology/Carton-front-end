@@ -78,7 +78,7 @@ type User = {
   firstname: string;
   phone_number: string;
   last_login?: string;
-  isActive?: boolean;
+  active_inactive?: string;
   created_time: string;
 };
 
@@ -89,13 +89,13 @@ const UsersTable: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, 'Number'));
+      const querySnapshot = await getDocs(collection(db, 'user'));
       const usersData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         firstname: doc.data().firstname,
         phone_number: doc.data().phone_number,
-        last_login: doc.data().last_login,
-        isActive: doc.data().isActive,
+        last_login: doc.data().Last_Login,
+        active_inactive: doc.data().active_inactive,
         created_time: doc.data().created_time,
       }));
       setUsers(usersData);

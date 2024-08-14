@@ -34,7 +34,7 @@ const UserInfoCell: FC<Props> = ({ user }) => {
       </div>
       <div className='d-flex flex-column'>
         <Link to={`/Users/${user.id}`} className='text-gray-800 text-hover-primary mb-1'>
-          {user.company_name} {/* Updated from user.name to user.firstname */}
+          {user.first_name} {/* Updated from user.name to user.firstname */}
         </Link>
       </div>
     </div>

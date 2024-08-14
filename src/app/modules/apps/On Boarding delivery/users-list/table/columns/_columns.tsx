@@ -12,8 +12,8 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Cell: ({...props}) => <UserSelectionCell id={props.data[props.row.index].id} />,
   },
   {
-    Header: (props) => <UserCustomHeader tableProps={props} title='Company name' className='min-w-125px' />,
-    id: 'company_name',
+    Header: (props) => <UserCustomHeader tableProps={props} title='Delivery Name' className='min-w-125px' />,
+    id: 'first_name',
     Cell: ({...props}) => <UserInfoCell user={props.data[props.row.index]} />,
   },
   {
@@ -21,7 +21,7 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     accessor: 'phone_number',
   },
   {
-    Header: (props) => <UserCustomHeader tableProps={props} title='Company Address' className='min-w-125px' />,
+    Header: (props) => <UserCustomHeader tableProps={props} title='Delivery Address' className='min-w-125px' />,
   
     accessor: 'address1',
   },

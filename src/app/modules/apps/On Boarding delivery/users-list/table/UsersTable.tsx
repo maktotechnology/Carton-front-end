@@ -104,63 +104,34 @@ import { CustomRow } from './columns/CustomRow';
 import { UsersListPagination } from '../components/pagination/UsersListPagination';
 import { UsersListLoading } from '../components/loading/UsersListLoading';
 
-type User = {
-  id: string;
-  company_name: string;
-  phone_number: string;
-  last_login?: string;
-  active_inactive?: string;
-  address1: string;
-  status: string;
-};
-
 type Delivery = {
   id: string;
-  company_name: string; // Adjust this type based on your delivery structure
+  first_name: string; // Adjust this type based on your delivery structure
+  address1: string;
+  phone_number:string;
+
 };
 
 const UsersTable: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
-  const [isCompanyView, setIsCompanyView] = useState(true); // Toggle state
   const isLoading = false; // You can update this with a loading state if needed
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, 'company'));
-      const usersData = querySnapshot.docs
-        .map((doc) => ({
-          id: doc.id,
-          company_name: doc.data().company_name,
-          phone_number: doc.data().phone_number,
-          address1: doc.data().address1,
-          active_inactive: doc.data().active_inactive,
-          status: doc.data().status, // Assuming 'status' field exists
-        }))
-        .filter((user) => user.status === 'pending'); // Filter by status
-
-      setUsers(usersData);
-    };
-
     const fetchDeliveries = async () => {
       const querySnapshot = await getDocs(collection(db, 'delivery'));
       const deliveriesData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
-        company_name: doc.data().first_name, // Adjust based on your delivery structure
+        first_name: doc.data().first_name,
+        address1: doc.data().address1,
+        phone_number:doc.data().phone_number, // Adjust based on your delivery structure
       }));
       setDeliveries(deliveriesData);
     };
-    console.log(deliveries);
 
-    // Fetch data based on the current view
-    if (isCompanyView) {
-      fetchUsers();
-    } else {
-      fetchDeliveries();
-    }
-  }, [isCompanyView]);
+    fetchDeliveries();
+  }, []);
 
-  const data = useMemo(() => (isCompanyView ? users : deliveries), [users, deliveries, isCompanyView]);
+  const data = useMemo(() => deliveries, [deliveries]);
   const columns = useMemo(() => usersColumns, []);
   const { getTableProps, getTableBodyProps, headers, rows, prepareRow } = useTable({
     columns,
@@ -169,16 +140,6 @@ const UsersTable: React.FC = () => {
 
   return (
     <KTCardBody className='py-4'>
-      {/* <div className='mb-3'>
-        <label>
-          <input
-            type='checkbox'
-            checked={!isCompanyView}
-            onChange={() => setIsCompanyView((prev) => !prev)}
-          />
-          Toggle to {isCompanyView ? 'Delivery' : 'Company'}
-        </label>
-      </div> */}
       <div className='table-responsive'>
         <table
           id='kt_table_users'
@@ -187,14 +148,14 @@ const UsersTable: React.FC = () => {
         >
           <thead>
             <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-              {headers.map((column: ColumnInstance<User | Delivery>) => (
+              {headers.map((column: ColumnInstance<Delivery>) => (
                 <CustomHeaderColumn key={column.id} column={column} />
               ))}
             </tr>
           </thead>
           <tbody className='text-gray-600 fw-bold' {...getTableBodyProps()}>
             {rows.length > 0 ? (
-              rows.map((row: Row<User | Delivery>, i) => {
+              rows.map((row: Row<Delivery>, i) => {
                 prepareRow(row);
                 return <CustomRow row={row} key={`row-${i}-${row.id}`} />;
               })

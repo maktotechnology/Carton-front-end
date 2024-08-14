@@ -7,7 +7,7 @@ export type User = {
   email?: string
   position?: string
   role?: string
-  company_name?: string
+  first_name?: string
   status: string;
   address1?:string
   phone_number?: string   // This represents the phone number

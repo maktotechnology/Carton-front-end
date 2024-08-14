@@ -128,7 +128,18 @@ const BuilderPage: React.FC = () => {
   if (!userData && orderData.length === 0) {
     return <div>Loading...</div>;
   }
+  const documentUrl = userData?.doc; // Assuming userData.doc contains the URL
 
+  // Split the URL to get the relevant path part
+  const pathParts = documentUrl?.split('/');
+  const lastSegment = decodeURIComponent(pathParts.slice(-1)[0].split('?')[0]); // This gets the file part
+  const penultimateSegment = decodeURIComponent(pathParts.slice(-2, -1)[0].split('?')[0]); // This gets the previous part
+  
+  // Combine them to form the desired output
+  const desiredOutput = `${penultimateSegment}${lastSegment}`;
+  
+  console.log(penultimateSegment + " " + lastSegment); // This will output: "2F1723528882070000.pdf"
+  
   return (
     <>
       <div className='card card-custom'>
@@ -186,7 +197,7 @@ const BuilderPage: React.FC = () => {
                 </div>
 
 
-                <div className='row mb-10'>
+            <div className='row mb-10'>
               <div className='col-lg-6'>
                 <label className='col-form-label'>Phone Number:</label>
                 <input
@@ -258,8 +269,21 @@ const BuilderPage: React.FC = () => {
                 />
               </div>
             </div>
-          
-                {/* Add more fields similarly */}
+
+            <div className='row mb-10'>
+                  <div className='col-lg-6'>
+                    <label className='col-form-label'>Document:</label>
+                    <input
+                      type='text'
+                      value={desiredOutput}
+                      readOnly
+                      className="form-control"
+                      style={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue' }}
+                      onClick={() => window.open(documentUrl, '_blank')}
+                    />
+                  </div>
+                </div>
+                
               </div>
               <div className='card-footer py-6'>
                 <div className='row justify-content-center'>

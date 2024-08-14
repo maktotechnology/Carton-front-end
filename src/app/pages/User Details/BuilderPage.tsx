@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, where, collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { getLayout, ILayout, LayoutSetup, useLayout } from '../../../_metronic/layout/core';
-import { Tab, Tabs } from 'react-bootstrap';
+import { Tabs, Tab, Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 const BuilderPage: React.FC = () => {
-  const { setLayout } = useLayout();
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('userDetails');
   const [userData, setUserData] = useState<any>(null);
-  const [orderData, setOrderData] = useState<any>(null); // State for order data
+  const [orderData, setOrderData] = useState<any[]>([]); // State for multiple order data
+  const [selectedOrder, setSelectedOrder] = useState<any>(null); // State for selected order details
   const { userID } = useParams<{ userID: string }>();
 
   useEffect(() => {
@@ -38,13 +37,23 @@ const BuilderPage: React.FC = () => {
         console.error('UID is undefined.');
         return;
       }
-
+    
       try {
-        const orderDoc = await getDoc(doc(db, 'orders', userID));
-        if (orderDoc.exists()) {
-          setOrderData(orderDoc.data());
+        const ordersRef = collection(db, 'orders');
+        const q = query(ordersRef, where('uid', '==', userID));
+        const querySnapshot = await getDocs(q);
+    
+        const orders: any[] = [];
+        querySnapshot.forEach((doc) => {
+          orders.push({ id: doc.id, ...doc.data() });
+        });
+    
+        console.log('Fetched Orders:', JSON.stringify(orders, null, 2));
+    
+        if (orders.length > 0) {
+          setOrderData(orders);
         } else {
-          console.error('No such document!');
+          console.error('No orders found for this user.');
         }
       } catch (error) {
         console.error('Error fetching order details:', error);
@@ -57,6 +66,10 @@ const BuilderPage: React.FC = () => {
       fetchOrderDetails();
     }
   }, [userID, activeTab]);
+
+  const handleOrderClick = (order: any) => {
+    setSelectedOrder(order);
+  };
 
   const handleSubmit = async () => {
     if (activeTab === 'userDetails') {
@@ -79,14 +92,14 @@ const BuilderPage: React.FC = () => {
     } else if (activeTab === 'orders') {
       setShowPopup(true);
       const confirmUpdate = window.confirm("Are you sure you want to update this order's details?");
-      if (confirmUpdate && orderData) {
+      if (confirmUpdate && selectedOrder) {
         try {
-          if (userID) {
-            const orderDocRef = doc(db, 'orders', userID);
-            await updateDoc(orderDocRef, orderData);
+          if (selectedOrder.id) {
+            const orderDocRef = doc(db, 'orders', selectedOrder.id);
+            await updateDoc(orderDocRef, selectedOrder);
             alert('Order details updated successfully!');
           } else {
-            console.error('UserID is undefined or invalid.');
+            console.error('Order ID is undefined or invalid.');
           }
         } catch (error) {
           console.error('Error updating order details:', error);
@@ -101,7 +114,7 @@ const BuilderPage: React.FC = () => {
     if (activeTab === 'userDetails') {
       setUserData({ ...userData, [name]: value });
     } else if (activeTab === 'orders') {
-      setOrderData({ ...orderData, [name]: value });
+      setSelectedOrder({ ...selectedOrder, [name]: value });
     }
   };
 
@@ -112,7 +125,7 @@ const BuilderPage: React.FC = () => {
     }
   };
 
-  if (!userData && !orderData) {
+  if (!userData && orderData.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -265,41 +278,58 @@ const BuilderPage: React.FC = () => {
             </form>
           </Tab>
           <Tab eventKey='orders' title='Orders'>
-            <form className='form'>
-              <div className='card-body'>
-                {/* Orders Information Form Fields */}
-                <div className='row mb-10'>
-                  <div className='col-lg-6'>
-                    <label className='col-form-label'>Order ID:</label>
-                    <input
-                      type='text'
-                      className='form-control form-control-solid input-solid'
-                      name='order_id'
-                      value={orderData?.order_id || ''}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+            <div className='card-body'>
+              {/* Table to display order IDs */}
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderData.map((order) => (
+                    <tr key={order.id} onClick={() => handleOrderClick(order)}>
+                      <td>{order.order_id}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+
+              {/* If an order is selected, display its details */}
+              {selectedOrder && (
+                <form className='form mt-4'>
+                  <div className='row mb-10'>
+                    <div className='col-lg-6'>
+                      <label className='col-form-label'>Order ID:</label>
+                      <input
+                        type='text'
+                        className='form-control form-control-solid input-solid'
+                        name='order_id'
+                        value={selectedOrder?.order_id || ''}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </div>
+                    <div className='col-lg-6'>
+                      <label className='col-form-label'>Amount:</label>
+                      <input
+                        type='text'
+                        className='form-control form-control-solid input-solid'
+                        name='amount'
+                        value={selectedOrder?.amount || ''}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </div>
                   </div>
+              <div className='row mb-10'>
                   <div className='col-lg-6'>
-                    <label className='col-form-label'>Amount:</label>
-                    <input
-                      type='text'
-                      className='form-control form-control-solid input-solid'
-                      name='amount'
-                      value={orderData?.amount || ''}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
-                  </div>
-                </div>
-                <div className='row mb-10'>
-                  <div className='col-lg-6'>
-                    <label className='col-form-label'>Items:</label>
-                    <input
+                   <label className='col-form-label'>Items:</label>
+                 <input
                       type='text'
                       className='form-control form-control-solid input-solid'
                       name='items'
-                      value={orderData?.items || ''}
+                      value={selectedOrder?.items || ''}
                       onChange={handleChange}
                       disabled={!editMode}
                     />
@@ -307,10 +337,10 @@ const BuilderPage: React.FC = () => {
                   <div className='col-lg-6'>
                     <label className='col-form-label'>Payment Date:</label>
                     <input
-                      type='date'
+                      type='text'
                       className='form-control form-control-solid input-solid'
                       name='payment_date'
-                      value={orderData?.payment_date || ''}
+                      value={selectedOrder?.payment_date || ''}
                       onChange={handleChange}
                       disabled={!editMode}
                     />
@@ -323,7 +353,7 @@ const BuilderPage: React.FC = () => {
                       type='text'
                       className='form-control form-control-solid input-solid'
                       name='payment_type'
-                      value={orderData?.payment_type || ''}
+                      value={selectedOrder?.payment_type || ''}
                       onChange={handleChange}
                       disabled={!editMode}
                     />
@@ -334,28 +364,30 @@ const BuilderPage: React.FC = () => {
                       type='text'
                       className='form-control form-control-solid input-solid'
                       name='phone_number'
-                      value={orderData?.phone_number || ''}
+                      value={selectedOrder?.phone_number || ''}
                       onChange={handleChange}
                       disabled={!editMode}
                     />
                   </div>
                 </div>
-                <div className='card-footer py-6'>
-                  <div className='row justify-content-center'>
-                    <div className='col-lg-6 text-center'>
-                      <button
-                        type='button'
-                        onClick={handleSubmit}
-                        className='btn btn-primary'
-                        disabled={!editMode}
-                      >
-                        <span className='indicator-label'>Submit</span>
-                      </button>
+                  {/* Add more fields as needed */}
+                  <div className='card-footer py-6'>
+                    <div className='row justify-content-center'>
+                      <div className='col-lg-6 text-center'>
+                        <button
+                          type='button'
+                          onClick={handleSubmit}
+                          className='btn btn-primary'
+                          disabled={!editMode}
+                        >
+                          <span className='indicator-label'>Submit</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </form>
+                </form>
+              )}
+            </div>
           </Tab>
         </Tabs>
       </div>

@@ -2,7 +2,7 @@
 import {Link} from 'react-router-dom'
 
 
-export function Overview() {
+export function Profile() {
   return (
     <>
       <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
@@ -11,7 +11,7 @@ export function Overview() {
             <h3 className='fw-bolder m-0'>Profile Details</h3>
           </div>
 
-          <Link to='/crafted/account/settings' className='btn btn-primary align-self-center'>
+          <Link to='/customer-management/user/settings' className='btn btn-primary align-self-center'>
             Edit Profile
           </Link>
         </div>

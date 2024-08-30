@@ -1,8 +1,8 @@
 import {Route, Routes, Outlet, Navigate} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../../_metronic/layout/core'
-import {UsersListWrapper} from './users-list/UsersList'
+import {CustomerListWrapper} from './customer-list/CustomerList'
 
-const usersBreadcrumbs: Array<PageLink> = [
+const CustomerBreadcrumbs: Array<PageLink> = [
   {
     title: 'Customer Management',
     path: '/apps/customer-management/customer',
@@ -17,7 +17,7 @@ const usersBreadcrumbs: Array<PageLink> = [
   },
 ]
 
-const UsersPage = () => {
+const CustomerPage = () => {
   return (
     <Routes>
       <Route element={<Outlet />}>
@@ -25,8 +25,8 @@ const UsersPage = () => {
           path='customer'
           element={
             <>
-              <PageTitle breadcrumbs={usersBreadcrumbs}>Customer list</PageTitle>
-              <UsersListWrapper />
+              <PageTitle breadcrumbs={CustomerBreadcrumbs}>Customer list</PageTitle>
+              <CustomerListWrapper />
             </>
           }
         />
@@ -36,4 +36,4 @@ const UsersPage = () => {
   )
 }
 
-export default UsersPage
+export default CustomerPage

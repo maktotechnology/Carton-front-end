@@ -70,8 +70,8 @@ import {KTCardBody} from '../../../../../../_metronic/helpers'
 import {usersColumns} from './columns/_columns'
 import {CustomHeaderColumn} from './columns/CustomHeaderColumn'
 import {CustomRow} from './columns/CustomRow'
-import {UsersListPagination} from '../components/pagination/UsersListPagination'
-import {UsersListLoading} from '../components/loading/UsersListLoading'
+import {UsersListPagination} from '../components/pagination/CustomerListPagination'
+import {UsersListLoading} from '../components/loading/CustomerListLoading'
 
 type User = {
   id: string;

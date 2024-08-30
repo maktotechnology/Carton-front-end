@@ -8,7 +8,7 @@ type Props = {
   user: User;
 };
 
-const UserInfoCell: FC<Props> = ({ user }) => {
+const CustomerInfoCell: FC<Props> = ({ user }) => {
   // Log the user data to the console whenever the component renders
   useEffect(() => {
     console.log('User data:', user);
@@ -50,7 +50,7 @@ const UserInfoCell: FC<Props> = ({ user }) => {
   );
 };
 
-export { UserInfoCell };
+export { CustomerInfoCell };
 
 
 

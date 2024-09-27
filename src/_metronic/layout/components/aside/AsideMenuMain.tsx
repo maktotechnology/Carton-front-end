@@ -15,11 +15,7 @@ export function AsideMenuMain() {
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
       />
 
-      <AsideMenuItemWithSub to='/apps/customer-management' title='Customer Management' icon='profile-circle'>
-      <AsideMenuItem to='/apps/customer-management/customer' hasBullet={true} title='Customer List' />
-        <AsideMenuItem to='/customer-management/user/overview' title='Profile' hasBullet={true} />
-        <AsideMenuItem to='/customer-management/user/settings' title='Settings' hasBullet={true} />
-      </AsideMenuItemWithSub>
+      <AsideMenuItem to='/apps/customer-management/customer' title='Customer Management' icon='profile-circle'/>
       <AsideMenuItem to='Orders' title='Orders' icon='book-square' />
       <AsideMenuItem to='Cancellation' title='Cancellation' icon='lock-3' />
 

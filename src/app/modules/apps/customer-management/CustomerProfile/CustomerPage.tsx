@@ -4,6 +4,9 @@ import {PageLink, PageTitle} from '../../../../../_metronic/layout/core'
 import {Profile} from './components/Profile'
 import {Settings} from './components/settings/Settings'
 import {CustomerHeader} from './CustomerHeader'
+import {BuilderPage} from './components/Order/BuilderPage'
+import {CustomerListWrapper} from './components/Order/Orders/customer-list/CustomerList'
+
 
 const accountBreadCrumbs: Array<PageLink> = [
   {
@@ -34,7 +37,7 @@ const AccountPage: React.FC = () => {
         }
       >
         <Route
-          path='overview'
+          path='overview/:userID'
           element={
             <>
               <PageTitle breadcrumbs={accountBreadCrumbs}>Profile</PageTitle>
@@ -43,11 +46,20 @@ const AccountPage: React.FC = () => {
           }
         />
         <Route
-          path='settings'
+          path='settings/:userID'
           element={
             <>
               <PageTitle breadcrumbs={accountBreadCrumbs}>Settings</PageTitle>
               <Settings />
+            </>
+          }
+        />
+        <Route
+          path='Order/:userID'
+          element={
+            <>
+              <PageTitle breadcrumbs={accountBreadCrumbs}>Order</PageTitle>
+              <CustomerListWrapper />
             </>
           }
         />

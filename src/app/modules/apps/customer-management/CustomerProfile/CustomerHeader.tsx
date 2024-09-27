@@ -1,12 +1,43 @@
-
-import React from 'react'
-import {KTIcon, toAbsoluteUrl} from '../../../../../_metronic/helpers'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../../firebase'; // adjust this import based on your project structure
+import { KTIcon, toAbsoluteUrl } from '../../../../../_metronic/helpers';
+import { Dropdown1 } from '../../../../../_metronic/partials';
 import {Link} from 'react-router-dom'
-import {Dropdown1} from '../../../../../_metronic/partials'
-import {useLocation} from 'react-router'
+
 
 const CustomerHeader: React.FC = () => {
-  const location = useLocation()
+  const { userID } = useParams<{ userID: string }>();
+  const [profileData, setProfileData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (userID) {
+        try {
+          const docRef = doc(db, 'user', userID);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            setProfileData(docSnap.data());
+          } else {
+            console.log('No such document!');
+          }
+        } catch (error) {
+          console.error('Error fetching document:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchProfileData();
+  }, [userID]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -25,18 +56,10 @@ const CustomerHeader: React.FC = () => {
                 <div className='d-flex flex-column'>
                   <div className='d-flex align-items-center mb-2'>
                     <a href='#' className='text-gray-800 text-hover-primary fs-2 fw-bolder me-1'>
-                      Max Smith
+                      {profileData?.firstname} {profileData?.lastname}
                     </a>
                     <a href='#'>
                       <KTIcon iconName='verify' className='fs-1 text-primary' />
-                    </a>
-                    <a
-                      href='#'
-                      className='btn btn-sm btn-light-success fw-bolder ms-2 fs-8 py-1 px-3'
-                      data-bs-toggle='modal'
-                      data-bs-target='#kt_modal_upgrade_plan'
-                    >
-                      Upgrade to Pro
                     </a>
                   </div>
 
@@ -46,55 +69,26 @@ const CustomerHeader: React.FC = () => {
                       className='d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2'
                     >
                       <KTIcon iconName='profile-circle' className='fs-4 me-1' />
-                      Developer
+                      {profileData?.address1}
                     </a>
                     <a
                       href='#'
                       className='d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2'
                     >
                       <KTIcon iconName='geolocation' className='fs-4 me-1' />
-                      SF, Bay Area
+                      {profileData?.city }
                     </a>
                     <a
                       href='#'
                       className='d-flex align-items-center text-gray-500 text-hover-primary mb-2'
                     >
                       <KTIcon iconName='sms' className='fs-4 me-1' />
-                      max@kt.com
+                      {profileData?.phone_number}
                     </a>
                   </div>
                 </div>
 
-                <div className='d-flex my-4'>
-                  <a href='#' className='btn btn-sm btn-light me-2' id='kt_user_follow_button'>
-                    <KTIcon iconName='check' className='fs-3 d-none' />
 
-                    <span className='indicator-label'>Follow</span>
-                    <span className='indicator-progress'>
-                      Please wait...
-                      <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                    </span>
-                  </a>
-                  <a
-                    href='#'
-                    className='btn btn-sm btn-primary me-3'
-                    data-bs-toggle='modal'
-                    data-bs-target='#kt_modal_offer_a_deal'
-                  >
-                    Hire Me
-                  </a>
-                  <div className='me-0'>
-                    <button
-                      className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'
-                      data-kt-menu-trigger='click'
-                      data-kt-menu-placement='bottom-end'
-                      data-kt-menu-flip='top-end'
-                    >
-                      <i className='bi bi-three-dots fs-3'></i>
-                    </button>
-                    <Dropdown1 />
-                  </div>
-                </div>
               </div>
 
               <div className='d-flex flex-wrap flex-stack'>
@@ -138,23 +132,24 @@ const CustomerHeader: React.FC = () => {
                     <div
                       className='bg-success rounded h-5px'
                       role='progressbar'
-                      style={{width: '50%'}}
+                      style={{ width: '50%' }}
                     ></div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
+          </div>
           <div className='d-flex overflow-auto h-55px'>
             <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
+
               <li className='nav-item'>
                 <Link
                   className={
                     `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/customer-management/user/overview' && 'active')
+                    (location.pathname === `/customer-management/user/overview/${userID}` && 'active')
                   }
-                  to='/customer-management/user/overview'
+                  to={`/customer-management/user/overview/${userID}`}
                 >
                   Overview
                 </Link>
@@ -163,11 +158,11 @@ const CustomerHeader: React.FC = () => {
                 <Link
                   className={
                     `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/customer-management/user/settings' && 'active')
+                    (location.pathname === `/customer-management/user/Order/${userID}` && 'active')
                   }
-                  to='/customer-management/user/settings'
+                  to={`/customer-management/user/Order/${userID}`}
                 >
-                  Settings
+                  Orders
                 </Link>
               </li>
             </ul>
@@ -175,7 +170,7 @@ const CustomerHeader: React.FC = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export {CustomerHeader}
+export { CustomerHeader };

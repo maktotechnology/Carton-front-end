@@ -1,11 +1,45 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase'; // adjust this import based on your project structure
+import { KTIcon, toAbsoluteUrl } from '../../../_metronic/helpers';
+import { Dropdown1 } from '../../../_metronic/partials';
+import {Link} from 'react-router-dom'
 
-import React from 'react'
-import {KTIcon, toAbsoluteUrl} from '../../../_metronic/helpers'
-import {Link, useLocation} from 'react-router-dom'
-import {Dropdown1} from '../../../_metronic/partials'
 
 const ProfileHeader: React.FC = () => {
-  const location = useLocation()
+  const { userID } = useParams<{ userID: string }>();
+  const [profileData, setProfileData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (userID) {
+        try {
+          const docRef = doc(db, 'user', userID);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            setProfileData(docSnap.data());
+          } else {
+            console.log('No such document!');
+          }
+        } catch (error) {
+          console.error('Error fetching document:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    
+
+    fetchProfileData();
+  }, [userID]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -14,7 +48,7 @@ const ProfileHeader: React.FC = () => {
           <div className='d-flex flex-wrap flex-sm-nowrap mb-3'>
             <div className='me-7 mb-4'>
               <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
-                <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='Metornic' />
+                <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='Metronic' />
                 <div className='position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px'></div>
               </div>
             </div>
@@ -24,7 +58,7 @@ const ProfileHeader: React.FC = () => {
                 <div className='d-flex flex-column'>
                   <div className='d-flex align-items-center mb-2'>
                     <a href='#' className='text-gray-800 text-hover-primary fs-2 fw-bolder me-1'>
-                      Max Smith
+                      {profileData?.firstname} {profileData?.lastname}
                     </a>
                     <a href='#'>
                       <KTIcon iconName='verify' className='fs-1 text-primary' />
@@ -37,55 +71,26 @@ const ProfileHeader: React.FC = () => {
                       className='d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2'
                     >
                       <KTIcon iconName='profile-circle' className='fs-4 me-1' />
-                      Developer
+                      {profileData?.address1}
                     </a>
                     <a
                       href='#'
                       className='d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2'
                     >
                       <KTIcon iconName='geolocation' className='fs-4 me-1' />
-                      SF, Bay Area
+                      {profileData?.city }
                     </a>
                     <a
                       href='#'
                       className='d-flex align-items-center text-gray-500 text-hover-primary mb-2'
                     >
                       <KTIcon iconName='sms' className='fs-4 me-1' />
-                      max@kt.com
+                      {profileData?.phone_number}
                     </a>
                   </div>
                 </div>
 
-                <div className='d-flex my-4'>
-                  <a href='#' className='btn btn-sm btn-light me-2' id='kt_user_follow_button'>
-                    <KTIcon iconName='check' className='fs-3 d-none' />
 
-                    <span className='indicator-label'>Follow</span>
-                    <span className='indicator-progress'>
-                      Please wait...
-                      <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                    </span>
-                  </a>
-                  <a
-                    href='#'
-                    className='btn btn-sm btn-primary me-3'
-                    data-bs-toggle='modal'
-                    data-bs-target='#kt_modal_offer_a_deal'
-                  >
-                    Hire Me
-                  </a>
-                  <div className='me-0'>
-                    <button
-                      className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'
-                      data-kt-menu-trigger='click'
-                      data-kt-menu-placement='bottom-end'
-                      data-kt-menu-flip='top-end'
-                    >
-                      <i className='bi bi-three-dots fs-3'></i>
-                    </button>
-                    <Dropdown1 />
-                  </div>
-                </div>
               </div>
 
               <div className='d-flex flex-wrap flex-stack'>
@@ -129,69 +134,26 @@ const ProfileHeader: React.FC = () => {
                     <div
                       className='bg-success rounded h-5px'
                       role='progressbar'
-                      style={{width: '50%'}}
+                      style={{ width: '50%' }}
                     ></div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
+          </div>
           <div className='d-flex overflow-auto h-55px'>
             <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
+
               <li className='nav-item'>
                 <Link
                   className={
                     `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/crafted/pages/profile/overview' && 'active')
+                    (location.pathname === `/customer-management/user/overview/${userID}` && 'active')
                   }
-                  to='/crafted/pages/profile/overview'
+                  to={`/crafted/pages/profile/overview/${userID}`}
                 >
                   Overview
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link
-                  className={
-                    `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/crafted/pages/profile/projects' && 'active')
-                  }
-                  to='/crafted/pages/profile/projects'
-                >
-                  Projects
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link
-                  className={
-                    `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/crafted/pages/profile/campaigns' && 'active')
-                  }
-                  to='/crafted/pages/profile/campaigns'
-                >
-                  Campaigns
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link
-                  className={
-                    `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/crafted/pages/profile/documents' && 'active')
-                  }
-                  to='/crafted/pages/profile/documents'
-                >
-                  Documents
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link
-                  className={
-                    `nav-link text-active-primary me-6 ` +
-                    (location.pathname === '/crafted/pages/profile/connections' && 'active')
-                  }
-                  to='/crafted/pages/profile/connections'
-                >
-                  Connections
                 </Link>
               </li>
             </ul>
@@ -199,7 +161,7 @@ const ProfileHeader: React.FC = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export {ProfileHeader}
+export { ProfileHeader };

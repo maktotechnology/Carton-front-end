@@ -10,8 +10,9 @@ import BuilderPageWrapper from '../pages/Product List/BuilderPageWrapper'
 import BuilderPageWrapper01 from '../pages/Store Details/BuilderPageWrapper'
 import BuilderPageWrapper02 from '../pages/categories form/BuilderPageWrapper'
 import BuilderPageWrapper03 from '../pages/User Details/BuilderPageWrapper'
-
-
+import {Profile} from '../../app/modules/apps/Orders/Profile'
+import {CompanyD} from '../../app/modules/apps/On Boarding/Company' 
+import { Driver } from '../modules/apps/On Boarding delivery/driver'
 import {StoreOrder} from '../modules/apps/store-orders/DashboardWrapper'
 import {Orders} from '../modules/apps/Orders/DashboardWrapper'
 import {Cancellation} from '../modules/apps/Cancellation/DashboardWrapper'
@@ -35,11 +36,12 @@ const PrivateRoutes = () => {
   const ProductDashboard = lazy(()=> import('../modules/apps/product-dashboard/UsersPage'))
   const Categories = lazy(()=> import('../modules/apps/categories/UsersPage'))
   const Catalogue = lazy(()=> import('../modules/apps/Store Product Catalogue/UsersPage'))
-  const Company = lazy(() => import('../modules/apps/Company Details/UsersPage'))
   const OnBoarding = lazy(() => import('../modules/apps/On Boarding/UsersPage'))
 
+  const CompanyPages = lazy(() => import('../modules/apps/Company Details/CompanyPages/CompanyPage'))
+  const Company = lazy(() => import('../modules/apps/Company Details/UsersPage'))
 
-
+  const DeliveryPages = lazy(() => import('../modules/apps/Delivery Person/DeliveryPages/DeliveryPage'))
 
 
 
@@ -70,7 +72,31 @@ const PrivateRoutes = () => {
             </SuspensedView>
           }
         />
-
+        <Route
+          path='Driver/:userID'
+          element={
+            <SuspensedView>
+              <Driver />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='Company/On-Boarding/:userID'
+          element={
+            <SuspensedView>
+              <CompanyD/>
+            </SuspensedView>
+          }
+        />
+        
+        <Route
+          path='Orders/:userID'
+          element={
+            <SuspensedView>
+              <Profile />
+            </SuspensedView>
+          }
+        />
         <Route
           path='Category'
           element={
@@ -126,6 +152,22 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <AccountPage />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='Company/details/*'
+          element={
+            <SuspensedView>
+              <CompanyPages />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='Delivery/details/*'
+          element={
+            <SuspensedView>
+              <DeliveryPages />
             </SuspensedView>
           }
         />

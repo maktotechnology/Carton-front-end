@@ -1,5 +1,5 @@
 
-import {FC} from 'react'
+import {FC,useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {useAuth} from '../../../../app/modules/auth'
 import {Languages} from './Languages'
@@ -7,6 +7,12 @@ import {toAbsoluteUrl} from '../../../helpers'
 
 const HeaderUserMenu: FC = () => {
   const {currentUser, logout} = useAuth()
+    // Use useEffect to log the user ID when the component renders
+    useEffect(() => {
+      if (currentUser?.auth?.uid) {
+        console.log('Logged-in user UID:', currentUser.auth.uid);
+      }
+    }, [currentUser]);
   return (
     <div
       className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px'
@@ -34,7 +40,7 @@ const HeaderUserMenu: FC = () => {
       <div className='separator my-2'></div>
 
       <div className='menu-item px-5'>
-        <Link to={'/crafted/pages/profile'} className='menu-link px-5'>
+        <Link to={`/crafted/pages/profile/overview/${currentUser?.auth?.uid}`} className='menu-link px-5'>
           My Profile
         </Link>
       </div>

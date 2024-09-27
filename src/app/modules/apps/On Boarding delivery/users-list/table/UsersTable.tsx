@@ -123,8 +123,9 @@ const UsersTable: React.FC = () => {
         id: doc.id,
         first_name: doc.data().first_name,
         address1: doc.data().address1,
-        phone_number:doc.data().phone_number, // Adjust based on your delivery structure
-      }));
+        phone_number:doc.data().phone_number,
+        status: doc.data().status, // Adjust based on your delivery structure
+      })).filter((user) => user.status === 'pending');
       setDeliveries(deliveriesData);
     };
 

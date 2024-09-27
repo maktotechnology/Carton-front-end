@@ -18,7 +18,7 @@ const UserInfoCell: FC<Props> = ({ user }) => {
     <div className='d-flex align-items-center'>
       {/* Avatar */}
       <div className='d-flex flex-column'>
-        <Link to={`/Users/${user.id}`}>
+        <Link to={`/Driver/${user.id}`}>
           {/* Display initials if avatar is not available */}
 
             <div
@@ -33,7 +33,7 @@ const UserInfoCell: FC<Props> = ({ user }) => {
         </Link>
       </div>
       <div className='d-flex flex-column'>
-        <Link to={`/Users/${user.id}`} className='text-gray-800 text-hover-primary mb-1'>
+        <Link to={`/Driver/${user.id}`} className='text-gray-800 text-hover-primary mb-1'>
           {user.first_name} {/* Updated from user.name to user.firstname */}
         </Link>
       </div>

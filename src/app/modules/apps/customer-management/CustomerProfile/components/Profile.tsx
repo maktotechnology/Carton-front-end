@@ -1,11 +1,14 @@
 
 import {Link} from 'react-router-dom'
 
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc, updateDoc, where, collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../../../../firebase';
 import { useParams } from 'react-router-dom';
 
+=======
+>>>>>>> 7af00896a516255c5b4fca3789fb0d10d0737ef9
 export function Profile() {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);

@@ -24,7 +24,7 @@ const App = () => {
     const script = document.createElement('script')
 
     
-    script.src = "http://13.234.34.123:3000/packs/js/sdk.js"
+    script.src = "https://gdsupport.ghostdelivery.ae/packs/js/sdk.js"
     script.defer = true
     script.async = true
     document.body.appendChild(script)
@@ -33,8 +33,8 @@ const App = () => {
       console.log('Chatwoot script loaded')
       if (window.chatwootSDK) {
         window.chatwootSDK.run({
-          websiteToken: 'wMgCkYYSLjSGsRE8mwFk25VV',
-          baseUrl: "http://13.234.34.123:3000/"
+          websiteToken: 'faPjFdJWLURwwdrTT3idkubY',
+          baseUrl: "https://gdsupport.ghostdelivery.ae/"
         })
         console.log('Chatwoot initialized')
       } else {

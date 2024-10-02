@@ -79,7 +79,7 @@ export function Login() {
       ) : (
         <div className='mb-10 bg-light-info p-8 rounded'>
           <div className='text-info'>
-            Use account <strong>administrator@ghostdelivery.ae</strong> and password <strong>Ark.ia#534</strong> to continue.
+            Use account <strong>administrator@ghostdelivery.ae</strong> and password <strong>ghostae</strong> to continue.
           </div>
         </div>
       )}

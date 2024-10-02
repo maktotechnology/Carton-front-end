@@ -1,6 +1,7 @@
 import {ID, Response} from '../../../../../../../../../../_metronic/helpers'
 
 export type User = {
+  order_id: ReactNode
   id?: ID
   firstname?: string   // This can be used for the first name
   avatar?: string
